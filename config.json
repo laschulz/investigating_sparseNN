@@ -1,0 +1,7 @@
+{
+    "batch_size": 8,
+    "patience": 20,
+    "dataset_size": 1024,
+    "num_epochs": 10000,
+    "save_path": "/Users/laura/Documents/MIT/Semesterproject/investigating_sparseNN/experiment_output"
+}
