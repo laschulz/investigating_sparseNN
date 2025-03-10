@@ -30,30 +30,27 @@ class ExperimentRunner:
             self.teacher_model.conv1.weight.copy_(torch.tensor([[[2.59, -2.83, 0.87]]]))
             self.teacher_model.conv2.weight.copy_(torch.tensor([[[-1.38, 1.29]]]))
             self.teacher_model.conv3.weight.copy_(torch.tensor([[[0.86, -0.84]]]))
+        self.teacher_model_name = teacher_name
 
         # Initialize the student model
         self.student_model = student_model.to(self.device)
-
-        # Define optimizer and loss function
-        self.optimizer = optim.SGD(self.student_model.parameters(), lr=lr, momentum=momentum)
-        self.loss_fn = nn.MSELoss()
-
-        # Save model names for logging
-        self.teacher_model_name = teacher_name
         self.student_model_name = student_name
 
+        # Define optimizer and loss function
+        self.optimizer = optim.SGD(self.student_model.parameters(), lr=lr, momentum=momentum) #TODO: add l2 here
+        self.loss_fn = nn.MSELoss()
+
+
     def evaluate(self):
-        # compute distance metric
         self.distance = utils.calc_distance_metric(self.teacher_model, self.student_model, self.teacher_model_name, self.student_model_name)
 
-        # TODO: maybe remove these print statements?
-        print("\nTarget function parameters (Teacher Model):")
-        for param in self.teacher_model.parameters():
-            print(param.data.cpu().numpy())
+        # print("\nTarget function parameters (Teacher Model):")
+        # for param in self.teacher_model.parameters():
+        #     print(param.data.cpu().numpy())
 
-        print("\nStudent function parameters AFTER training:")
-        for param in self.student_model.parameters():
-            print(param.data.cpu().numpy())
+        # print("\nStudent function parameters AFTER training:")
+        # for param in self.student_model.parameters():
+        #     print(param.data.cpu().numpy())
 
     def run(self):
         """Start the experiment: Generate dataset and train the student model."""
@@ -74,10 +71,11 @@ class ExperimentRunner:
     
     def save_output(self):
         """Save the trained model's weights and log experiment details in a text file."""
+
         #Path
         save_dir = self.config.get("save_path", "./experiment_output")
         model_save_path = os.path.join(save_dir, f"{self.teacher_model_name}__{self.student_model_name}.pth")
-        date = datetime.now().strftime("%d%m%Y_%H%M%S")
+        date = datetime.now().strftime("%d%m%Y")
         text_save_path = os.path.join(save_dir, f"experiment__{date}.txt")
 
         save_data = {
@@ -92,28 +90,28 @@ class ExperimentRunner:
         torch.save(save_data, model_save_path)
         print(f"Experiment saved to {model_save_path}")
 
+        # Check if file already exists
+        file_exists = os.path.exists(text_save_path)
+
         # Save experiment details in a text file
-        with open(text_save_path, "w") as f:
-            f.write("Experiment Summary:\n")
-            f.write("=" * 80 + "\n\n")
+        with open(text_save_path, "a") as f:
+            if not file_exists:
+                f.write("Experiment Summary:\n")
+                f.write("=" * 80 + "\n\n")
 
-            # Save Teacher Model Parameters
-            f.write("Teacher Model Parameters:\n")
-            for name, param in self.teacher_model.named_parameters():
-                f.write(f"{name}: {param.data.cpu().numpy()}\n")
-            f.write("\n" + "=" * 80 + "\n\n")
+                # Save Teacher Model Parameters
+                f.write("Teacher Model Parameters:\n")
+                for name, param in self.teacher_model.named_parameters():
+                    f.write(f"{name}: {param.data.cpu().numpy()}\n")
+                f.write("\n" + "=" * 80 + "\n\n")
 
-            f.write(f"{self.teacher_model_name} -> {self.student_model_name}\n")
-            f.write("=" * 80 + "\n\n")
-
-            # Save Student Model Parameters
+            f.write(f"{self.teacher_model_name} -> {self.student_model_name}\n\n")
             f.write("Student Model Parameters:\n")
             for name, param in self.student_model.named_parameters():
                 f.write(f"{name}: {param.data.cpu().numpy()}\n")
-            f.write("\n" + "=" * 80 + "\n\n")
 
-            # Save Experiment Details
-            f.write(f"Final Loss: {self.final_loss:.4f}\n")
+            f.write(f"\nFinal Loss: {self.final_loss:.4f}\n")
             f.write(f"Distance Metric: {self.distance:.4f}\n")
+            f.write("\n" + "=" * 80 + "\n\n")
 
         print(f"Experiment details saved to {text_save_path}")

@@ -1,4 +1,3 @@
-
 import json, os
 import torch
 from torch.utils.data import DataLoader, TensorDataset
@@ -9,11 +8,10 @@ import models
 
 
 model = {
-    "nonoverlapping_CNN_all_tanh": models.nonoverlapping_CNN(torch.tanh, torch.tanh, torch.tanh),
-    "nonoverlapping_CNN_all_relu": models.nonoverlapping_CNN(torch.relu, torch.relu, torch.relu),
-    "nonoverlapping_CNN_all_sigmoid": models.nonoverlapping_CNN(torch.sigmoid, torch.sigmoid, torch.sigmoid)
+    "nonoverlapping_CNN_all_tanh": lambda: models.nonoverlapping_CNN(torch.tanh, torch.tanh, torch.tanh),
+    "nonoverlapping_CNN_all_relu": lambda: models.nonoverlapping_CNN(torch.relu, torch.relu, torch.relu),
+    "nonoverlapping_CNN_all_sigmoid": lambda: models.nonoverlapping_CNN(torch.sigmoid, torch.sigmoid, torch.sigmoid)
 }
-
 
 def read_config():
     with open("config.json", "r") as file:

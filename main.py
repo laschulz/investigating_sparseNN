@@ -1,5 +1,5 @@
-import sys, signal, time
-import traceback
+import sys, signal
+import traceback, argparse
 from functools import partial
 import torch
 
@@ -29,13 +29,10 @@ def run_single_experiment(teacher_model, student_model, teacher_name, student_na
     cmd = f"python3 {' '.join(sys.argv)}"
     signal.signal(signal.SIGUSR1, partial(signal_handler, (cmd, student_name)))
 
-    start_time = time.time()
     try:
         experiment_runner.run()
         experiment_runner.evaluate()
         experiment_runner.save_output()
-        with open(f"finished_{student_name}.txt", "a") as f:
-            f.write(f"{cmd} time_elapsed: {time.time() - start_time:.2f} seconds\n")
     except Exception as e:
         with open(f"failed_{student_name}_msgs.txt", "a") as f:
             f.write(f"{cmd} \n")
@@ -44,23 +41,23 @@ def run_single_experiment(teacher_model, student_model, teacher_name, student_na
 
 if __name__ == "__main__":
     # Parse command-line arguments
-    args_list = sys.argv[1:]
-    args = {k[2:]: v for k, v in zip(args_list[::2], args_list[1::2])}
-    print("Parsed arguments:", args)  # Debug print statement
+    parser = argparse.ArgumentParser(description="Run model experiments")
+    parser.add_argument("--mode", type=str, choices=["single", "multiple"], required=True, help="Execution mode")
+    parser.add_argument("--teacher_model", type=str, help="Teacher model name")
+    parser.add_argument("--student_model", type=str, help="Student model name")
+    parser.add_argument("--lr", type=float, default=0.05, help="Learning rate")
 
-    mode = args.get("mode")
-    learning_rate = float(args.get("lr", 0.05))
+    args = parser.parse_args()
+    print("Parsed arguments:", args)
 
-    # Ensure required arguments exist
-    # if "teacher_model" not in args or "student_model" not in args:
-    #     print("Usage: python main.py --teacher_model <model_name> --student_model <model_name> --lr <learning_rate>")
-    #     sys.exit(1)
+    mode = args.mode
+    learning_rate = args.lr
 
     if mode == "single":
-        teacher_model = utils.model[args["teacher_model"]]()
-        student_model = utils.model[args["student_model"]]()
-        teacher_name = args["teacher_model"]
-        student_name = args["student_model"]
+        teacher_name = args.teacher_model
+        student_name = args.student_model
+        teacher_model = utils.model[teacher_name]()
+        student_model = utils.model[student_name]()
         run_single_experiment(teacher_model, student_model, teacher_name, student_name, learning_rate)
 
     elif mode == "multiple":
@@ -68,6 +65,6 @@ if __name__ == "__main__":
             for s_act in {torch.tanh, torch.relu, torch.sigmoid}:
                 teacher_model = models.nonoverlapping_CNN(t_act, t_act, t_act)
                 student_model = models.nonoverlapping_CNN(s_act, s_act, s_act) #TODO: replace this with generic model that is defined in args
-                teacher_name = f"nonoverlapping_CNN_{t_act}"
-                student_name = f"nonoverlapping_CNN_{s_act}"
+                teacher_name = f"nonoverlapping_CNN_{t_act.__name__}"
+                student_name = f"nonoverlapping_CNN_{s_act.__name__}"
                 run_single_experiment(teacher_model, student_model, teacher_name, student_name, learning_rate)
