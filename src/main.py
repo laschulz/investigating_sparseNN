@@ -23,7 +23,9 @@ def run_single_experiment(teacher_model, student_model, teacher_name, student_na
         student_model=student_model,
         lr=learning_rate,
         teacher_name=teacher_name,
-        student_name=student_name
+        student_name=student_name,
+        l1_norm = l1_norm,
+        l2_norm = l2_norm
     )
 
     cmd = f"python3 {' '.join(sys.argv)}"
@@ -37,7 +39,6 @@ def run_single_experiment(teacher_model, student_model, teacher_name, student_na
         with open(f"failed_{student_name}_msgs.txt", "a") as f:
             f.write(f"{cmd} \n")
             f.write(f"{traceback.format_exc()} \n\n")
-
 
 if __name__ == "__main__":
     # Parse command-line arguments

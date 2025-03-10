@@ -15,7 +15,7 @@ class ExperimentRunner:
     """
 
     # could change this that we have th emodel directly
-    def __init__(self, teacher_model, student_model, teacher_name, student_name, lr=0.05, momentum=0.9):
+    def __init__(self, teacher_model, student_model, teacher_name, student_name, lr=0.05, l1_norm=0, l2_norm=0, momentum=0.9):
         np.random.seed(42)
         torch.manual_seed(42)
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -37,9 +37,10 @@ class ExperimentRunner:
         self.student_model_name = student_name
 
         # Define optimizer and loss function
-        self.optimizer = optim.SGD(self.student_model.parameters(), lr=lr, momentum=momentum) #TODO: add l2 here
+        self.optimizer = optim.SGD(self.student_model.parameters(), lr=lr, momentum=momentum, weight_decay=l2_norm)
         self.loss_fn = nn.MSELoss()
-
+        self.l1_norm = l1_norm
+        self.l2_norm = l2_norm
 
     def evaluate(self):
         self.distance = utils.calc_distance_metric(self.teacher_model, self.student_model, self.teacher_model_name, self.student_model_name)
@@ -65,6 +66,7 @@ class ExperimentRunner:
             X_train=X_generated,
             y_train=y_generated,
             optimizer=self.optimizer,
+            l1_lambda=self.l1_norm,
             loss_fn=self.loss_fn,
             batch_size=self.config["batch_size"]
         )
@@ -84,8 +86,10 @@ class ExperimentRunner:
             "student_model_state_dict": self.student_model.state_dict(),
             "teacher_model_name": self.teacher_model_name,
             "student_model_name": self.student_model_name,
+            "l1_norm": self.l1_norm,
+            "l2_norm": self.l2_norm,
             "final_loss": self.final_loss,
-            "distance_metric": self.distance,  # Store computed distance
+            "distance_metric": self.distance,
             "config": self.config
         }
         torch.save(save_data, model_save_path)
@@ -113,6 +117,8 @@ class ExperimentRunner:
 
             f.write(f"\nFinal Loss: {self.final_loss:.4f}\n")
             f.write(f"Distance Metric: {self.distance:.4f}\n")
+            f.write(f"L1 norm: {self.l1_norm}\n")
+            f.write(f"L2 norm: {self.l2_norm}\n")
             f.write("\n" + "=" * 80 + "\n\n")
 
         print(f"Experiment details saved to {text_save_path}")
