@@ -73,9 +73,10 @@ class ExperimentRunner:
         """Save the trained model's weights and log experiment details in a text file."""
 
         #Path
-        save_dir = self.config.get("save_path", "./experiment_output")
-        model_save_path = os.path.join(save_dir, f"{self.teacher_model_name}__{self.student_model_name}.pth")
         date = datetime.now().strftime("%d%m%Y")
+        save_dir = os.path.join(self.config.get("save_path", "./experiment_output"), f"experiments_{date}")
+        os.makedirs(save_dir, exist_ok=True)
+        model_save_path = os.path.join(save_dir, f"{self.teacher_model_name}__{self.student_model_name}.pth")
         text_save_path = os.path.join(save_dir, f"experiment__{date}.txt")
 
         save_data = {
