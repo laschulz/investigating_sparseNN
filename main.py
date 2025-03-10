@@ -32,15 +32,14 @@ def run_single_experiment(teacher_model, student_model, teacher_name, student_na
     start_time = time.time()
     try:
         experiment_runner.run()
-        experiment_runner.save_output()
         experiment_runner.evaluate()
+        experiment_runner.save_output()
         with open(f"finished_{student_name}.txt", "a") as f:
             f.write(f"{cmd} time_elapsed: {time.time() - start_time:.2f} seconds\n")
     except Exception as e:
         with open(f"failed_{student_name}_msgs.txt", "a") as f:
             f.write(f"{cmd} \n")
             f.write(f"{traceback.format_exc()} \n\n")
-
 
 
 if __name__ == "__main__":

@@ -85,14 +85,18 @@ def load_saved_models(save_dir, teacher_model, student_model):
 
     return teacher_model_state_dict, student_model_state_dict, final_loss, config
 
-def calc_distance_metric(teacher_model, student_model):
+def calc_distance_metric(teacher_model, student_model, teacher_model_name: str, student_model_name: str):
     """ take (absolute) distance between each parameter of the teacher and student 
         (Note that these are the actual models and not the model names).
         Take absolute of a whole row if the activation function is symmetric at 0 -> tanh -> TODO: HOW TO CHECK THIS SMARTLY?
     """
     distance = 0.0
     for teacher_param, student_param in zip(teacher_model.parameters(), student_model.parameters()):
-        distance += torch.norm(torch.abs(teacher_param) - torch.abs(student_param)).item() #TODO: maybe not do absolute values / make this smarter
+        if "tanh" in teacher_model_name and "tanh" in student_model_name: #TODO: test if this is correct
+            print("Entered tanh case") 
+            distance += torch.norm(torch.abs(teacher_param) - torch.abs(student_param)).item()
+        else:
+            distance += torch.norm(teacher_param - student_param).item()
     return distance
 
 def cka_metric(teacher_model, student_model):

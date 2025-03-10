@@ -4,6 +4,7 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 import numpy as np
+from datetime import datetime
 
 import utils
 
@@ -42,7 +43,17 @@ class ExperimentRunner:
         self.student_model_name = student_name
 
     def evaluate(self):
-        pass
+        # compute distance metric
+        self.distance = utils.calc_distance_metric(self.teacher_model, self.student_model, self.teacher_model_name, self.student_model_name)
+
+        # TODO: maybe remove these print statements?
+        print("\nTarget function parameters (Teacher Model):")
+        for param in self.teacher_model.parameters():
+            print(param.data.cpu().numpy())
+
+        print("\nStudent function parameters AFTER training:")
+        for param in self.student_model.parameters():
+            print(param.data.cpu().numpy())
 
     def run(self):
         """Start the experiment: Generate dataset and train the student model."""
@@ -60,27 +71,49 @@ class ExperimentRunner:
             loss_fn=self.loss_fn,
             batch_size=self.config["batch_size"]
         )
-
-        # TODO: maybe remove these print statements?
-        print("\nTarget function parameters (Teacher Model):")
-        for param in self.teacher_model.parameters():
-            print(param.data.cpu().numpy())
-
-        print("\nStudent function parameters AFTER training:")
-        for param in self.student_model.parameters():
-            print(param.data.cpu().numpy())
-
+    
     def save_output(self):
-        """Save the trained model's weights."""
+        """Save the trained model's weights and log experiment details in a text file."""
+        #Path
+        save_dir = self.config.get("save_path", "./experiment_output")
+        model_save_path = os.path.join(save_dir, f"{self.teacher_model_name}__{self.student_model_name}.pth")
+        date = datetime.now().strftime("%d%m%Y_%H%M%S")
+        text_save_path = os.path.join(save_dir, f"experiment__{date}.txt")
+
         save_data = {
             "teacher_model_state_dict": self.teacher_model.state_dict(),
             "student_model_state_dict": self.student_model.state_dict(),
+            "teacher_model_name": self.teacher_model_name,
+            "student_model_name": self.student_model_name,
             "final_loss": self.final_loss,
+            "distance_metric": self.distance,  # Store computed distance
             "config": self.config
-            # TODO: save activations when this becomes relevant
         }
-        save_dir = self.config.get("save_path", "./experiment_output")
-        save_file = f"{self.teacher_model_name}__{self.student_model_name}.pth"
-        save_path = os.path.join(save_dir, save_file)
-        torch.save(save_data, save_path)
-        print(f"Experiment saved to {save_path}")
+        torch.save(save_data, model_save_path)
+        print(f"Experiment saved to {model_save_path}")
+
+        # Save experiment details in a text file
+        with open(text_save_path, "w") as f:
+            f.write("Experiment Summary:\n")
+            f.write("=" * 80 + "\n\n")
+
+            # Save Teacher Model Parameters
+            f.write("Teacher Model Parameters:\n")
+            for name, param in self.teacher_model.named_parameters():
+                f.write(f"{name}: {param.data.cpu().numpy()}\n")
+            f.write("\n" + "=" * 80 + "\n\n")
+
+            f.write(f"{self.teacher_model_name} -> {self.student_model_name}\n")
+            f.write("=" * 80 + "\n\n")
+
+            # Save Student Model Parameters
+            f.write("Student Model Parameters:\n")
+            for name, param in self.student_model.named_parameters():
+                f.write(f"{name}: {param.data.cpu().numpy()}\n")
+            f.write("\n" + "=" * 80 + "\n\n")
+
+            # Save Experiment Details
+            f.write(f"Final Loss: {self.final_loss:.4f}\n")
+            f.write(f"Distance Metric: {self.distance:.4f}\n")
+
+        print(f"Experiment details saved to {text_save_path}")
