@@ -17,6 +17,6 @@ python3 main.py \
 or running multiple experiments where all 9 combinations of activation functions (tanh, sigmoid, relu) for the teacher / student are tested.
 ```sh
 python3 main.py \
--- mode multiple \
--- lr 0.05
+--mode multiple \
+--lr 0.05
 ```
