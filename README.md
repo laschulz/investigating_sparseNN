@@ -8,7 +8,7 @@ Repository for Semester Project conducted at the MIT Poggio Lab.
 Currently, the code enables to either run a single experiment
 ```sh
 python3 main.py \
--- mode single
+-- mode single \
 -- teacher_model nonoverlapping_CNN_tanh \
 -- student_model nonoverlapping_CNN_tanh \
 -- lr 0.05
