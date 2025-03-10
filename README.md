@@ -8,15 +8,15 @@ Repository for Semester Project conducted at the MIT Poggio Lab.
 Currently, the code enables to either run a single experiment
 ```sh
 python3 main.py \
-— mode single
+-- mode single
 -- teacher_model nonoverlapping_CNN_tanh \
-— student_model nonoverlapping_CNN_tanh \
-— lr 0.05
+-- student_model nonoverlapping_CNN_tanh \
+-- lr 0.05
 ```
 
 or running multiple experiments where all 9 combinations of activation functions (tanh, sigmoid, relu) for the teacher / student are tested.
 ```sh
 python3 main.py \
-— mode multiple \
-— lr 0.05
+-- mode multiple \
+-- lr 0.05
 ```
