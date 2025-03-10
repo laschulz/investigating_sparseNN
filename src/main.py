@@ -15,7 +15,7 @@ def signal_handler(msg, sig, frame):
         f.write(f"{cmd} \n")
     sys.exit(0)
 
-def run_single_experiment(teacher_model, student_model, teacher_name, student_name, learning_rate):
+def run_single_experiment(teacher_model, student_model, teacher_name, student_name, learning_rate, l1_norm, l2_norm):
     """Runs an experiment, trains the model, and saves results."""
     
     experiment_runner = ExperimentRunner(
@@ -46,19 +46,23 @@ if __name__ == "__main__":
     parser.add_argument("--teacher_model", type=str, help="Teacher model name")
     parser.add_argument("--student_model", type=str, help="Student model name")
     parser.add_argument("--lr", type=float, default=0.05, help="Learning rate")
+    parser.add_argument("--l1_norm", type=float, default=0, help="Value for L1 regularization")
+    parser.add_argument("--l2_norm", type=float, default=0, help="Value for L2 regularization")
 
     args = parser.parse_args()
     print("Parsed arguments:", args)
 
     mode = args.mode
     learning_rate = args.lr
+    l1_norm = args.l1_norm
+    l2_norm = args.l2_norm
 
     if mode == "single":
         teacher_name = args.teacher_model
         student_name = args.student_model
         teacher_model = utils.model[teacher_name]()
         student_model = utils.model[student_name]()
-        run_single_experiment(teacher_model, student_model, teacher_name, student_name, learning_rate)
+        run_single_experiment(teacher_model, student_model, teacher_name, student_name, learning_rate, l1_norm, l2_norm)
 
     elif mode == "multiple":
         for t_act in {torch.tanh, torch.relu, torch.sigmoid}:
@@ -67,4 +71,4 @@ if __name__ == "__main__":
                 student_model = models.nonoverlapping_CNN(s_act, s_act, s_act) #TODO: replace this with generic model that is defined in args
                 teacher_name = f"nonoverlapping_CNN_{t_act.__name__}"
                 student_name = f"nonoverlapping_CNN_{s_act.__name__}"
-                run_single_experiment(teacher_model, student_model, teacher_name, student_name, learning_rate)
+                run_single_experiment(teacher_model, student_model, teacher_name, student_name, learning_rate, l1_norm, l2_norm)
