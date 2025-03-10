@@ -65,8 +65,8 @@ def train_model(model, X_train, y_train, optimizer, loss_fn, l1_lambda=0, batch_
                     break
     return model, best_loss
 
-def generate_dataset(teacher_model, dataset_size):
-    # Use Teacher CNN to generate a new dataset
-    X_generated = torch.tensor(np.random.randn(dataset_size, 12), dtype=torch.float32)
-    y_generated = teacher_model(X_generated).detach()
-    return X_generated, y_generated
+# def generate_dataset(teacher_model, dataset_size):
+#     # Use Teacher CNN to generate a new dataset
+#     X_generated = torch.tensor(np.random.randn(dataset_size, 12), dtype=torch.float32)
+#     y_generated = teacher_model(X_generated).detach()
+#     return X_generated, y_generated
