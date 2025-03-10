@@ -1,5 +1,5 @@
 
-import json
+import json, os
 import torch
 from torch.utils.data import DataLoader, TensorDataset
 import numpy as np
@@ -9,8 +9,9 @@ import models
 
 
 model = {
-    "nonoverlapping_CNN_tanh": models.nonoverlapping_CNN_tanh,
-    "nonoverlapping_CNN_relu": models.nonoverlapping_CNN_relu
+    "nonoverlapping_CNN_all_tanh": models.nonoverlapping_CNN(torch.tanh, torch.tanh, torch.tanh),
+    "nonoverlapping_CNN_all_relu": models.nonoverlapping_CNN(torch.relu, torch.relu, torch.relu),
+    "nonoverlapping_CNN_all_sigmoid": models.nonoverlapping_CNN(torch.sigmoid, torch.sigmoid, torch.sigmoid)
 }
 
 
@@ -19,7 +20,7 @@ def read_config():
         config = json.load(file)   
     return config
 
-def train_model(model, X_train, y_train, optimizer, loss_fn, l1_lambda=0, batch_size=32):
+def train_model(model, X_train, y_train, optimizer, loss_fn, l1_lambda=0, batch_size=32): #potentially add this to runner
     config = read_config()
     best_loss = float('inf')
     patience_counter = 0
@@ -65,8 +66,35 @@ def train_model(model, X_train, y_train, optimizer, loss_fn, l1_lambda=0, batch_
                     break
     return model, best_loss
 
-# def generate_dataset(teacher_model, dataset_size):
-#     # Use Teacher CNN to generate a new dataset
-#     X_generated = torch.tensor(np.random.randn(dataset_size, 12), dtype=torch.float32)
-#     y_generated = teacher_model(X_generated).detach()
-#     return X_generated, y_generated
+def load_saved_models(save_dir, teacher_model, student_model):
+    """Load the saved experiment data from a file."""
+    
+    # Construct the full path to the saved file
+    save_file = f"{teacher_model}__{student_model}.pth"
+    save_path = os.path.join(save_dir, save_file)
+
+    # Load the data from the file
+    checkpoint = torch.load(save_path)
+    print(f"Loaded experiment from {save_path}")
+
+    # Extract stored information
+    teacher_model_state_dict = checkpoint["teacher_model_state_dict"]
+    student_model_state_dict = checkpoint["student_model_state_dict"]
+    final_loss = checkpoint["final_loss"]
+    config = checkpoint["config"]
+
+    return teacher_model_state_dict, student_model_state_dict, final_loss, config
+
+def calc_distance_metric(teacher_model, student_model):
+    """ take (absolute) distance between each parameter of the teacher and student 
+        (Note that these are the actual models and not the model names).
+        Take absolute of a whole row if the activation function is symmetric at 0 -> tanh -> TODO: HOW TO CHECK THIS SMARTLY?
+    """
+    distance = 0.0
+    for teacher_param, student_param in zip(teacher_model.parameters(), student_model.parameters()):
+        distance += torch.norm(torch.abs(teacher_param) - torch.abs(student_param)).item() #TODO: maybe not do absolute values / make this smarter
+    return distance
+
+def cka_metric(teacher_model, student_model):
+    # TODO: IMPLEMENT, not yet relevant
+    pass
