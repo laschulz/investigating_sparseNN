@@ -10,13 +10,11 @@ Currently, the code enables to either run a single experiment
 python3 main.py \
     --mode single \
     --teacher_model nonoverlapping_CNN_all_tanh \
-    --student_model nonoverlapping_CNN_all_tanh \
-    --lr 0.05
+    --student_model nonoverlapping_CNN_all_tanh
 ```
 
 or running multiple experiments where all 9 combinations of activation functions (tanh, sigmoid, relu) for the teacher / student are tested.
 ```sh
 python3 main.py \
-    --mode multiple \
-    --lr 0.05
+    --mode multiple
 ```
