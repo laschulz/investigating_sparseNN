@@ -15,7 +15,7 @@ class ExperimentRunner:
     """
 
     # could change this that we have th emodel directly
-    def __init__(self, teacher_model, student_model, teacher_name, student_name, lr=0.05, l1_norm=0, l2_norm=0, momentum=0.9):
+    def __init__(self, teacher_model, student_model, teacher_name, student_name, momentum=0.9):
         np.random.seed(42)
         torch.manual_seed(42)
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -37,10 +37,10 @@ class ExperimentRunner:
         self.student_model_name = student_name
 
         # Define optimizer and loss function
-        self.optimizer = optim.SGD(self.student_model.parameters(), lr=lr, momentum=momentum, weight_decay=l2_norm)
+        self.l1_norm = self.config.get("l1_norm", 0)
+        self.l2_norm = self.config.get("l2_norm", 0)
+        self.optimizer = optim.SGD(self.student_model.parameters(), lr=self.config.get("lr", 0.05), momentum=momentum, weight_decay=self.l2_norm)
         self.loss_fn = nn.MSELoss()
-        self.l1_norm = l1_norm
-        self.l2_norm = l2_norm
 
     def evaluate(self):
         self.distance = utils.calc_distance_metric(self.teacher_model, self.student_model, self.teacher_model_name, self.student_model_name)

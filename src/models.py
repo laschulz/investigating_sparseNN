@@ -11,6 +11,20 @@ class nonoverlapping_CNN(nn.Module):
         self.act2 = act2
         self.act3 = act3
         
+        self._initialize_weights()
+
+    def _initialize_weights(self):
+        conv_layers = [self.conv1, self.conv2, self.conv3]
+        activations = [self.act1, self.act2, self.act3]
+
+        for conv, act in zip(conv_layers, activations):
+            if isinstance(act, (nn.ReLU, nn.LeakyReLU)):
+                nn.init.kaiming_normal_(conv.weight, mode='fan_out', nonlinearity='relu')
+            elif isinstance(act, (nn.Sigmoid, nn.Tanh)):
+                nn.init.xavier_uniform_(conv.weight)
+            else:
+                nn.init.kaiming_normal_(conv.weight)  # Default to Kaiming for unknown activations
+
     def forward(self, x):
         x = x.unsqueeze(1)  # Add channel dimension for CNN
         x = self.act1(self.conv1(x))

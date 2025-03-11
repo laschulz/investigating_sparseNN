@@ -86,7 +86,7 @@ def load_saved_models(save_dir, teacher_model, student_model):
 def calc_distance_metric(teacher_model, student_model, teacher_model_name: str, student_model_name: str):
     """ take (absolute) distance between each parameter of the teacher and student 
         (Note that these are the actual models and not the model names).
-        Take absolute of a whole row if the activation function is symmetric at 0 -> tanh -> TODO: HOW TO CHECK THIS SMARTLY?
+        Take absolute of a whole row if the activation function is symmetric at 0 -> tanh
     """
     distance = 0.0
     for teacher_param, student_param in zip(teacher_model.parameters(), student_model.parameters()):
