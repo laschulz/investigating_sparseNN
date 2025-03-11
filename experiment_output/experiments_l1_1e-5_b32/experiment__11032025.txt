@@ -1,0 +1,136 @@
+Experiment Summary:
+================================================================================
+
+Teacher Model Parameters:
+conv1.weight: [[[ 2.59 -2.83  0.87]]]
+conv2.weight: [[[-1.38  1.29]]]
+conv3.weight: [[[ 0.86 -0.84]]]
+
+================================================================================
+
+nonoverlapping_CNN_relu -> nonoverlapping_CNN_relu
+
+Student Model Parameters:
+conv1.weight: [[[0.2009255  0.2680521  0.09790505]]]
+conv2.weight: [[[0.16650234 0.68347216]]]
+conv3.weight: [[[-0.26740876 -0.21095935]]]
+
+Final Loss: 5.0851
+Distance Metric: 6.9399
+L1 norm: 1e-05
+L2 norm: 0
+
+================================================================================
+
+nonoverlapping_CNN_relu -> nonoverlapping_CNN_sigmoid
+
+Student Model Parameters:
+conv1.weight: [[[ 0.8972686  -1.1607281   0.30022994]]]
+conv2.weight: [[[-8.608315  8.050548]]]
+conv3.weight: [[[ 9.247654  -7.1185546]]]
+
+Final Loss: 3.7177
+Distance Metric: 22.8191
+L1 norm: 1e-05
+L2 norm: 0
+
+================================================================================
+
+nonoverlapping_CNN_relu -> nonoverlapping_CNN_tanh
+
+Student Model Parameters:
+conv1.weight: [[[-0.536548    0.46956444 -0.1790405 ]]]
+conv2.weight: [[[-0.31266996  0.65182275]]]
+conv3.weight: [[[-3.9559948  0.952496 ]]]
+
+Final Loss: 3.8595
+Distance Metric: 11.0474
+L1 norm: 1e-05
+L2 norm: 0
+
+================================================================================
+
+nonoverlapping_CNN_sigmoid -> nonoverlapping_CNN_relu
+
+Student Model Parameters:
+conv1.weight: [[[-1.4618153e-06 -1.4562751e-06  2.1534902e-06]]]
+conv2.weight: [[[-6.7927442e-07 -9.5059664e-07]]]
+conv3.weight: [[[ 1.1627280e-06 -1.3448702e-06]]]
+
+Final Loss: 0.2545
+Distance Metric: 7.0249
+L1 norm: 1e-05
+L2 norm: 0
+
+================================================================================
+
+nonoverlapping_CNN_sigmoid -> nonoverlapping_CNN_sigmoid
+
+Student Model Parameters:
+conv1.weight: [[[-2.1897423   2.3945014  -0.72427946]]]
+conv2.weight: [[[ 1.134781  -1.0648193]]]
+conv3.weight: [[[ 1.0491204 -1.0298066]]]
+
+Final Loss: 0.0001
+Distance Metric: 10.9714
+L1 norm: 1e-05
+L2 norm: 0
+
+================================================================================
+
+nonoverlapping_CNN_sigmoid -> nonoverlapping_CNN_tanh
+
+Student Model Parameters:
+conv1.weight: [[[ 0.29711306 -0.11541325  0.34240177]]]
+conv2.weight: [[[0.11297616 0.31919327]]]
+conv3.weight: [[[0.24182564 0.17715223]]]
+
+Final Loss: 0.2530
+Distance Metric: 6.5634
+L1 norm: 1e-05
+L2 norm: 0
+
+================================================================================
+
+nonoverlapping_CNN_tanh -> nonoverlapping_CNN_relu
+
+Student Model Parameters:
+conv1.weight: [[[-1.378273   1.4101702 -0.5054112]]]
+conv2.weight: [[[ 0.74571484 -1.282485  ]]]
+conv3.weight: [[[ 0.4480421 -2.99208  ]]]
+
+Final Loss: 0.2864
+Distance Metric: 11.4964
+L1 norm: 1e-05
+L2 norm: 0
+
+================================================================================
+
+nonoverlapping_CNN_tanh -> nonoverlapping_CNN_sigmoid
+
+Student Model Parameters:
+conv1.weight: [[[-4.145355   4.4953966 -1.4274805]]]
+conv2.weight: [[[-1.1859316  1.0547502]]]
+conv3.weight: [[[-18.857677  13.530398]]]
+
+Final Loss: 0.1995
+Distance Metric: 34.9166
+L1 norm: 1e-05
+L2 norm: 0
+
+================================================================================
+
+nonoverlapping_CNN_tanh -> nonoverlapping_CNN_tanh
+
+Student Model Parameters:
+conv1.weight: [[[ 2.5846024  -2.8240352   0.86807346]]]
+conv2.weight: [[[-1.3772374  1.2873077]]]
+conv3.weight: [[[ 0.86018217 -0.8402072 ]]]
+
+Final Loss: 0.0001
+Distance Metric: 0.0124
+L1 norm: 1e-05
+L2 norm: 0
+
+================================================================================
+

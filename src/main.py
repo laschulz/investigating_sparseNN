@@ -53,6 +53,8 @@ if __name__ == "__main__":
     args = parser.parse_args()
     print("Parsed arguments:", args)
 
+    config = utils.read_config()
+    
     mode = args.mode
     learning_rate = args.lr
     l1_norm = args.l1_norm
