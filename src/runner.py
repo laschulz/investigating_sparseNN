@@ -1,5 +1,4 @@
 import os
-from functools import partial
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -7,7 +6,8 @@ import numpy as np
 from datetime import datetime
 
 import utils
-
+import metrics
+import trainer
 
 class ExperimentRunner:
     """
@@ -43,37 +43,28 @@ class ExperimentRunner:
         self.loss_fn = nn.MSELoss()
 
     def evaluate(self):
-        self.distance = utils.calc_distance_metric(self.teacher_model, self.student_model, self.teacher_model_name, self.student_model_name)
-
-        # print("\nTarget function parameters (Teacher Model):")
-        # for param in self.teacher_model.parameters():
-        #     print(param.data.cpu().numpy())
-
-        # print("\nStudent function parameters AFTER training:")
-        # for param in self.student_model.parameters():
-        #     print(param.data.cpu().numpy())
+        self.distance = metrics.calc_distance_metric(self.teacher_model, self.student_model, self.teacher_model_name, self.student_model_name)
 
     def run(self):
         """Start the experiment: Generate dataset and train the student model."""
-        
         # Generate dataset using the teacher model
         X_generated = torch.randn(self.config["dataset_size"], 12).to(self.device)
         y_generated = self.teacher_model(X_generated).detach()
 
         # Train student model
-        self.student_model, self.final_loss = utils.train_model(
+        self.student_model, self.final_loss = trainer.train_model(
             model=self.student_model,
             X_train=X_generated,
             y_train=y_generated,
             optimizer=self.optimizer,
             l1_lambda=self.l1_norm,
             loss_fn=self.loss_fn,
-            batch_size=self.config["batch_size"]
+            batch_size=self.config["batch_size"],
+            clipping=self.config["clipping"]
         )
     
     def save_output(self):
         """Save the trained model's weights and log experiment details in a text file."""
-
         #Path
         date = datetime.now().strftime("%d%m%Y")
         save_dir = os.path.join(self.config.get("save_path", "./experiment_output"), f"experiments_{date}")

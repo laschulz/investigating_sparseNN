@@ -1,4 +1,5 @@
 import torch.nn as nn
+import utils
     
 class nonoverlapping_CNN(nn.Module):
     def __init__(self, act1, act2, act3):
@@ -11,7 +12,9 @@ class nonoverlapping_CNN(nn.Module):
         self.act2 = act2
         self.act3 = act3
         
-        self.initialize_weights()
+        self.config = utils.read_config()
+        if self.config.get("init"):
+            self.initialize_weights()
 
     def initialize_weights(self):
         conv_layers = [self.conv1, self.conv2, self.conv3]
@@ -43,7 +46,9 @@ class overlapping_CNN(nn.Module):
         self.act2 = act2
         self.act3 = act3
         
-        self.initialize_weights()
+        self.config = utils.read_config()
+        if self.config.get("init"):
+            self.initialize_weights()
 
     def initialize_weights(self):
         conv_layers = [self.conv1, self.conv2, self.conv3]
@@ -75,7 +80,9 @@ class FCNN(nn.Module):
         self.act2 = act2
         self.act3 = act3
         
-        self.initialize_weights()
+        self.config = utils.read_config()
+        if self.config.get("init"):
+            self.initialize_weights()
 
     def initialize_weights(self):
         fc_layers = [self.fc1, self.fc2, self.fc3]
@@ -107,7 +114,9 @@ class overlapping_CNN2(nn.Module):
         self.act2 = act2
         self.act3 = act3
         
-        self.initialize_weights()
+        self.config = utils.read_config()
+        if self.config.get("init"):
+            self.initialize_weights()
 
     def initialize_weights(self):
         conv_layers = [self.conv1, self.conv2, self.conv3]
