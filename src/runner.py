@@ -51,6 +51,9 @@ class ExperimentRunner:
         X_generated = torch.randn(self.config["dataset_size"], 12).to(self.device)
         y_generated = self.teacher_model(X_generated).detach()
 
+        self.batch_size = self.config["batch_size"]
+        self.clipping = self.config["clipping"]
+
         # Train student model
         self.student_model, self.final_loss = trainer.train_model(
             model=self.student_model,
@@ -59,8 +62,8 @@ class ExperimentRunner:
             optimizer=self.optimizer,
             l1_lambda=self.l1_norm,
             loss_fn=self.loss_fn,
-            batch_size=self.config["batch_size"],
-            clipping=self.config["clipping"]
+            batch_size=self.batch_size,
+            clipping=self.clipping
         )
     
     def save_output(self):
@@ -103,13 +106,18 @@ class ExperimentRunner:
 
             f.write(f"{self.teacher_model_name} -> {self.student_model_name}\n\n")
             f.write("Student Model Parameters:\n")
+            threshold = 1e-2
             for name, param in self.student_model.named_parameters():
-                f.write(f"{name}: {param.data.cpu().numpy()}\n")
+                param_data = param.data.cpu().numpy()
+                param_data[abs(param_data) < threshold] = 0  # Zero out small values
+                f.write(f"{name}: {param_data}\n")
 
             f.write(f"\nFinal Loss: {self.final_loss:.4f}\n")
             f.write(f"Distance Metric: {self.distance:.4f}\n")
             f.write(f"L1 norm: {self.l1_norm}\n")
             f.write(f"L2 norm: {self.l2_norm}\n")
+            f.write(f"Batch size: {self.batch_size}\n")
+            f.write(f"Clipping: {self.clipping}\n")
             f.write("\n" + "=" * 80 + "\n\n")
 
         print(f"Experiment details saved to {text_save_path}")
