@@ -47,6 +47,7 @@ def match_layer_weights(teacher_weights: torch.Tensor, student_weights: torch.Te
     total_distance = matched_distance + unmatched_penalty
     return total_distance
 
+# Metric for comparing CNN with Transformer
 def cka_metric(teacher_model, student_model):
     # TODO: IMPLEMENT, not yet relevant
     pass

@@ -16,6 +16,7 @@ def train_model(model, X_train, y_train, optimizer, loss_fn, l1_lambda=0, batch_
     print("Starting training...")
     with tqdm(total=config["num_epochs"], desc="Training Progress", unit="epoch") as pbar:
         for epoch in range(config["num_epochs"]):
+            pbar.update(1)
             epoch_loss = 0.0
             
             for batch_X, batch_y in dataloader:

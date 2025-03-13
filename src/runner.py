@@ -1,5 +1,6 @@
 import os
 import torch
+import torch.backends
 import torch.nn as nn
 import torch.optim as optim
 import numpy as np
@@ -19,6 +20,8 @@ class ExperimentRunner:
         np.random.seed(42)
         torch.manual_seed(42)
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        # self.device = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
+
         print("Running on", self.device)
 
         self.config = utils.read_config()

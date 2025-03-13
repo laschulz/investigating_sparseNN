@@ -40,7 +40,7 @@ class NonOverlappingCNN(BaseCNN):
     """CNN with non-overlapping strides."""
     def __init__(self, act1, act2, act3):
         layers_config = [
-            (1, 1, 3, 3),
+            (1, 1, 3, 3), #in_c, out_c, kernel_size, stride
             (1, 1, 2, 2),
             (1, 1, 2, 2)
         ]
@@ -50,7 +50,7 @@ class OverlappingCNN(BaseCNN):
     """CNN with overlapping strides."""
     def __init__(self, act1, act2, act3):
         layers_config = [
-            (1, 4, 3, 3),
+            (1, 4, 3, 3), #in_c, out_c, kernel_size, stride
             (4, 4, 2, 2),
             (4, 1, 2, 2)
         ]
@@ -60,7 +60,7 @@ class OverlappingCNN2(BaseCNN):
     """Alternative overlapping CNN with different stride settings."""
     def __init__(self, act1, act2, act3):
         layers_config = [
-            (1, 1, 3, 1),
+            (1, 1, 3, 1), #in_c, out_c, kernel_size, stride
             (1, 1, 2, 1),
             (1, 1, 2, 1)
         ]
@@ -99,7 +99,3 @@ class FCNN(nn.Module):
         for layer, act in zip(self.layers, self.activations):
             x = act(layer(x))
         return x
-
-class Transformer(nn.Module):
-    """Placeholder for transformer model."""
-    pass

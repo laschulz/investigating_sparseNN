@@ -47,6 +47,8 @@ def run_experiments(teacher_type, student_types):
     ))
 
     for student_type, teacher_activation, student_activation, lr, l1_norm, l2_norm in param_combinations:
+        if teacher_activation != student_activation and config["same_act"]:
+            continue
         teacher_model = model_mapper(teacher_type, teacher_activation)
         teacher_name = f"{teacher_type}_CNN_{teacher_activation.__name__}"
 
@@ -105,7 +107,6 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
     mode = args.mode
-    print("Parsed arguments:", args)
 
     if mode == "single":
         teacher_name = args.teacher_model
