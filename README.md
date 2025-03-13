@@ -16,5 +16,6 @@ python3 src/main.py \
 or running multiple experiments where all 9 combinations of activation functions (tanh, sigmoid, relu) for the teacher / student are tested.
 ```sh
 python3 src/main.py \
-    --mode multiple
+    --mode multiple \
+    --student_type overlapping
 ```

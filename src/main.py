@@ -19,8 +19,8 @@ def signal_handler(msg, sig, frame):
 def model_mapper(model_type, activation):
     """Helper function to create the appropriate model instance."""
     model_map = {
-        "nonoverlapping": models.nonoverlapping_CNN,
-        "overlapping": models.overlapping_CNN,
+        "nonoverlapping": models.NonOverlappingCNN,
+        "overlapping": models.OverlappingCNN,
         "fcnn": models.FCNN
     }
     if model_type not in model_map:
@@ -68,14 +68,17 @@ def run_experiments(teacher_type, student_types):
             l2_norm=l2_norm
         )
 
-def run_single_experiment(teacher_model, student_model, teacher_name, student_name):
+def run_single_experiment(teacher_model, student_model, teacher_name, student_name, lr, l1_norm, l2_norm):
     """Runs an experiment, trains the model, and saves results."""
     
     experiment_runner = ExperimentRunner(
         teacher_model=teacher_model,
         student_model=student_model,
         teacher_name=teacher_name,
-        student_name=student_name
+        student_name=student_name,
+        lr=lr,
+        l1_norm=l1_norm,
+        l2_norm=l2_norm
     )
 
     cmd = f"python3 {' '.join(sys.argv)}"
@@ -109,7 +112,18 @@ if __name__ == "__main__":
         student_name = args.student_model
         teacher_model = utils.model[teacher_name]()
         student_model = utils.model[student_name]()
-        run_single_experiment(teacher_model, student_model, teacher_name, student_name)
+        config = utils.read_config()
+        lr = config["lr"][0]
+        l1_norm = config["l1_norm"][0]
+        l2_norm = config["l2_norm"][0]
+
+        run_single_experiment(teacher_model=teacher_model, 
+                              student_model=student_model, 
+                              teacher_name=teacher_name, 
+                              student_name=student_name, 
+                              lr=lr, 
+                              l1_norm=l1_norm, 
+                              l2_norm=l2_norm)
 
     elif mode == "multiple":
         if not args.student_type:

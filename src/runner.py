@@ -15,21 +15,27 @@ class ExperimentRunner:
     """
 
     # could change this that we have th emodel directly
-    def __init__(self, teacher_model, student_model, teacher_name, student_name, momentum=0.9):
+    def __init__(self, teacher_model, student_model, teacher_name, student_name, lr, l1_norm, l2_norm, momentum=0.9):
         np.random.seed(42)
         torch.manual_seed(42)
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         print("Running on", self.device)
 
-        # Load configuration
         self.config = utils.read_config()
 
         # Initialize the teacher model with fixed ReLU activations
         self.teacher_model = teacher_model.to(self.device)
+        teacher_weights = [
+            torch.tensor([[[2.59, -2.83, 0.87]]]),  # conv1
+            torch.tensor([[[-1.38, 1.29]]]),        # conv2
+            torch.tensor([[[0.86, -0.84]]])         # conv3
+        ]
         with torch.no_grad():
-            self.teacher_model.conv1.weight.copy_(torch.tensor([[[2.59, -2.83, 0.87]]]))
-            self.teacher_model.conv2.weight.copy_(torch.tensor([[[-1.38, 1.29]]]))
-            self.teacher_model.conv3.weight.copy_(torch.tensor([[[0.86, -0.84]]]))
+            for layer, weight in zip(self.teacher_model.layers, teacher_weights):
+                if layer.weight.shape == weight.shape:  # Ensure shape matches before assignment
+                    layer.weight.copy_(weight)
+                else:
+                    print(f"Skipping weight assignment for {layer}, shape mismatch: {layer.weight.shape} vs {weight.shape}")
         self.teacher_model_name = teacher_name
 
         # Initialize the student model
@@ -37,9 +43,10 @@ class ExperimentRunner:
         self.student_model_name = student_name
 
         # Define optimizer and loss function
-        self.l1_norm = self.config.get("l1_norm", 0)
-        self.l2_norm = self.config.get("l2_norm", 0)
-        self.optimizer = optim.SGD(self.student_model.parameters(), lr=self.config.get("lr", 0.05), momentum=momentum, weight_decay=self.l2_norm)
+        self.l1_norm = l1_norm
+        self.l2_norm = l2_norm
+        self.lr = lr
+        self.optimizer = optim.SGD(self.student_model.parameters(), lr=self.lr, momentum=momentum, weight_decay=self.l2_norm)
         self.loss_fn = nn.MSELoss()
 
     def evaluate(self):
@@ -82,6 +89,7 @@ class ExperimentRunner:
             "student_model_name": self.student_model_name,
             "l1_norm": self.l1_norm,
             "l2_norm": self.l2_norm,
+            "lr": self.lr,
             "final_loss": self.final_loss,
             "distance_metric": self.distance,
             "config": self.config

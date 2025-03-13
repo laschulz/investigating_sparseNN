@@ -1,138 +1,105 @@
 import torch.nn as nn
 import utils
     
-class nonoverlapping_CNN(nn.Module):
-    def __init__(self, act1, act2, act3):
-        super(nonoverlapping_CNN, self).__init__()
-        self.conv1 = nn.Conv1d(in_channels=1, out_channels=1, kernel_size=3, stride=3, padding=0, bias = False)
-        self.conv2 = nn.Conv1d(in_channels=1, out_channels=1, kernel_size=2, stride=2, padding=0, bias = False)
-        self.conv3 = nn.Conv1d(in_channels=1, out_channels=1, kernel_size=2, stride=2, padding=0, bias = False)
-
-        self.act1 = act1
-        self.act2 = act2
-        self.act3 = act3
-        
-        self.config = utils.read_config()
-        if self.config.get("init"):
-            self.initialize_weights()
-
-    def initialize_weights(self):
-        conv_layers = [self.conv1, self.conv2, self.conv3]
-        activations = [self.act1, self.act2, self.act3]
-
-        for conv, act in zip(conv_layers, activations):
-            if isinstance(act, (nn.ReLU, nn.LeakyReLU)):
-                nn.init.kaiming_normal_(conv.weight, mode='fan_out', nonlinearity='relu')
-            elif isinstance(act, (nn.Sigmoid, nn.Tanh)):
-                nn.init.xavier_uniform_(conv.weight)
-            else:
-                nn.init.kaiming_normal_(conv.weight)
-
-    def forward(self, x):
-        x = x.unsqueeze(1)
-        x = self.act1(self.conv1(x))
-        x = self.act2(self.conv2(x))
-        x = self.act3(self.conv3(x))
-        return x
+class BaseCNN(nn.Module):
+    """Base class for CNN models with configurable activation functions."""
     
-class overlapping_CNN(nn.Module):
-    def __init__(self, act1, act2, act3):
-        super(overlapping_CNN, self).__init__()
-        self.conv1 = nn.Conv1d(in_channels=1, out_channels=4, kernel_size=3, stride=3, padding=0, bias=False)
-        self.conv2 = nn.Conv1d(in_channels=4, out_channels=4, kernel_size=2, stride=2, padding=0, bias=False)
-        self.conv3 = nn.Conv1d(in_channels=4, out_channels=1, kernel_size=2, stride=2, padding=0, bias=False)  
-
-        self.act1 = act1
-        self.act2 = act2
-        self.act3 = act3
+    def __init__(self, layers_config, activations):
+        super(BaseCNN, self).__init__()
         
+        self.layers = nn.ModuleList([
+            nn.Conv1d(in_c, out_c, kernel, stride, padding=0, bias=False)
+            for in_c, out_c, kernel, stride in layers_config
+        ])
+        
+        self.activations = activations
         self.config = utils.read_config()
+
         if self.config.get("init"):
             self.initialize_weights()
 
     def initialize_weights(self):
-        conv_layers = [self.conv1, self.conv2, self.conv3]
-        activations = [self.act1, self.act2, self.act3]
-
-        for conv, act in zip(conv_layers, activations):
+        """Applies weight initialization based on activation functions."""
+        for layer, act in zip(self.layers, self.activations):
             if isinstance(act, (nn.ReLU, nn.LeakyReLU)):
-                nn.init.kaiming_normal_(conv.weight, mode='fan_out', nonlinearity='relu')
+                nn.init.kaiming_normal_(layer.weight, mode='fan_out', nonlinearity='relu')
             elif isinstance(act, (nn.Sigmoid, nn.Tanh)):
-                nn.init.xavier_uniform_(conv.weight)
+                nn.init.xavier_uniform_(layer.weight)
             else:
-                nn.init.kaiming_normal_(conv.weight)
+                nn.init.kaiming_normal_(layer.weight)
 
     def forward(self, x):
         x = x.unsqueeze(1)
-        x = self.act1(self.conv1(x))
-        x = self.act2(self.conv2(x))
-        x = self.act3(self.conv3(x))
+        for layer, act in zip(self.layers, self.activations):
+            x = act(layer(x))
         return x
+
+# Subclasses inheriting from BaseCNN
+
+class NonOverlappingCNN(BaseCNN):
+    """CNN with non-overlapping strides."""
+    def __init__(self, act1, act2, act3):
+        layers_config = [
+            (1, 1, 3, 3),
+            (1, 1, 2, 2),
+            (1, 1, 2, 2)
+        ]
+        super().__init__(layers_config, [act1, act2, act3])
+
+class OverlappingCNN(BaseCNN):
+    """CNN with overlapping strides."""
+    def __init__(self, act1, act2, act3):
+        layers_config = [
+            (1, 4, 3, 3),
+            (4, 4, 2, 2),
+            (4, 1, 2, 2)
+        ]
+        super().__init__(layers_config, [act1, act2, act3])
+
+class OverlappingCNN2(BaseCNN):
+    """Alternative overlapping CNN with different stride settings."""
+    def __init__(self, act1, act2, act3):
+        layers_config = [
+            (1, 1, 3, 1),
+            (1, 1, 2, 1),
+            (1, 1, 2, 1)
+        ]
+        super().__init__(layers_config, [act1, act2, act3])
+
+##########################################################################
 
 class FCNN(nn.Module):
+    """Fully Connected Neural Network."""
+    
     def __init__(self, act1, act2, act3):
         super(FCNN, self).__init__()
-        self.fc1 = nn.Linear(12, 4, bias=False)
-        self.fc2 = nn.Linear(4, 2, bias=False)
-        self.fc3 = nn.Linear(2, 1, bias=False)
-
-        self.act1 = act1
-        self.act2 = act2
-        self.act3 = act3
+        self.layers = nn.ModuleList([
+            nn.Linear(12, 4, bias=False),
+            nn.Linear(4, 2, bias=False),
+            nn.Linear(2, 1, bias=False)
+        ])
         
+        self.activations = [act1, act2, act3]
         self.config = utils.read_config()
+
         if self.config.get("init"):
             self.initialize_weights()
 
     def initialize_weights(self):
-        fc_layers = [self.fc1, self.fc2, self.fc3]
-        activations = [self.act1, self.act2, self.act3]
-
-        for fc, act in zip(fc_layers, activations):
+        """Applies weight initialization based on activation functions."""
+        for layer, act in zip(self.layers, self.activations):
             if isinstance(act, (nn.ReLU, nn.LeakyReLU)):
-                nn.init.kaiming_normal_(fc.weight, mode='fan_out', nonlinearity='relu')
+                nn.init.kaiming_normal_(layer.weight, mode='fan_out', nonlinearity='relu')
             elif isinstance(act, (nn.Sigmoid, nn.Tanh)):
-                nn.init.xavier_uniform_(fc.weight)
+                nn.init.xavier_uniform_(layer.weight)
             else:
-                nn.init.kaiming_normal_(fc.weight)
+                nn.init.kaiming_normal_(layer.weight)
 
     def forward(self, x):
-        x = self.act1(self.fc1(x))
-        x = self.act2(self.fc2(x))
-        x = self.act3(self.fc3(x))
+        for layer, act in zip(self.layers, self.activations):
+            x = act(layer(x))
         return x
 
-# Finding: using a different stride than the teacher doesn't work!
-class overlapping_CNN2(nn.Module):
-    def __init__(self, act1, act2, act3):
-        super(overlapping_CNN, self).__init__()
-        self.conv1 = nn.Conv1d(in_channels=1, out_channels=1, kernel_size=3, stride=1, padding=0, bias=False)
-        self.conv2 = nn.Conv1d(in_channels=1, out_channels=1, kernel_size=2, stride=1, padding=0, bias=False)
-        self.conv3 = nn.Conv1d(in_channels=1, out_channels=1, kernel_size=2, stride=1, padding=0, bias=False)  
-
-        self.act1 = act1
-        self.act2 = act2
-        self.act3 = act3
-        
-        self.config = utils.read_config()
-        if self.config.get("init"):
-            self.initialize_weights()
-
-    def initialize_weights(self):
-        conv_layers = [self.conv1, self.conv2, self.conv3]
-        activations = [self.act1, self.act2, self.act3]
-
-        for conv, act in zip(conv_layers, activations):
-            if isinstance(act, (nn.ReLU, nn.LeakyReLU)):
-                nn.init.kaiming_normal_(conv.weight, mode='fan_out', nonlinearity='relu')
-            elif isinstance(act, (nn.Sigmoid, nn.Tanh)):
-                nn.init.xavier_uniform_(conv.weight)
-            else:
-                nn.init.kaiming_normal_(conv.weight)
-
-    def forward(self, x):
-        x = x.unsqueeze(1)
-        x = self.act1(self.conv1(x))
-        x = self.act2(self.conv2(x))
-        x = self.act3(self.conv3(x))
-        return x
+class Transformer(nn.Module):
+    """Placeholder for transformer model."""
+    pass
