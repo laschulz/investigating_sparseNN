@@ -2,6 +2,7 @@ import sys, signal
 import traceback, argparse
 from functools import partial
 import torch
+import itertools
 
 from runner import ExperimentRunner
 import utils
@@ -30,15 +31,42 @@ def run_experiments(teacher_type, student_types):
     """Runs experiments across multiple activations for given teacher and student model types."""
     activations = {torch.tanh, torch.relu, torch.sigmoid}
 
-    for t_act in activations:
-        teacher_model = model_mapper(teacher_type, t_act)
-        teacher_name = f"{teacher_type}_CNN_{t_act.__name__}"
+    config = utils.read_config()
+    lr_values = config.get("lr", [0.01])
+    l1_norm_values = config.get("l1_norm", [0])
+    l2_norm_values = config.get("l2_norm", [0])
 
-        for s_act in activations:
-            for student_type in student_types:
-                student_model = model_mapper(student_type, s_act)
-                student_name = f"{student_type}_CNN_{s_act.__name__}"
-                run_single_experiment(teacher_model, student_model, teacher_name, student_name)
+    # Generate all possible hyperparameter combinations
+    param_combinations = list(itertools.product(
+        student_types,
+        activations,
+        activations,
+        lr_values,
+        l1_norm_values,
+        l2_norm_values
+    ))
+
+    for student_type, teacher_activation, student_activation, lr, l1_norm, l2_norm in param_combinations:
+        teacher_model = model_mapper(teacher_type, teacher_activation)
+        teacher_name = f"{teacher_type}_CNN_{teacher_activation.__name__}"
+
+        student_model = model_mapper(student_type, student_activation)
+        student_name = f"{student_type}_CNN_{student_activation.__name__}"
+
+        print(f"Running experiment with: "
+              f"Teacher={teacher_type}, Student={student_type}, "
+              f"t_act={teacher_activation.__name__}, s_act={student_activation.__name__}, "
+              f"lr={lr}, l1_norm={l1_norm}, l2_norm={l2_norm}")
+
+        run_single_experiment(
+            teacher_model=teacher_model,
+            student_model=student_model,
+            teacher_name=teacher_name,
+            student_name=student_name,
+            lr=lr,
+            l1_norm=l1_norm,
+            l2_norm=l2_norm
+        )
 
 def run_single_experiment(teacher_model, student_model, teacher_name, student_name):
     """Runs an experiment, trains the model, and saves results."""

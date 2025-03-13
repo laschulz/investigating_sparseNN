@@ -4,7 +4,7 @@ import torch
 
 import utils
 
-def train_model(model, X_train, y_train, optimizer, loss_fn, l1_lambda=0, batch_size=32, clipping = None): #potentially add this to runner
+def train_model(model, X_train, y_train, optimizer, loss_fn, l1_lambda=0, batch_size=32, clipping = None):
     config = utils.read_config()
     best_loss = float('inf')
     patience_counter = 0
