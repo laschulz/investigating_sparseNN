@@ -3,6 +3,7 @@ from tqdm import tqdm
 import torch
 
 import utils
+import models
 
 def train_model(model, X_train, y_train, optimizer, loss_fn, l1_lambda=0, batch_size=32, clipping = None):
     config = utils.read_config()
@@ -22,6 +23,8 @@ def train_model(model, X_train, y_train, optimizer, loss_fn, l1_lambda=0, batch_
             for batch_X, batch_y in dataloader:
                 optimizer.zero_grad()
                 y_pred = model(batch_X)
+                if isinstance(model, models.FCNN):
+                    batch_y = batch_y.view(batch_y.size(0), -1) 
                 loss = loss_fn(y_pred, batch_y)
 
                 # Apply L1 regularization if l1_lambda > 0

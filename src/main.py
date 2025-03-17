@@ -19,8 +19,8 @@ def signal_handler(msg, sig, frame):
 def model_mapper(model_type, activation):
     """Helper function to create the appropriate model instance."""
     model_map = {
-        "nonoverlapping": models.NonOverlappingCNN,
-        "overlapping": models.OverlappingCNN,
+        "nonoverlappingCNN": models.NonOverlappingCNN,
+        "overlappingCNN": models.OverlappingCNN,
         "fcnn": models.FCNN
     }
     if model_type not in model_map:
@@ -50,10 +50,10 @@ def run_experiments(teacher_type, student_types):
         if teacher_activation != student_activation and config["same_act"]:
             continue
         teacher_model = model_mapper(teacher_type, teacher_activation)
-        teacher_name = f"{teacher_type}_CNN_{teacher_activation.__name__}"
+        teacher_name = f"{teacher_type}_{teacher_activation.__name__}"
 
         student_model = model_mapper(student_type, student_activation)
-        student_name = f"{student_type}_CNN_{student_activation.__name__}"
+        student_name = f"{student_type}_{student_activation.__name__}"
 
         print(f"Running experiment with: "
               f"Teacher={teacher_type}, Student={student_type}, "
@@ -129,7 +129,7 @@ if __name__ == "__main__":
     elif mode == "multiple":
         if not args.student_type:
             raise ValueError("--student_type is required in 'multiple' mode")
-        run_experiments("nonoverlapping", [args.student_type])
+        run_experiments("nonoverlappingCNN", [args.student_type])
 
     elif mode == "all":
-        run_experiments("nonoverlapping", ["nonoverlapping", "overlapping", "fcnn"])
+        run_experiments("nonoverlappingCNN", ["nonoverlappingCNN", "overlappingCNN", "fcnn"])

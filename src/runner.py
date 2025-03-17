@@ -21,7 +21,6 @@ class ExperimentRunner:
         torch.manual_seed(42)
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         # self.device = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
-
         print("Running on", self.device)
 
         self.config = utils.read_config()
@@ -117,7 +116,7 @@ class ExperimentRunner:
 
             f.write(f"{self.teacher_model_name} -> {self.student_model_name}\n\n")
             f.write("Student Model Parameters:\n")
-            threshold = 1e-2
+            threshold = 1e-4 #was 1e-2
             for name, param in self.student_model.named_parameters():
                 param_data = param.data.cpu().numpy()
                 param_data[abs(param_data) < threshold] = 0  # Zero out small values

@@ -1,9 +1,9 @@
 {
-    "batch_size": 16,
-    "patience": 50,
+    "batch_size": 32,
+    "patience": 100,
     "dataset_size": 1024,
-    "num_epochs": 30000,
-    "lr": [0.01],
+    "num_epochs": 50000,
+    "lr": [0.02],
     "l1_norm": [1e-5],
     "l2_norm": [0],
     "loss_func": "MSE",

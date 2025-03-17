@@ -1,3 +1,4 @@
+import torch
 import torch.nn as nn
 import utils
     
@@ -74,9 +75,9 @@ class FCNN(nn.Module):
     def __init__(self, act1, act2, act3):
         super(FCNN, self).__init__()
         self.layers = nn.ModuleList([
-            nn.Linear(12, 4, bias=False),
-            nn.Linear(4, 2, bias=False),
-            nn.Linear(2, 1, bias=False)
+            nn.Linear(12, 512, bias=False),
+            nn.Linear(512, 32, bias=False),
+            nn.Linear(32, 1, bias=False)
         ])
         
         self.activations = [act1, act2, act3]
