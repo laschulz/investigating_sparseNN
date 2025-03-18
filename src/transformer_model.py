@@ -96,10 +96,11 @@ class PositionalEncoding(nn.Module):
         x = x + self.pe[:, :x.size(1), :]
         return self.dropout(x)
 
+# TODO: is it really nonoverlapping
 class NonOverlappingViT(BaseViT):
     """Vision Transformer with standard non-overlapping patch processing."""
     
-    def __init__(self, act):
+    def __init__(self, act, device):
         super().__init__(
             input_length=12,
             patch_size=3,
@@ -109,5 +110,6 @@ class NonOverlappingViT(BaseViT):
             num_heads=4,
             d_ff=512,
             dropout=0.1,
-            activations=act
+            activations=act,
+            device=device
         )

@@ -77,9 +77,9 @@ class FCNN(nn.Module):
         super(FCNN, self).__init__()
         self.device = device
         self.layers = nn.ModuleList([
-            nn.Linear(12, 512, bias=False).to(self.device),
-            nn.Linear(512, 32, bias=False).to(self.device),
-            nn.Linear(32, 1, bias=False).to(self.device)
+            nn.Linear(12, 128, bias=False).to(self.device),
+            nn.Linear(128, 128, bias=False).to(self.device),
+            nn.Linear(128, 1, bias=False).to(self.device)
         ])
         
         self.activations = [act1, act2, act3]

@@ -57,7 +57,7 @@ def gram_matrix(x):
     """Computes the Gram (covariance) matrix of input x."""
     return x @ x.T
 
-def cka_metric(teacher_model, student_model, data_loader, layer_teacher=-1, layer_student=-1, device="cpu"):
+def calc_cka_metric(teacher_model, student_model, data_loader, device="cpu", num_layers=3):
     """
     Computes the Centered Kernel Alignment (CKA) similarity between the CNN (teacher) 
     and ViT (student) models based on feature representations.
@@ -65,33 +65,37 @@ def cka_metric(teacher_model, student_model, data_loader, layer_teacher=-1, laye
     teacher_model.to(device).eval()
     student_model.to(device).eval()
 
-    features_teacher = []
-    features_student = []
+    cka_scores = {}
 
     with torch.no_grad():
-        for batch in data_loader:
-            x = batch.to(device)
+        for layer_index in range(num_layers):
+            features_teacher = []
+            features_student = []
+            for batch in data_loader:
+                x = batch.to(device)
 
-            # Get features
-            teacher_activations = extract_features(teacher_model, x, layer_teacher)
-            features_teacher.append(teacher_activations)
+                # Get features
+                teacher_activations = extract_features(teacher_model, x, layer_index)
+                features_teacher.append(teacher_activations)
 
-            student_activations = extract_features(student_model, x, layer_student)
-            features_student.append(student_activations)
+                student_activations = extract_features(student_model, x, layer_index)
+                features_student.append(student_activations)
 
-    features_teacher = torch.cat(features_teacher, dim=0)
-    features_student = torch.cat(features_student, dim=0)
+            features_teacher = torch.cat(features_teacher, dim=0)
+            features_student = torch.cat(features_student, dim=0)
 
-    features_teacher = F.normalize(features_teacher, dim=1)
-    features_student = F.normalize(features_student, dim=1)
+            features_teacher = F.normalize(features_teacher, dim=1)
+            features_student = F.normalize(features_student, dim=1)
 
-    gram_teacher = gram_matrix(features_teacher).to(device)
-    gram_student = gram_matrix(features_student).to(device)
+            gram_teacher = gram_matrix(features_teacher).to(device)
+            gram_student = gram_matrix(features_student).to(device)
 
-    # Compute CKA similarity
-    cka_score = torch.trace(gram_teacher @ gram_student) / (torch.norm(gram_teacher) * torch.norm(gram_student))
+            # Compute CKA similarity
+            cka_score = torch.trace(gram_teacher @ gram_student) / (torch.norm(gram_teacher) * torch.norm(gram_student))
+            cka_scores[layer_index] = cka_score.item()
 
-    return cka_score.item()
+    cka_sum = sum(cka_scores.values())
+    return cka_sum
 
 # TODO: this confuses me
 def extract_features(model, x, layer_index):

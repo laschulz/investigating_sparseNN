@@ -5,6 +5,7 @@ import torch.nn as nn
 import torch.optim as optim
 import numpy as np
 from datetime import datetime
+from torch.utils.data import DataLoader, TensorDataset
 
 import utils
 import metrics
@@ -51,8 +52,22 @@ class ExperimentRunner:
         self.optimizer = optim.SGD(self.student_model.parameters(), lr=self.lr, momentum=momentum, weight_decay=self.l2_norm)
         self.loss_fn = nn.MSELoss()
 
+    # TODO: figure out cka metric
     def evaluate(self):
-        self.distance = metrics.calc_distance_metric(self.teacher_model, self.student_model, self.teacher_model_name, self.student_model_name, self.device)
+        if "ViT" in self.student_model_name:
+            # Perform evaluation using CKA metric for transformer models
+            print(f"Evaluating transformer model: {self.student_model_name}")
+            # Test on unseen data
+            X_test = torch.randn(256, 12).to(self.device)
+            y_test = self.teacher_model(X_test).detach().to(self.device)
+            dataset = TensorDataset(X_test, y_test)
+            dataloader = DataLoader(dataset, batch_size=self.batch_size, shuffle=True)
+            self.distance = metrics.calc_cka_metric(teacher_model=self.teacher_model, student_model=self.student_model, data_loader=dataloader, device=self.device)
+        else:
+            # Perform general evaluation using the normal distance metric
+            print(f"Evaluating model: {self.student_model_name}")
+            self.distance = metrics.calc_distance_metric(self.teacher_model, self.student_model, self.teacher_model_name, self.student_model_name, self.device)
+    
 
     def run(self):
         """Start the experiment: Generate dataset and train the student model."""

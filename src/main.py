@@ -7,6 +7,7 @@ import itertools
 from runner import ExperimentRunner
 import utils
 import models
+import transformer_model
 
 def signal_handler(msg, sig, frame):
     """Handles timeout signals and logs experiment failures."""
@@ -21,7 +22,8 @@ def model_mapper(model_type, activation, device):
     model_map = {
         "nonoverlappingCNN": models.NonOverlappingCNN,
         "overlappingCNN": models.OverlappingCNN,
-        "fcnn": models.FCNN
+        "fcnn": models.FCNN,
+        "nonoverlappingViT": transformer_model.NonOverlappingViT
     }
     if model_type not in model_map:
         raise ValueError(f"Unknown model type: {model_type}")
