@@ -1,15 +1,15 @@
-import torch
 import torch.nn as nn
 import utils
     
 class BaseCNN(nn.Module):
     """Base class for CNN models with configurable activation functions."""
     
-    def __init__(self, layers_config, activations):
+    def __init__(self, layers_config, activations, device='cpu'):
         super(BaseCNN, self).__init__()
         
+        self.device = device
         self.layers = nn.ModuleList([
-            nn.Conv1d(in_c, out_c, kernel, stride, padding=0, bias=False)
+            nn.Conv1d(in_c, out_c, kernel, stride, padding=0, bias=False).to(device)
             for in_c, out_c, kernel, stride in layers_config
         ])
         
@@ -30,6 +30,7 @@ class BaseCNN(nn.Module):
                 nn.init.kaiming_normal_(layer.weight)
 
     def forward(self, x):
+        x = x.to(self.device)
         x = x.unsqueeze(1)
         for layer, act in zip(self.layers, self.activations):
             x = act(layer(x))
@@ -39,45 +40,46 @@ class BaseCNN(nn.Module):
 
 class NonOverlappingCNN(BaseCNN):
     """CNN with non-overlapping strides."""
-    def __init__(self, act1, act2, act3):
+    def __init__(self, act1, act2, act3, device='cpu'):
         layers_config = [
             (1, 1, 3, 3), #in_c, out_c, kernel_size, stride
             (1, 1, 2, 2),
             (1, 1, 2, 2)
         ]
-        super().__init__(layers_config, [act1, act2, act3])
+        super().__init__(layers_config, [act1, act2, act3], device)
 
 class OverlappingCNN(BaseCNN):
     """CNN with overlapping strides."""
-    def __init__(self, act1, act2, act3):
+    def __init__(self, act1, act2, act3, device='cpu'):
         layers_config = [
             (1, 4, 3, 3), #in_c, out_c, kernel_size, stride
             (4, 4, 2, 2),
             (4, 1, 2, 2)
         ]
-        super().__init__(layers_config, [act1, act2, act3])
+        super().__init__(layers_config, [act1, act2, act3], device)
 
 class OverlappingCNN2(BaseCNN):
     """Alternative overlapping CNN with different stride settings."""
-    def __init__(self, act1, act2, act3):
+    def __init__(self, act1, act2, act3, device='cpu'):
         layers_config = [
             (1, 1, 3, 1), #in_c, out_c, kernel_size, stride
             (1, 1, 2, 1),
             (1, 1, 2, 1)
         ]
-        super().__init__(layers_config, [act1, act2, act3])
+        super().__init__(layers_config, [act1, act2, act3], device)
 
 ##########################################################################
 
 class FCNN(nn.Module):
     """Fully Connected Neural Network."""
     
-    def __init__(self, act1, act2, act3):
+    def __init__(self, act1, act2, act3, device):
         super(FCNN, self).__init__()
+        self.device = device
         self.layers = nn.ModuleList([
-            nn.Linear(12, 512, bias=False),
-            nn.Linear(512, 32, bias=False),
-            nn.Linear(32, 1, bias=False)
+            nn.Linear(12, 512, bias=False).to(self.device),
+            nn.Linear(512, 32, bias=False).to(self.device),
+            nn.Linear(32, 1, bias=False).to(self.device)
         ])
         
         self.activations = [act1, act2, act3]
@@ -97,6 +99,7 @@ class FCNN(nn.Module):
                 nn.init.kaiming_normal_(layer.weight)
 
     def forward(self, x):
+        x = x.to(self.device)
         for layer, act in zip(self.layers, self.activations):
             x = act(layer(x))
         return x

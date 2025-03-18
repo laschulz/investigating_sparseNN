@@ -3,23 +3,39 @@ import torch
 
 import models
 
-model = {
-    "nonoverlapping_CNN_all_tanh": lambda: models.NonOverlappingCNN(torch.tanh, torch.tanh, torch.tanh),
-    "nonoverlapping_CNN_all_relu": lambda: models.NonOverlappingCNN(torch.relu, torch.relu, torch.relu),
-    "nonoverlapping_CNN_all_sigmoid": lambda: models.NonOverlappingCNN(torch.sigmoid, torch.sigmoid, torch.sigmoid),
-    "overlapping_CNN_all_tanh": lambda: models.OverlappingCNN(torch.tanh, torch.tanh, torch.tanh),
-    "overlapping_CNN_all_relu": lambda: models.OverlappingCNN(torch.relu, torch.relu, torch.relu),
-    "overlapping_CNN_all_sigmoid": lambda: models.OverlappingCNN(torch.sigmoid, torch.sigmoid, torch.sigmoid),
-    "fcnn_all_tanh": lambda: models.FCNN(torch.tanh, torch.tanh, torch.tanh),
-    "fcnn_all_relu": lambda: models.FCNN(torch.relu, torch.relu, torch.relu),
-    "fcnn_all_sigmoid": lambda: models.FCNN(torch.sigmoid, torch.sigmoid, torch.sigmoid)
-}
+# model = {
+#     "nonoverlapping_CNN_all_tanh": lambda: models.NonOverlappingCNN(torch.tanh, torch.tanh, torch.tanh),
+#     "nonoverlapping_CNN_all_relu": lambda: models.NonOverlappingCNN(torch.relu, torch.relu, torch.relu),
+#     "nonoverlapping_CNN_all_sigmoid": lambda: models.NonOverlappingCNN(torch.sigmoid, torch.sigmoid, torch.sigmoid),
+#     "overlapping_CNN_all_tanh": lambda: models.OverlappingCNN(torch.tanh, torch.tanh, torch.tanh),
+#     "overlapping_CNN_all_relu": lambda: models.OverlappingCNN(torch.relu, torch.relu, torch.relu),
+#     "overlapping_CNN_all_sigmoid": lambda: models.OverlappingCNN(torch.sigmoid, torch.sigmoid, torch.sigmoid),
+#     "fcnn_all_tanh": lambda: models.FCNN(torch.tanh, torch.tanh, torch.tanh),
+#     "fcnn_all_relu": lambda: models.FCNN(torch.relu, torch.relu, torch.relu),
+#     "fcnn_all_sigmoid": lambda: models.FCNN(torch.sigmoid, torch.sigmoid, torch.sigmoid)
+# }
+
+def create_model(model_type, device="cpu"):
+    model_dict = {
+        "nonoverlapping_CNN_all_tanh": lambda: models.NonOverlappingCNN(torch.tanh, torch.tanh, torch.tanh, device=device),
+        "nonoverlapping_CNN_all_relu": lambda: models.NonOverlappingCNN(torch.relu, torch.relu, torch.relu, device=device),
+        "nonoverlapping_CNN_all_sigmoid": lambda: models.NonOverlappingCNN(torch.sigmoid, torch.sigmoid, torch.sigmoid, device=device),
+        "overlapping_CNN_all_tanh": lambda: models.OverlappingCNN(torch.tanh, torch.tanh, torch.tanh, device=device),
+        "overlapping_CNN_all_relu": lambda: models.OverlappingCNN(torch.relu, torch.relu, torch.relu, device=device),
+        "overlapping_CNN_all_sigmoid": lambda: models.OverlappingCNN(torch.sigmoid, torch.sigmoid, torch.sigmoid, device=device),
+        "fcnn_all_tanh": lambda: models.FCNN(torch.tanh, torch.tanh, torch.tanh, device=device),
+        "fcnn_all_relu": lambda: models.FCNN(torch.relu, torch.relu, torch.relu, device=device),
+        "fcnn_all_sigmoid": lambda: models.FCNN(torch.sigmoid, torch.sigmoid, torch.sigmoid, device=device)
+    }
+    return model_dict[model_type]()
+
 
 def read_config():
     with open("config.json", "r") as file:
         config = json.load(file)   
     return config
 
+# TODO: transfer to device
 def load_saved_models(save_dir, teacher_model, student_model): #this isn't used yet
     """Load the saved experiment data from a file."""
     

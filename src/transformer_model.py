@@ -6,7 +6,7 @@ import utils
 class BaseViT(nn.Module):
     """Base class for Vision Transformers with configurable activation functions."""
 
-    def __init__(self, input_length, patch_size, in_channels, num_layers, d_model, num_heads, d_ff, dropout, activation):
+    def __init__(self, input_length, patch_size, in_channels, num_layers, d_model, num_heads, d_ff, dropout, activation, device):
         """
         Args:
             input_length (int): Input sequence length.

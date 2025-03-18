@@ -27,7 +27,7 @@ def model_mapper(model_type, activation):
         raise ValueError(f"Unknown model type: {model_type}")
     return model_map[model_type](activation, activation, activation)
 
-def run_experiments(teacher_type, student_types):
+def run_experiments(teacher_type, student_types, device="cpu"):
     """Runs experiments across multiple activations for given teacher and student model types."""
     activations = {torch.tanh, torch.relu, torch.sigmoid}
 
@@ -67,10 +67,11 @@ def run_experiments(teacher_type, student_types):
             student_name=student_name,
             lr=lr,
             l1_norm=l1_norm,
-            l2_norm=l2_norm
+            l2_norm=l2_norm,
+            device=device
         )
 
-def run_single_experiment(teacher_model, student_model, teacher_name, student_name, lr, l1_norm, l2_norm):
+def run_single_experiment(teacher_model, student_model, teacher_name, student_name, lr, l1_norm, l2_norm, device="cpu"):
     """Runs an experiment, trains the model, and saves results."""
     
     experiment_runner = ExperimentRunner(
@@ -80,7 +81,8 @@ def run_single_experiment(teacher_model, student_model, teacher_name, student_na
         student_name=student_name,
         lr=lr,
         l1_norm=l1_norm,
-        l2_norm=l2_norm
+        l2_norm=l2_norm,
+        device=device
     )
 
     cmd = f"python3 {' '.join(sys.argv)}"
@@ -97,6 +99,8 @@ def run_single_experiment(teacher_model, student_model, teacher_name, student_na
 
 
 if __name__ == "__main__":
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    
     # Parse command-line arguments
     parser = argparse.ArgumentParser(description="Run model experiments")
     parser.add_argument("--mode", type=str, choices=["single", "multiple", "all"], required=True, help="Execution mode")
@@ -111,8 +115,8 @@ if __name__ == "__main__":
     if mode == "single":
         teacher_name = args.teacher_model
         student_name = args.student_model
-        teacher_model = utils.model[teacher_name]()
-        student_model = utils.model[student_name]()
+        teacher_model = utils.create_model(teacher_name, device=device)
+        student_model = utils.create_model(student_name, device=device)
         config = utils.read_config()
         lr = config["lr"][0]
         l1_norm = config["l1_norm"][0]
@@ -124,12 +128,14 @@ if __name__ == "__main__":
                               student_name=student_name, 
                               lr=lr, 
                               l1_norm=l1_norm, 
-                              l2_norm=l2_norm)
+                              l2_norm=l2_norm,
+                              device = device
+                              )
 
     elif mode == "multiple":
         if not args.student_type:
             raise ValueError("--student_type is required in 'multiple' mode")
-        run_experiments("nonoverlappingCNN", [args.student_type])
+        run_experiments("nonoverlappingCNN", [args.student_type], device=device)
 
     elif mode == "all":
-        run_experiments("nonoverlappingCNN", ["nonoverlappingCNN", "overlappingCNN", "fcnn"])
+        run_experiments("nonoverlappingCNN", ["nonoverlappingCNN", "overlappingCNN", "fcnn"], device=device)

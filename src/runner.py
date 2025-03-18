@@ -16,22 +16,24 @@ class ExperimentRunner:
     """
 
     # could change this that we have th emodel directly
-    def __init__(self, teacher_model, student_model, teacher_name, student_name, lr, l1_norm, l2_norm, momentum=0.9):
+    def __init__(self, teacher_model, student_model, teacher_name, student_name, lr, l1_norm, l2_norm, momentum=0.9, device="cpu"):
         np.random.seed(42)
         torch.manual_seed(42)
-        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        #self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         # self.device = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
-        print("Running on", self.device)
 
         self.config = utils.read_config()
+        self.device = device
+        print("Running on", self.device)
 
         # Initialize the teacher model with fixed ReLU activations
         self.teacher_model = teacher_model.to(self.device)
         teacher_weights = [
-            torch.tensor([[[2.59, -2.83, 0.87]]]),  # conv1
-            torch.tensor([[[-1.38, 1.29]]]),        # conv2
-            torch.tensor([[[0.86, -0.84]]])         # conv3
+            torch.tensor([[[2.59, -2.83, 0.87]]], device=self.device),  # conv1
+            torch.tensor([[[-1.38, 1.29]]], device=self.device),        # conv2
+            torch.tensor([[[0.86, -0.84]]], device=self.device)         # conv3
         ]
+
         with torch.no_grad():
             for layer, weight in zip(self.teacher_model.layers, teacher_weights):
                 if layer.weight.shape == weight.shape:  # Ensure shape matches before assignment
@@ -52,13 +54,13 @@ class ExperimentRunner:
         self.loss_fn = nn.MSELoss()
 
     def evaluate(self):
-        self.distance = metrics.calc_distance_metric(self.teacher_model, self.student_model, self.teacher_model_name, self.student_model_name)
+        self.distance = metrics.calc_distance_metric(self.teacher_model, self.student_model, self.teacher_model_name, self.student_model_name, self.device)
 
     def run(self):
         """Start the experiment: Generate dataset and train the student model."""
         # Generate dataset using the teacher model
         X_generated = torch.randn(self.config["dataset_size"], 12).to(self.device)
-        y_generated = self.teacher_model(X_generated).detach()
+        y_generated = self.teacher_model(X_generated).detach().to(self.device)
 
         self.batch_size = self.config["batch_size"]
         self.clipping = self.config["clipping"]
@@ -66,13 +68,14 @@ class ExperimentRunner:
         # Train student model
         self.student_model, self.final_loss = trainer.train_model(
             model=self.student_model,
-            X_train=X_generated,
-            y_train=y_generated,
+            X_train=X_generated.to(self.device),
+            y_train=y_generated.to(self.device),
             optimizer=self.optimizer,
             l1_lambda=self.l1_norm,
             loss_fn=self.loss_fn,
             batch_size=self.batch_size,
-            clipping=self.clipping
+            clipping=self.clipping,
+            device=self.device
         )
     
     def save_output(self):
