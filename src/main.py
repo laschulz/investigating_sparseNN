@@ -23,6 +23,7 @@ def model_mapper(model_type, activation, device):
         "nonoverlappingCNN": models.NonOverlappingCNN,
         "overlappingCNN": models.OverlappingCNN,
         "fcnn": models.FCNN,
+        "fcnn_decreasing": models.FCNN_decreasing,
         "nonoverlappingViT": transformer_model.NonOverlappingViT
     }
     if model_type not in model_map:
@@ -111,8 +112,8 @@ if __name__ == "__main__":
     parser.add_argument("--mode", type=str, choices=["single", "multiple", "all"], required=True, help="Execution mode")
     parser.add_argument("--teacher_model", type=str, help="Teacher model name")
     parser.add_argument("--student_model", type=str, help="Student model name")
-    parser.add_argument("--student_type", type=str, choices=["nonoverlapping", "overlapping", "fcnn"],
-                        help="Student model type: nonoverlapping, overlapping, fcnn")
+    parser.add_argument("--student_type", type=str, choices=["nonoverlapping", "overlapping", "fcnn", "fcnn_decreasing"],
+                        help="Student model type: nonoverlapping, overlapping, fcnn, fcnn_decreasing")
 
     args = parser.parse_args()
     mode = args.mode
@@ -143,4 +144,4 @@ if __name__ == "__main__":
         run_experiments("nonoverlappingCNN", [args.student_type], device=device)
 
     elif mode == "all":
-        run_experiments("nonoverlappingCNN", ["nonoverlappingCNN", "overlappingCNN", "fcnn"], device=device)
+        run_experiments("nonoverlappingCNN", ["nonoverlappingCNN", "overlappingCNN", "fcnn", "fcnn_decreasing"], device=device)
