@@ -16,7 +16,7 @@ def signal_handler(msg, sig, frame):
         f.write(f"{cmd} \n")
     sys.exit(0)
 
-def model_mapper(model_type, activation):
+def model_mapper(model_type, activation, device):
     """Helper function to create the appropriate model instance."""
     model_map = {
         "nonoverlappingCNN": models.NonOverlappingCNN,
@@ -25,7 +25,7 @@ def model_mapper(model_type, activation):
     }
     if model_type not in model_map:
         raise ValueError(f"Unknown model type: {model_type}")
-    return model_map[model_type](activation, activation, activation)
+    return model_map[model_type](activation, activation, activation, device)
 
 def run_experiments(teacher_type, student_types, device="cpu"):
     """Runs experiments across multiple activations for given teacher and student model types."""
@@ -49,10 +49,10 @@ def run_experiments(teacher_type, student_types, device="cpu"):
     for student_type, teacher_activation, student_activation, lr, l1_norm, l2_norm in param_combinations:
         if teacher_activation != student_activation and config["same_act"]:
             continue
-        teacher_model = model_mapper(teacher_type, teacher_activation)
+        teacher_model = model_mapper(teacher_type, teacher_activation, device)
         teacher_name = f"{teacher_type}_{teacher_activation.__name__}"
 
-        student_model = model_mapper(student_type, student_activation)
+        student_model = model_mapper(student_type, student_activation, device)
         student_name = f"{student_type}_{student_activation.__name__}"
 
         print(f"Running experiment with: "
@@ -73,6 +73,9 @@ def run_experiments(teacher_type, student_types, device="cpu"):
 
 def run_single_experiment(teacher_model, student_model, teacher_name, student_name, lr, l1_norm, l2_norm, device="cpu"):
     """Runs an experiment, trains the model, and saves results."""
+    
+    teacher_model = teacher_model.to(device)
+    student_model = student_model.to(device)
     
     experiment_runner = ExperimentRunner(
         teacher_model=teacher_model,
@@ -100,7 +103,7 @@ def run_single_experiment(teacher_model, student_model, teacher_name, student_na
 
 if __name__ == "__main__":
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    
+
     # Parse command-line arguments
     parser = argparse.ArgumentParser(description="Run model experiments")
     parser.add_argument("--mode", type=str, choices=["single", "multiple", "all"], required=True, help="Execution mode")

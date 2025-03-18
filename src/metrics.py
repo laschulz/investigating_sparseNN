@@ -8,6 +8,8 @@ def calc_distance_metric(teacher_model, student_model, teacher_model_name: str, 
     (Note that these are the actual models and not the model names).
     Take absolute of a whole row if the activation function is symmetric at 0 -> tanh
     """
+    teacher_model = teacher_model.to(device)
+    student_model = student_model.to(device)
     total_distance = 0.0
     use_absolute_distance = "tanh" in teacher_model_name and "tanh" in student_model_name
 

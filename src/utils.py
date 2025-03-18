@@ -35,8 +35,10 @@ def read_config():
         config = json.load(file)   
     return config
 
-# TODO: transfer to device
-def load_saved_models(save_dir, teacher_model, student_model): #this isn't used yet
+
+ # this isn't used yet
+ # TODO: add to device
+def load_saved_models(save_dir, teacher_model, student_model):
     """Load the saved experiment data from a file."""
     
     # Construct the full path to the saved file

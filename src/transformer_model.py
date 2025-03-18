@@ -27,8 +27,8 @@ class BaseViT(nn.Module):
         self.d_model = d_model
 
         self.patch_embedding = nn.Conv1d(in_channels, d_model, kernel_size=patch_size, stride=patch_size, bias=False)
-        self.cls_token = nn.Parameter(torch.randn(1, 1, d_model))
-        self.positional_encoding = PositionalEncoding(d_model, dropout, max_len=self.num_patches + 1)
+        self.cls_token = nn.Parameter(torch.randn(1, 1, d_model)).to(device)
+        self.positional_encoding = PositionalEncoding(d_model, dropout, max_len=self.num_patches + 1).to(device)
 
         encoder_layer = nn.TransformerEncoderLayer(
             d_model=d_model,

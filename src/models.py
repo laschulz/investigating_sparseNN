@@ -11,7 +11,7 @@ class BaseCNN(nn.Module):
         self.layers = nn.ModuleList([
             nn.Conv1d(in_c, out_c, kernel, stride, padding=0, bias=False).to(device)
             for in_c, out_c, kernel, stride in layers_config
-        ])
+        ]).to(device)
         
         self.activations = activations
         self.config = utils.read_config()

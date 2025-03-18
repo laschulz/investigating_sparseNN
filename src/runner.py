@@ -19,8 +19,6 @@ class ExperimentRunner:
     def __init__(self, teacher_model, student_model, teacher_name, student_name, lr, l1_norm, l2_norm, momentum=0.9, device="cpu"):
         np.random.seed(42)
         torch.manual_seed(42)
-        #self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        # self.device = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
 
         self.config = utils.read_config()
         self.device = device
