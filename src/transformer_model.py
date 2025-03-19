@@ -37,7 +37,7 @@ class BaseViT(nn.Module):
             dropout=dropout,
             activation=activation
         )
-        self.encoder = nn.TransformerEncoder(nn.Sequential(encoder_layer), num_layers=num_layers)
+        self.encoder = nn.TransformerEncoder(encoder_layer, num_layers=num_layers)
 
         # Classification Head
         self.mlp_head = nn.Sequential(
@@ -110,6 +110,6 @@ class NonOverlappingViT(BaseViT):
             num_heads=4,
             d_ff=512,
             dropout=0.1,
-            activations=act,
+            activation=act,
             device=device
         )

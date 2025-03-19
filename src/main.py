@@ -113,7 +113,7 @@ if __name__ == "__main__":
     parser.add_argument("--teacher_model", type=str, help="Teacher model name")
     parser.add_argument("--student_model", type=str, help="Student model name")
     parser.add_argument("--student_type", type=str, choices=["nonoverlapping", "overlapping", "fcnn", "fcnn_decreasing"],
-                        help="Student model type: nonoverlapping, overlapping, fcnn, fcnn_decreasing")
+                        help="Student model type: nonoverlapping, overlapping, fcnn, fcnn_decreasing, transformer")
 
     args = parser.parse_args()
     mode = args.mode
@@ -144,4 +144,4 @@ if __name__ == "__main__":
         run_experiments("nonoverlappingCNN", [args.student_type], device=device)
 
     elif mode == "all":
-        run_experiments("nonoverlappingCNN", ["nonoverlappingCNN", "overlappingCNN", "fcnn", "fcnn_decreasing"], device=device)
+        run_experiments("nonoverlappingCNN", ["nonoverlappingCNN", "overlappingCNN", "fcnn", "fcnn_decreasing, transformer"], device=device)
