@@ -32,7 +32,7 @@ def model_mapper(model_type, activation, device):
 
 def run_experiments(teacher_type, student_types, device="cpu"):
     """Runs experiments across multiple activations for given teacher and student model types."""
-    activations = {torch.tanh, torch.relu, torch.sigmoid}
+    activations = {torch.tanh, torch.relu, torch.sigmoid} 
 
     config = utils.read_config()
     lr_values = config.get("lr", [0.01])
@@ -112,8 +112,8 @@ if __name__ == "__main__":
     parser.add_argument("--mode", type=str, choices=["single", "multiple", "all"], required=True, help="Execution mode")
     parser.add_argument("--teacher_model", type=str, help="Teacher model name")
     parser.add_argument("--student_model", type=str, help="Student model name")
-    parser.add_argument("--student_type", type=str, choices=["nonoverlapping", "overlapping", "fcnn", "fcnn_decreasing"],
-                        help="Student model type: nonoverlapping, overlapping, fcnn, fcnn_decreasing, transformer")
+    parser.add_argument("--student_type", type=str, choices=["nonoverlapping", "overlapping", "fcnn", "fcnn_decreasing", "nonoverlappingViT"],
+                        help="Student model type: nonoverlapping, overlapping, fcnn, fcnn_decreasing, nonoverlappingViT")
 
     args = parser.parse_args()
     mode = args.mode
@@ -144,4 +144,4 @@ if __name__ == "__main__":
         run_experiments("nonoverlappingCNN", [args.student_type], device=device)
 
     elif mode == "all":
-        run_experiments("nonoverlappingCNN", ["nonoverlappingCNN", "overlappingCNN", "fcnn", "fcnn_decreasing, transformer"], device=device)
+        run_experiments("nonoverlappingCNN", ["nonoverlappingCNN", "overlappingCNN", "fcnn", "fcnn_decreasing, nonoverlappingViT"], device=device)
