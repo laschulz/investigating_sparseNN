@@ -4,6 +4,7 @@ import torch
 
 import utils
 import models
+import transformer_model
 
 def train_model(model, X_train, y_train, optimizer, loss_fn, l1_lambda=0, batch_size=32, clipping = None, device="cpu"):
     config = utils.read_config()
@@ -28,7 +29,7 @@ def train_model(model, X_train, y_train, optimizer, loss_fn, l1_lambda=0, batch_
                 
                 optimizer.zero_grad()
                 y_pred = model(batch_X)
-                if isinstance(model, models.FCNN):
+                if isinstance(model, (models.FCNN, models.FCNN_decreasing, transformer_model.NonOverlappingViT)):
                     batch_y = batch_y.view(batch_y.size(0), -1) 
                 loss = loss_fn(y_pred, batch_y)
 

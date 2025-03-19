@@ -1,5 +1,6 @@
 import torch
 import torch.nn as nn
+import torch.nn.init as init
 
 import utils
 
@@ -25,6 +26,7 @@ class BaseViT(nn.Module):
         self.patch_size = patch_size
         self.num_patches = input_length // patch_size
         self.d_model = d_model
+        self.activation = activation
 
         self.patch_embedding = nn.Conv1d(in_channels, d_model, kernel_size=patch_size, stride=patch_size, bias=False)
         self.cls_token = nn.Parameter(torch.randn(1, 1, d_model)).to(device)
@@ -48,22 +50,33 @@ class BaseViT(nn.Module):
         self.config = utils.read_config()
         if self.config.get("init"):
             self.initialize_weights()
-
+    
     def initialize_weights(self):
         """Applies weight initialization based on activation functions."""
-        for layer, act in zip(self.layers, self.activations):
-            if isinstance(act, (nn.ReLU, nn.LeakyReLU)):
-                nn.init.kaiming_normal_(layer.weight, mode='fan_out', nonlinearity='relu')
-            elif isinstance(act, (nn.Sigmoid, nn.Tanh)):
-                nn.init.xavier_uniform_(layer.weight)
+        for layer in self.modules():
+            if isinstance(layer, nn.Conv1d):
+                if isinstance(self.activation, nn.ReLU):
+                    init.kaiming_normal_(layer.weight, mode='fan_out', nonlinearity='relu')
+                else:
+                    init.xavier_uniform_(layer.weight)
+
+            elif isinstance(layer, nn.Linear):
+                if isinstance(self.activation, nn.ReLU):
+                    init.kaiming_normal_(layer.weight, mode='fan_out', nonlinearity='relu')
+                else:
+                    init.xavier_uniform_(layer.weight)
+
+        if hasattr(self.patch_embedding, "weight") and self.patch_embedding.weight.dim() == 3:
+            if isinstance(self.activation, nn.ReLU):
+                init.kaiming_normal_(self.patch_embedding.weight, mode='fan_out', nonlinearity='relu')
             else:
-                nn.init.kaiming_normal_(layer.weight)
-        nn.init.xavier_uniform_(self.patch_embedding.weight)
+                init.xavier_uniform_(self.patch_embedding.weight)
 
     def forward(self, x):
         batch_size = x.shape[0]
 
         # Convert image into patch embeddings
+        x = x.unsqueeze(1)  # Changes shape from (batch_size, seq_length) -> (batch_size, 1, seq_length)
         x = self.patch_embedding(x)  # [B, d_model, num_patches]
         x = x.transpose(1, 2)  # [B, num_patches, d_model]
 

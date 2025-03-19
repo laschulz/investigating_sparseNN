@@ -28,7 +28,10 @@ def model_mapper(model_type, activation, device):
     }
     if model_type not in model_map:
         raise ValueError(f"Unknown model type: {model_type}")
-    return model_map[model_type](activation, activation, activation, device)
+    if model_type == "nonoverlappingViT":
+        return model_map[model_type](activation, device)
+    else:
+        return model_map[model_type](activation, activation, activation, device)
 
 def run_experiments(teacher_type, student_types, device="cpu"):
     """Runs experiments across multiple activations for given teacher and student model types."""
