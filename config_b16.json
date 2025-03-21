@@ -1,0 +1,14 @@
+{
+    "batch_size": 16,
+    "patience": 100,
+    "dataset_size": 1024,
+    "num_epochs": 500000,
+    "lr": [0.01],
+    "l1_norm": [1e-5],
+    "l2_norm": [0],
+    "loss_func": "MSE",
+    "init": true, 
+    "clipping": 0,
+    "same_act": true,
+    "save_path": "/Users/laura/Documents/MIT/Semesterproject/investigating_sparseNN/experiment_output"
+}

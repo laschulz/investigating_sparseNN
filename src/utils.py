@@ -34,7 +34,7 @@ def create_model(model_type, device="cpu"):
     return model_dict[model_type]()
 
 
-def read_config():
-    with open("config.json", "r") as file:
+def read_config(config_path):
+    with open(config_path, "r") as file:
         config = json.load(file)   
     return config

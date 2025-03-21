@@ -17,12 +17,13 @@ class ExperimentRunner:
     """
 
     # could change this that we have th emodel directly
-    def __init__(self, teacher_model, student_model, teacher_name, student_name, lr, l1_norm, l2_norm, momentum=0.9, device="cpu"):
+    def __init__(self, teacher_model, student_model, teacher_name, student_name, lr, l1_norm, l2_norm, momentum=0.9, device="cpu", config_path=None):
         np.random.seed(42)
         torch.manual_seed(42)
-
-        self.config = utils.read_config()
+        
+        self.config = utils.read_config(config_path)
         self.device = device
+        self.config_path = config_path
         print("Running on", self.device)
 
         # Initialize the teacher model with fixed ReLU activations
@@ -88,7 +89,8 @@ class ExperimentRunner:
             loss_fn=self.loss_fn,
             batch_size=self.batch_size,
             clipping=self.clipping,
-            device=self.device
+            device=self.device,
+            config_path=self.config_path
         )
     
     def save_output(self):

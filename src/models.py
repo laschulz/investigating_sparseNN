@@ -4,7 +4,7 @@ import utils
 class BaseCNN(nn.Module):
     """Base class for CNN models with configurable activation functions."""
     
-    def __init__(self, layers_config, activations, device='cpu'):
+    def __init__(self, layers_config, activations, device='cpu', config_path=None):
         super(BaseCNN, self).__init__()
         
         self.device = device
@@ -14,7 +14,7 @@ class BaseCNN(nn.Module):
         ]).to(device)
         
         self.activations = activations
-        self.config = utils.read_config()
+        self.config = utils.read_config(config_path)
 
         if self.config.get("init"):
             self.initialize_weights()
@@ -40,47 +40,47 @@ class BaseCNN(nn.Module):
 
 class NonOverlappingCNN(BaseCNN):
     """CNN with non-overlapping strides."""
-    def __init__(self, act1, act2, act3, device='cpu'):
+    def __init__(self, act1, act2, act3, device='cpu', config_path=None):
         layers_config = [
             (1, 1, 3, 3), #in_c, out_c, kernel_size, stride
             (1, 1, 2, 2),
             (1, 1, 2, 2)
         ]
-        super().__init__(layers_config, [act1, act2, act3], device)
+        super().__init__(layers_config, [act1, act2, act3], device, config_path)
 
 class OverlappingCNN(BaseCNN):
     """CNN with overlapping strides."""
-    def __init__(self, act1, act2, act3, device='cpu'):
+    def __init__(self, act1, act2, act3, device='cpu', config_path=None):
         layers_config = [
             (1, 4, 3, 3), #in_c, out_c, kernel_size, stride
             (4, 4, 2, 2),
             (4, 1, 2, 2)
         ]
-        super().__init__(layers_config, [act1, act2, act3], device)
+        super().__init__(layers_config, [act1, act2, act3], device, config_path)
 
 class OverlappingCNN2(BaseCNN):
     """Alternative overlapping CNN with different stride settings."""
-    def __init__(self, act1, act2, act3, device='cpu'):
+    def __init__(self, act1, act2, act3, device='cpu', config_path=None):
         layers_config = [
             (1, 1, 3, 1), #in_c, out_c, kernel_size, stride
             (1, 1, 2, 1),
             (1, 1, 2, 1)
         ]
-        super().__init__(layers_config, [act1, act2, act3], device)
+        super().__init__(layers_config, [act1, act2, act3], device, config_path)
 
 ##########################################################################
 
 class BaseFCNN(nn.Module):
     """Base class for Fully Connected Neural Networks with configurable architecture."""
     
-    def __init__(self, layer_sizes, activations, device):
+    def __init__(self, layer_sizes, activations, device, config_path):
         super(BaseFCNN, self).__init__()
         self.device = device
         self.layers = nn.ModuleList([
             nn.Linear(in_f, out_f, bias=False) for in_f, out_f in zip(layer_sizes[:-1], layer_sizes[1:])
         ])
         self.activations = activations
-        self.config = utils.read_config()
+        self.config = utils.read_config(config_path)
 
         if self.config.get("init"):
             self.initialize_weights()
@@ -105,15 +105,15 @@ class BaseFCNN(nn.Module):
 class FCNN(BaseFCNN):
     """Fully Connected Neural Network with uniform layer sizes."""
     
-    def __init__(self, act1, act2, act3, device):
-        super().__init__([12, 128, 128, 1], [act1, act2, act3], device)
+    def __init__(self, act1, act2, act3, device, config_path):
+        super().__init__([12, 128, 128, 1], [act1, act2, act3], device, config_path)
 
 
 class FCNN_decreasing(BaseFCNN):
     """Fully Connected Neural Network with decreasing layer sizes."""
     
-    def __init__(self, act1, act2, act3, device):
-        super().__init__([12, 256, 32, 1], [act1, act2, act3], device)
+    def __init__(self, act1, act2, act3, device, config_path):
+        super().__init__([12, 256, 32, 1], [act1, act2, act3], device, config_path)
 
 
 # class FCNN(nn.Module):

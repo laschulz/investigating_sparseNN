@@ -6,8 +6,8 @@ import utils
 import models
 import transformer_model
 
-def train_model(model, X_train, y_train, optimizer, loss_fn, l1_lambda=0, batch_size=32, clipping = None, device="cpu"):
-    config = utils.read_config()
+def train_model(model, X_train, y_train, optimizer, loss_fn, l1_lambda=0, batch_size=32, clipping = None, device="cpu", config_path=None):
+    config = utils.read_config(config_path)
     best_loss = float('inf')
     patience_counter = 0
 
