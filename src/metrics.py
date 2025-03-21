@@ -72,7 +72,8 @@ def calc_cka_metric(teacher_model, student_model, data_loader, device="cpu", num
             features_teacher = []
             features_student = []
             for batch in data_loader:
-                x = batch.to(device)
+                x, _ = batch  # We don't need y_batch
+                x = x.to(device)
 
                 # Get features
                 teacher_activations = extract_features(teacher_model, x, layer_index)

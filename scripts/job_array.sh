@@ -7,7 +7,7 @@
 hostname                     # Print the hostname of the compute node
 
 # Create the logs directory if it doesn't exist
-mkdir -p /om2/user/laschulz/investigating_sparsenn/logs
+mkdir -p /om2/user/laschulz/investigating_sparseNN/logs
 
 # Activate the conda environment
 source /om2/user/laschulz/anaconda/etc/profile.d/conda.sh
@@ -27,3 +27,4 @@ echo "Running with student_type: $STUDENT"
 python src/main.py \
     --mode multiple \
     --student_type $STUDENT
+    --config_path config_b16.json

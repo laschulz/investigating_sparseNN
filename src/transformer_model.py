@@ -7,7 +7,7 @@ import utils
 class BaseViT(nn.Module):
     """Base class for Vision Transformers with configurable activation functions."""
 
-    def __init__(self, input_length, patch_size, in_channels, num_layers, d_model, num_heads, d_ff, dropout, activation, device):
+    def __init__(self, input_length, patch_size, in_channels, num_layers, d_model, num_heads, d_ff, dropout, activation, device, config_path):
         """
         Args:
             input_length (int): Input sequence length.
@@ -47,7 +47,7 @@ class BaseViT(nn.Module):
             nn.Linear(d_model, 1)  # Single output (regression) or change num_classes for classification
         )
 
-        self.config = utils.read_config()
+        self.config = utils.read_config(config_path)
         if self.config.get("init"):
             self.initialize_weights()
     
@@ -113,7 +113,7 @@ class PositionalEncoding(nn.Module):
 class NonOverlappingViT(BaseViT):
     """Vision Transformer with standard non-overlapping patch processing."""
     
-    def __init__(self, act, device):
+    def __init__(self, act, device, config_path):
         super().__init__(
             input_length=12,
             patch_size=3,
@@ -124,5 +124,6 @@ class NonOverlappingViT(BaseViT):
             d_ff=512,
             dropout=0.1,
             activation=act,
-            device=device
+            device=device,
+            config_path=config_path
         )
