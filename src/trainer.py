@@ -52,7 +52,7 @@ def train_model(model, X_train, y_train, optimizer, loss_fn, l1_lambda=0, batch_
             # Compute average loss for the epoch
             epoch_loss /= len(dataloader)
 
-            if epoch % 1000 == 0:
+            if epoch % 5000 == 0:
                 print(f'Epoch {epoch}, Loss: {epoch_loss:.4f}')
 
             # Early stopping logic
