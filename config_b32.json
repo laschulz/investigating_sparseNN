@@ -4,7 +4,7 @@
     "dataset_size": 4096,
     "num_epochs": 100000,
     "lr": [0.005],
-    "l1_norm": [1e-5],
+    "l1_norm": [1e-6],
     "l2_norm": [0],
     "loss_func": "MSE",
     "init": true, 
