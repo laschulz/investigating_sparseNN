@@ -1,7 +1,7 @@
 {
     "batch_size": 16,
     "patience": 100,
-    "dataset_size": 4096,
+    "dataset_size": 8192,
     "num_epochs": 100000,
     "lr": [0.005],
     "l1_norm": [5e-6],

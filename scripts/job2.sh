@@ -24,12 +24,7 @@ echo $CONDA_PREFIX
 which python
 python --version
 
-# /om2/user/laschulz/anaconda3/envs/sparse/bin/python src/main.py \
-#     --mode multiple \
-#     --student_type fcnn \
-#     --config_path config_b16.json
-
 python src/main.py \
     --mode multiple \
-    --student_type fcnn \
+    --student_type fcnn_decreasing \
     --config_path config_b16.json
