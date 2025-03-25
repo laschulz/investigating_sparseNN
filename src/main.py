@@ -35,7 +35,7 @@ def model_mapper(model_type, activation, device, config_path):
 
 def run_experiments(teacher_type, student_types, device="cpu", config_path=None):
     """Runs experiments across multiple activations for given teacher and student model types."""
-    activations = {torch.tanh, torch.relu, torch.sigmoid} 
+    activations = {torch.tanh, torch.sigmoid} #torch.relu,
 
     config = utils.read_config(config_path)
     lr_values = config.get("lr", [0.01])
@@ -110,6 +110,12 @@ def run_single_experiment(teacher_model, student_model, teacher_name, student_na
 
 
 if __name__ == "__main__":
+# Configure GPU settings only when using GPU
+    if torch.cuda.is_available():
+        # Enable TF32 precision on Ampere+ GPUs (faster than FP32, more accurate than FP16)
+        torch.backends.cuda.matmul.allow_tf32 = True
+        torch.backends.cudnn.allow_tf32 = True
+        
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     # Parse command-line arguments

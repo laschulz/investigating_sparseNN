@@ -73,8 +73,9 @@ class ExperimentRunner:
     def run(self):
         """Start the experiment: Generate dataset and train the student model."""
         # Generate dataset using the teacher model
-        X_generated = torch.randn(self.config["dataset_size"], 12).to(self.device)
-        y_generated = self.teacher_model(X_generated).detach().to(self.device)
+        X_generated = torch.randn(self.config["dataset_size"], 12, device=self.device)
+        with torch.no_grad():  # No need to track gradients for teacher inference
+            y_generated = self.teacher_model(X_generated).detach()  # Already on device
 
         self.batch_size = self.config["batch_size"]
         self.clipping = self.config["clipping"]
@@ -82,8 +83,8 @@ class ExperimentRunner:
         # Train student model
         self.student_model, self.final_loss = trainer.train_model(
             model=self.student_model,
-            X_train=X_generated.to(self.device),
-            y_train=y_generated.to(self.device),
+            X_train=X_generated,
+            y_train=y_generated,
             optimizer=self.optimizer,
             l1_lambda=self.l1_norm,
             loss_fn=self.loss_fn,
