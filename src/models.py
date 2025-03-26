@@ -48,6 +48,8 @@ class NonOverlappingCNN(BaseCNN):
         ]
         super().__init__(layers_config, [act1, act2, act3], device, config_path)
 
+        #TODO: different weights per kernel
+
 class OverlappingCNN(BaseCNN):
     """CNN with overlapping strides."""
     def __init__(self, act1, act2, act3, device='cpu', config_path=None):
@@ -90,6 +92,7 @@ class BaseFCNN(nn.Module):
         for layer, act in zip(self.layers, self.activations):
             if isinstance(act, (nn.ReLU, nn.LeakyReLU)):
                 nn.init.kaiming_normal_(layer.weight, mode='fan_out', nonlinearity='relu')
+                # TODO: smaller weights
             elif isinstance(act, (nn.Sigmoid, nn.Tanh)):
                 nn.init.xavier_uniform_(layer.weight)
             else:
@@ -113,39 +116,4 @@ class FCNN_decreasing(BaseFCNN):
     """Fully Connected Neural Network with decreasing layer sizes."""
     
     def __init__(self, act1, act2, act3, device, config_path):
-        super().__init__([12, 256, 32, 1], [act1, act2, act3], device, config_path)
-
-
-# class FCNN(nn.Module):
-#     """Fully Connected Neural Network."""
-    
-#     def __init__(self, act1, act2, act3, device):
-#         super(FCNN, self).__init__()
-#         self.device = device
-#         self.layers = nn.ModuleList([
-#             nn.Linear(12, 128, bias=False).to(self.device),
-#             nn.Linear(128, 128, bias=False).to(self.device),
-#             nn.Linear(128, 1, bias=False).to(self.device)
-#         ])
-        
-#         self.activations = [act1, act2, act3]
-#         self.config = utils.read_config()
-
-#         if self.config.get("init"):
-#             self.initialize_weights()
-
-#     def initialize_weights(self):
-#         """Applies weight initialization based on activation functions."""
-#         for layer, act in zip(self.layers, self.activations):
-#             if isinstance(act, (nn.ReLU, nn.LeakyReLU)):
-#                 nn.init.kaiming_normal_(layer.weight, mode='fan_out', nonlinearity='relu')
-#             elif isinstance(act, (nn.Sigmoid, nn.Tanh)):
-#                 nn.init.xavier_uniform_(layer.weight)
-#             else:
-#                 nn.init.kaiming_normal_(layer.weight)
-
-#     def forward(self, x):
-#         x = x.to(self.device)
-#         for layer, act in zip(self.layers, self.activations):
-#             x = act(layer(x))
-#         return x
+        super().__init__([12, 512, 32, 1], [act1, act2, act3], device, config_path)

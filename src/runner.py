@@ -53,7 +53,6 @@ class ExperimentRunner:
         self.optimizer = optim.SGD(self.student_model.parameters(), lr=self.lr, momentum=momentum, weight_decay=self.l2_norm)
         self.loss_fn = nn.MSELoss()
 
-    # TODO: figure out cka metric
     def evaluate(self):
         if "ViT" in self.student_model_name:
             # Perform evaluation using CKA metric for transformer models
@@ -69,13 +68,13 @@ class ExperimentRunner:
             print(f"Evaluating model: {self.student_model_name}")
             self.distance = metrics.calc_distance_metric(self.teacher_model, self.student_model, self.teacher_model_name, self.student_model_name, self.device)
     
-
     def run(self):
         """Start the experiment: Generate dataset and train the student model."""
         # Generate dataset using the teacher model
-        X_generated = torch.randn(self.config["dataset_size"], 12, device=self.device)
-        with torch.no_grad():  # No need to track gradients for teacher inference
-            y_generated = self.teacher_model(X_generated).detach()  # Already on device
+        # X_generated = torch.randn(self.config["dataset_size"], 12, device=self.device)
+        # y_generated = self.teacher_model(X_generated).detach()
+        X_generated = torch.randn(self.config["dataset_size"], 12)
+        y_generated = self.teacher_model(X_generated).detach()
 
         self.batch_size = self.config["batch_size"]
         self.clipping = self.config["clipping"]
@@ -147,6 +146,8 @@ class ExperimentRunner:
             f.write(f"L2 norm: {self.l2_norm}\n")
             f.write(f"Batch size: {self.batch_size}\n")
             f.write(f"Clipping: {self.clipping}\n")
+            f.write(f"Learning rate: {self.lr}\n")
+            f.write(f"data size: {self.config['dataset_size']}\n")
             f.write("\n" + "=" * 80 + "\n\n")
 
         print(f"Experiment details saved to {text_save_path}")

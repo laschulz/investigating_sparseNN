@@ -35,7 +35,7 @@ def model_mapper(model_type, activation, device, config_path):
 
 def run_experiments(teacher_type, student_types, device="cpu", config_path=None):
     """Runs experiments across multiple activations for given teacher and student model types."""
-    activations = {torch.tanh, torch.sigmoid} #torch.relu,
+    activations = {torch.sigmoid, torch.tanh} #torch.relu, 
 
     config = utils.read_config(config_path)
     lr_values = config.get("lr", [0.01])
