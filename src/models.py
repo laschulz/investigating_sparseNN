@@ -116,4 +116,4 @@ class FCNN_decreasing(BaseFCNN):
     """Fully Connected Neural Network with decreasing layer sizes."""
     
     def __init__(self, act1, act2, act3, device, config_path):
-        super().__init__([12, 512, 32, 1], [act1, act2, act3], device, config_path)
+        super().__init__([12, 256, 32, 1], [act1, act2, act3], device, config_path)

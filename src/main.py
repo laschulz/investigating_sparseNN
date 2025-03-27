@@ -35,7 +35,7 @@ def model_mapper(model_type, activation, device, config_path):
 
 def run_experiments(teacher_type, student_types, device="cpu", config_path=None):
     """Runs experiments across multiple activations for given teacher and student model types."""
-    activations = {torch.sigmoid, torch.tanh} #torch.relu, 
+    activations = {torch.sigmoid, torch.tanh, torch.relu}
 
     config = utils.read_config(config_path)
     lr_values = config.get("lr", [0.01])
@@ -123,6 +123,8 @@ if __name__ == "__main__":
     parser.add_argument("--mode", type=str, choices=["single", "multiple", "all"], required=True, help="Execution mode")
     parser.add_argument("--teacher_model", type=str, help="Teacher model name")
     parser.add_argument("--student_model", type=str, help="Student model name")
+    parser.add_argument("--teacher_type", type=str, choices=["nonoverlappingCNN", "overlappingCNN", "fcnn", "fcnn_decreasing", "nonoverlappingViT"],
+                        help="Student model type: nonoverlappingCNN, overlappingCNN, fcnn, fcnn_decreasing, nonoverlappingViT")
     parser.add_argument("--student_type", type=str, choices=["nonoverlappingCNN", "overlappingCNN", "fcnn", "fcnn_decreasing", "nonoverlappingViT"],
                         help="Student model type: nonoverlappingCNN, overlappingCNN, fcnn, fcnn_decreasing, nonoverlappingViT")
     parser.add_argument("--config_path", type=str, help="Path to configuration file")
@@ -153,7 +155,7 @@ if __name__ == "__main__":
     elif mode == "multiple":
         if not args.student_type:
             raise ValueError("--student_type is required in 'multiple' mode")
-        run_experiments("nonoverlappingCNN", [args.student_type], device=device, config_path=args.config_path)
+        run_experiments(args.teacher_type, [args.student_type], device=device, config_path=args.config_path)
 
     elif mode == "all":
         run_experiments("nonoverlappingCNN", ["nonoverlappingCNN", "overlappingCNN", "fcnn", "fcnn_decreasing", "nonoverlappingViT"], device=device, config_path=args.config_path)
