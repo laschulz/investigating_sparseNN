@@ -98,7 +98,6 @@ def calc_cka_metric(teacher_model, student_model, data_loader, device="cpu", num
     cka_sum = sum(cka_scores.values())
     return cka_sum
 
-# TODO: this confuses me
 def extract_features(model, x, layer_index):
     """
     Extracts feature representations from a given layer of the model.

@@ -17,58 +17,20 @@ class ExperimentRunner:
     """
 
     # could change this that we have th emodel directly
-    def __init__(self, teacher_model, student_model, teacher_name, student_name, lr, l1_norm, l2_norm, momentum=0.9, device="cpu", config_path=None):
+    def __init__(self, teacher_model, student_model, teacher_name, student_name, lr, l1_norm, l2_norm, momentum=0.9, config_path=None):
         np.random.seed(42)
         torch.manual_seed(42)
+        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        print("Running on", self.device)
         
         self.config = utils.read_config(config_path)
-        self.device = device
         self.config_path = config_path
-        print("Running on", self.device)
 
         # Initialize the teacher model with fixed ReLU activations
-        self.teacher_model = teacher_model.to(self.device)
+        self.teacher_model = teacher_model
         self.teacher_model_name = teacher_name
-        if "nonoverlapping" in teacher_name:
-            teacher_weights = [
-                torch.tensor([[[2.59, -2.83, 0.87]]], device=self.device),  # conv1
-                torch.tensor([[[-1.38, 1.29]]], device=self.device),        # conv2
-                torch.tensor([[[0.86, -0.84]]], device=self.device)         # conv3
-            ]
-            with torch.no_grad():
-                for layer, weight in zip(self.teacher_model.layers, teacher_weights):
-                    layer.weight.copy_(weight)
-        elif "overlapping" in teacher_name:
-            teacher_weights = [
-            torch.tensor([[[-0.78, -0.12,  0.70]],
-                      [[-1.16,  0.47,  0.05]],
-                      [[-0.73,  1.96, -1.01]],
-                      [[-0.32,  0.21,  0.63]]], device=self.device),  # conv1
-            torch.tensor([[[ 0.00,  0.04],
-                       [ 0.68,  0.34],
-                       [ 0.54, -0.22],
-                       [-0.14, -0.33]],
-                      [[-0.14,  1.59],
-                       [ 1.48, -0.52],
-                       [-1.26,  0.30],
-                       [-0.40, -1.09]],
-                      [[-0.71,  0.44],
-                       [-0.02, -0.14],
-                       [ 0.37, -0.70],
-                       [-0.83, -0.38]],
-                      [[ 0.89, -0.48],
-                       [-0.27, -0.81],
-                       [ 1.76, -0.41],
-                       [ 0.15,  0.49]]], device=self.device),  # conv2
-            torch.tensor([[[-0.54,  0.16],
-                       [-0.74, -0.46],
-                       [ 0.08,  0.18],
-                       [-0.22,  0.81]]], device=self.device)           # conv3
-            ]
-    
-            with torch.no_grad():
-                for layer, weight in zip(self.teacher_model.layers, teacher_weights):
-                    layer.weight.copy_(weight)
+
+        self.teacher_model = utils.init_teacher(self.teacher_model, self.teacher_model_name)
 
         # print weights of model
         for name, param in self.teacher_model.named_parameters():
@@ -84,13 +46,15 @@ class ExperimentRunner:
         self.lr = lr
         self.optimizer = optim.SGD(self.student_model.parameters(), lr=self.lr, momentum=momentum, weight_decay=self.l2_norm)
         self.loss_fn = nn.MSELoss()
+        # set loss to cosine similarity loss
+        # self.loss_fn = nn.CosineEmbeddingLoss()
 
     def evaluate(self):
         if "ViT" in self.student_model_name:
             # Perform evaluation using CKA metric for transformer models
             print(f"Evaluating transformer model: {self.student_model_name}")
             # Test on unseen data
-            X_test = torch.randn(256, 12).to(self.device)
+            X_test = torch.randn(256, 12, device=self.device)
             y_test = self.teacher_model(X_test).detach().to(self.device)
             dataset = TensorDataset(X_test, y_test)
             dataloader = DataLoader(dataset, batch_size=self.batch_size, shuffle=True)
@@ -107,10 +71,10 @@ class ExperimentRunner:
     def run(self):
         """Start the experiment: Generate dataset and train the student model."""
         # Generate dataset using the teacher model
-        # X_generated = torch.randn(self.config["dataset_size"], 12, device=self.device)
-        # y_generated = self.teacher_model(X_generated).detach()
         X_generated = torch.randn(self.config["dataset_size"], 12)
-        y_generated = self.teacher_model(X_generated).detach()
+        with torch.no_grad():
+            y_generated = self.teacher_model(X_generated).detach().cpu()
+        X_generated = X_generated.cpu()
 
         self.batch_size = self.config["batch_size"]
         self.clipping = self.config["clipping"]

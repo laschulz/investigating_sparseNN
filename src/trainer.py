@@ -12,12 +12,22 @@ def train_model(model, X_train, y_train, optimizer, loss_fn, l1_lambda=0, batch_
     best_loss = float('inf')
     patience_counter = 0
 
-    model = model.to(device)
-    #X_train, y_train = X_train.to(device), y_train.to(device)
+    print(f"Using device: {device}")    
+    X_train, y_train = X_train.cpu(), y_train.cpu()
 
     # Create a DataLoader to handle batching and shuffling
     dataset = TensorDataset(X_train, y_train)
-    dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
+    if device == "cuda":
+        dataloader = DataLoader(
+                dataset, 
+                batch_size=batch_size, 
+                shuffle=True,
+                num_workers=8,
+                persistent_workers=True,
+                pin_memory=True
+            )
+    else:
+        dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
 
     print("Starting training...")
     disable_tqdm = not sys.stdout.isatty()
@@ -27,7 +37,7 @@ def train_model(model, X_train, y_train, optimizer, loss_fn, l1_lambda=0, batch_
             epoch_loss = 0.0
             
             for batch_X, batch_y in dataloader:
-                #batch_X, batch_y = batch_X.to(device), batch_y.to(device)
+                batch_X, batch_y = batch_X.to(device), batch_y.to(device)
                 
                 optimizer.zero_grad()
                 y_pred = model(batch_X)

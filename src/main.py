@@ -9,7 +9,7 @@ import utils
 import models
 import transformer_model
 
-def signal_handler(msg, sig, frame):
+def signal_handler(msg, sig):
     """Handles timeout signals and logs experiment failures."""
     print(f"Exit signal received: {sig}")
     cmd, student_model_name = msg
@@ -17,7 +17,7 @@ def signal_handler(msg, sig, frame):
         f.write(f"{cmd} \n")
     sys.exit(0)
 
-def model_mapper(model_type, activation, device, config_path):
+def model_mapper(model_type, activation, config_path):
     """Helper function to create the appropriate model instance."""
     model_map = {
         "nonoverlappingCNN": models.NonOverlappingCNN,
@@ -29,11 +29,11 @@ def model_mapper(model_type, activation, device, config_path):
     if model_type not in model_map:
         raise ValueError(f"Unknown model type: {model_type}")
     if model_type == "nonoverlappingViT":
-        return model_map[model_type](activation, device, config_path)
+        return model_map[model_type](activation, config_path)
     else:
-        return model_map[model_type](activation, activation, activation, device, config_path)
+        return model_map[model_type](activation, activation, activation, config_path)
 
-def run_experiments(teacher_type, student_types, device="cpu", config_path=None):
+def run_experiments(teacher_type, student_types, config_path=None):
     """Runs experiments across multiple activations for given teacher and student model types."""
     activations = {torch.sigmoid, torch.tanh, torch.relu}
 
@@ -55,10 +55,10 @@ def run_experiments(teacher_type, student_types, device="cpu", config_path=None)
     for student_type, teacher_activation, student_activation, lr, l1_norm, l2_norm in param_combinations:
         if teacher_activation != student_activation and config["same_act"]:
             continue
-        teacher_model = model_mapper(teacher_type, teacher_activation, device, config_path)
+        teacher_model = model_mapper(teacher_type, teacher_activation, config_path)
         teacher_name = f"{teacher_type}_{teacher_activation.__name__}"
 
-        student_model = model_mapper(student_type, student_activation, device, config_path)
+        student_model = model_mapper(student_type, student_activation, config_path)
         student_name = f"{student_type}_{student_activation.__name__}"
 
         print(f"Running experiment with: "
@@ -74,15 +74,14 @@ def run_experiments(teacher_type, student_types, device="cpu", config_path=None)
             lr=lr,
             l1_norm=l1_norm,
             l2_norm=l2_norm,
-            device=device,
             config_path=config_path
         )
 
-def run_single_experiment(teacher_model, student_model, teacher_name, student_name, lr, l1_norm, l2_norm, device="cpu", config_path=None):
+def run_single_experiment(teacher_model, student_model, teacher_name, student_name, lr, l1_norm, l2_norm, config_path=None):
     """Runs an experiment, trains the model, and saves results."""
     
-    teacher_model = teacher_model.to(device)
-    student_model = student_model.to(device)
+    teacher_model = teacher_model
+    student_model = student_model
     
     experiment_runner = ExperimentRunner(
         teacher_model=teacher_model,
@@ -92,7 +91,6 @@ def run_single_experiment(teacher_model, student_model, teacher_name, student_na
         lr=lr,
         l1_norm=l1_norm,
         l2_norm=l2_norm,
-        device=device,
         config_path=config_path
     )
 
@@ -109,15 +107,7 @@ def run_single_experiment(teacher_model, student_model, teacher_name, student_na
             f.write(f"{traceback.format_exc()} \n\n")
 
 
-if __name__ == "__main__":
-# Configure GPU settings only when using GPU
-    if torch.cuda.is_available():
-        # Enable TF32 precision on Ampere+ GPUs (faster than FP32, more accurate than FP16)
-        torch.backends.cuda.matmul.allow_tf32 = True
-        torch.backends.cudnn.allow_tf32 = True
-        
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-
+if __name__ == "__main__":    
     # Parse command-line arguments
     parser = argparse.ArgumentParser(description="Run model experiments")
     parser.add_argument("--mode", type=str, choices=["single", "multiple", "all"], required=True, help="Execution mode")
@@ -135,8 +125,8 @@ if __name__ == "__main__":
     if mode == "single":
         teacher_name = args.teacher_model
         student_name = args.student_model
-        teacher_model = utils.create_model(teacher_name, device=device)
-        student_model = utils.create_model(student_name, device=device)
+        teacher_model = utils.create_model(teacher_name)
+        student_model = utils.create_model(student_name)
         config = utils.read_config(args.config_path)
         lr = config["lr"][0]
         l1_norm = config["l1_norm"][0]
@@ -148,14 +138,13 @@ if __name__ == "__main__":
                               student_name=student_name, 
                               lr=lr, 
                               l1_norm=l1_norm, 
-                              l2_norm=l2_norm,
-                              device = device
+                              l2_norm=l2_norm
                               )
 
     elif mode == "multiple":
         if not args.student_type:
             raise ValueError("--student_type is required in 'multiple' mode")
-        run_experiments(args.teacher_type, [args.student_type], device=device, config_path=args.config_path)
+        run_experiments(args.teacher_type, [args.student_type], config_path=args.config_path)
 
     elif mode == "all":
-        run_experiments("nonoverlappingCNN", ["nonoverlappingCNN", "overlappingCNN", "fcnn", "fcnn_decreasing", "nonoverlappingViT"], device=device, config_path=args.config_path)
+        run_experiments("nonoverlappingCNN", ["nonoverlappingCNN", "overlappingCNN", "fcnn", "fcnn_decreasing", "nonoverlappingViT"], config_path=args.config_path)
