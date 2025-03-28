@@ -21,6 +21,7 @@ def model_mapper(model_type, activation, config_path):
     """Helper function to create the appropriate model instance."""
     model_map = {
         "nonoverlappingCNN": models.NonOverlappingCNN,
+        "multiWeightCNN": models.MultiWeightCNN,
         "overlappingCNN": models.OverlappingCNN,
         "fcnn": models.FCNN,
         "fcnn_decreasing": models.FCNN_decreasing,
@@ -113,10 +114,10 @@ if __name__ == "__main__":
     parser.add_argument("--mode", type=str, choices=["single", "multiple", "all"], required=True, help="Execution mode")
     parser.add_argument("--teacher_model", type=str, help="Teacher model name")
     parser.add_argument("--student_model", type=str, help="Student model name")
-    parser.add_argument("--teacher_type", type=str, choices=["nonoverlappingCNN", "overlappingCNN", "fcnn", "fcnn_decreasing", "nonoverlappingViT"],
-                        help="Student model type: nonoverlappingCNN, overlappingCNN, fcnn, fcnn_decreasing, nonoverlappingViT")
-    parser.add_argument("--student_type", type=str, choices=["nonoverlappingCNN", "overlappingCNN", "fcnn", "fcnn_decreasing", "nonoverlappingViT"],
-                        help="Student model type: nonoverlappingCNN, overlappingCNN, fcnn, fcnn_decreasing, nonoverlappingViT")
+    parser.add_argument("--teacher_type", type=str, choices=["nonoverlappingCNN", "multiWeightCNN", "overlappingCNN", "fcnn", "fcnn_decreasing", "nonoverlappingViT"],
+                        help="Student model type: nonoverlappingCNN, multiWeightCNN, overlappingCNN, fcnn, fcnn_decreasing, nonoverlappingViT")
+    parser.add_argument("--student_type", type=str, choices=["nonoverlappingCNN", "multiWeightCNN", "overlappingCNN", "fcnn", "fcnn_decreasing", "nonoverlappingViT"],
+                        help="Student model type: nonoverlappingCNN, multiWeightCNN, overlappingCNN, fcnn, fcnn_decreasing, nonoverlappingViT")
     parser.add_argument("--config_path", type=str, help="Path to configuration file")
 
     args = parser.parse_args()

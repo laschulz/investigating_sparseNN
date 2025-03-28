@@ -12,10 +12,10 @@ def create_model(model_type):
         "nonoverlapping_CNN_all_gelu": lambda: models.NonOverlappingCNN(torch.nn.functional.gelu, torch.nn.functional.gelu, torch.nn.functional.gelu),
         "nonoverlapping_CNN_all_sigmoid": lambda: models.NonOverlappingCNN(torch.sigmoid, torch.sigmoid, torch.sigmoid),
 
-        "alternating_CNN_all_tanh": lambda: models.AlternatingCNN([torch.tanh, torch.tanh, torch.tanh]),
-        "alternating_CNN_all_relu": lambda: models.AlternatingCNN([torch.relu, torch.relu, torch.relu]),
-        "alternating_CNN_all_gelu": lambda: models.AlternatingCNN([torch.nn.functional.gelu, torch.nn.functional.gelu, torch.nn.functional.gelu]),
-        "alternating_CNN_all_sigmoid": lambda: models.AlternatingCNN([torch.sigmoid, torch.sigmoid, torch.sigmoid]),
+        "multiWeight_CNN_all_tanh": lambda: models.MultiWeightCNN(torch.tanh, torch.tanh, torch.tanh),
+        "multiWeight_CNN_all_relu": lambda: models.MultiWeightCNN(torch.relu, torch.relu, torch.relu),
+        "multiWeight_CNN_all_gelu": lambda: models.MultiWeightCNN(torch.nn.functional.gelu, torch.nn.functional.gelu, torch.nn.functional.gelu),
+        "multiWeight_CNN_all_sigmoid": lambda: models.MultiWeightCNN(torch.sigmoid, torch.sigmoid, torch.sigmoid),
         
         "overlapping_CNN_all_tanh": lambda: models.OverlappingCNN(torch.tanh, torch.tanh, torch.tanh),
         "overlapping_CNN_all_relu": lambda: models.OverlappingCNN(torch.relu, torch.relu, torch.relu),

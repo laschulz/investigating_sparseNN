@@ -70,10 +70,10 @@ class OverlappingCNN2(BaseCNN):
 
 ##########################################################################
 
-class AlternatingCNN(nn.Module):
+class MultiWeightCNN(nn.Module):
     """CNN with alternating weights for each chunk of input and configurable activations."""
-    def __init__(self, activations):
-        self.activations = activations
+    def __init__(self, act1, act2, act3):
+        self.activations = [act1, act2, act3]
         super().__init__()
         self.layer1_weights = nn.ParameterList([
             nn.Parameter(torch.tensor([[2.59, -2.83, 0.87]])),
