@@ -5,32 +5,37 @@ import re
 import models
 import transformer_model
 
-def create_model(model_type, device="cpu"):
+def create_model(model_type):
     model_dict = {
-        "nonoverlapping_CNN_all_tanh": lambda: models.NonOverlappingCNN(torch.tanh, torch.tanh, torch.tanh, device=device),
-        "nonoverlapping_CNN_all_relu": lambda: models.NonOverlappingCNN(torch.relu, torch.relu, torch.relu, device=device),
-        "nonoverlapping_CNN_all_gelu": lambda: models.NonOverlappingCNN(torch.nn.functional.gelu, torch.nn.functional.gelu, torch.nn.functional.gelu, device=device),
-        "nonoverlapping_CNN_all_sigmoid": lambda: models.NonOverlappingCNN(torch.sigmoid, torch.sigmoid, torch.sigmoid, device=device),
+        "nonoverlapping_CNN_all_tanh": lambda: models.NonOverlappingCNN(torch.tanh, torch.tanh, torch.tanh),
+        "nonoverlapping_CNN_all_relu": lambda: models.NonOverlappingCNN(torch.relu, torch.relu, torch.relu),
+        "nonoverlapping_CNN_all_gelu": lambda: models.NonOverlappingCNN(torch.nn.functional.gelu, torch.nn.functional.gelu, torch.nn.functional.gelu),
+        "nonoverlapping_CNN_all_sigmoid": lambda: models.NonOverlappingCNN(torch.sigmoid, torch.sigmoid, torch.sigmoid),
+
+        "alternating_CNN_all_tanh": lambda: models.AlternatingCNN([torch.tanh, torch.tanh, torch.tanh]),
+        "alternating_CNN_all_relu": lambda: models.AlternatingCNN([torch.relu, torch.relu, torch.relu]),
+        "alternating_CNN_all_gelu": lambda: models.AlternatingCNN([torch.nn.functional.gelu, torch.nn.functional.gelu, torch.nn.functional.gelu]),
+        "alternating_CNN_all_sigmoid": lambda: models.AlternatingCNN([torch.sigmoid, torch.sigmoid, torch.sigmoid]),
         
-        "overlapping_CNN_all_tanh": lambda: models.OverlappingCNN(torch.tanh, torch.tanh, torch.tanh, device=device),
-        "overlapping_CNN_all_relu": lambda: models.OverlappingCNN(torch.relu, torch.relu, torch.relu, device=device),
-        "overlapping_CNN_all_gelu": lambda: models.OverlappingCNN(torch.nn.functional.gelu, torch.nn.functional.gelu, torch.nn.functional.gelu, device=device),
-        "overlapping_CNN_all_sigmoid": lambda: models.OverlappingCNN(torch.sigmoid, torch.sigmoid, torch.sigmoid, device=device),
+        "overlapping_CNN_all_tanh": lambda: models.OverlappingCNN(torch.tanh, torch.tanh, torch.tanh),
+        "overlapping_CNN_all_relu": lambda: models.OverlappingCNN(torch.relu, torch.relu, torch.relu),
+        "overlapping_CNN_all_gelu": lambda: models.OverlappingCNN(torch.nn.functional.gelu, torch.nn.functional.gelu, torch.nn.functional.gelu),
+        "overlapping_CNN_all_sigmoid": lambda: models.OverlappingCNN(torch.sigmoid, torch.sigmoid, torch.sigmoid),
         
-        "fcnn_all_tanh": lambda: models.FCNN(torch.tanh, torch.tanh, torch.tanh, device=device),
-        "fcnn_all_relu": lambda: models.FCNN(torch.relu, torch.relu, torch.relu, device=device),
-        "fcnn_all_gelu": lambda: models.FCNN(torch.nn.functional.gelu, torch.nn.functional.gelu, torch.nn.functional.gelu, device=device),
-        "fcnn_all_sigmoid": lambda: models.FCNN(torch.sigmoid, torch.sigmoid, torch.sigmoid, device=device),
+        "fcnn_all_tanh": lambda: models.FCNN(torch.tanh, torch.tanh, torch.tanh),
+        "fcnn_all_relu": lambda: models.FCNN(torch.relu, torch.relu, torch.relu),
+        "fcnn_all_gelu": lambda: models.FCNN(torch.nn.functional.gelu, torch.nn.functional.gelu, torch.nn.functional.gelu),
+        "fcnn_all_sigmoid": lambda: models.FCNN(torch.sigmoid, torch.sigmoid, torch.sigmoid),
         
-        "fcnn_decreasing_all_tanh": lambda: models.FCNN_decreasing(torch.tanh, torch.tanh, torch.tanh, device=device),
-        "fcnn_decreasing_all_relu": lambda: models.FCNN_decreasing(torch.relu, torch.relu, torch.relu, device=device),
-        "fcnn_decreasing_all_gelu": lambda: models.FCNN_decreasing(torch.nn.functional.gelu, torch.nn.functional.gelu, torch.nn.functional.gelu, device=device),
-        "fcnn_decreasing_all_sigmoid": lambda: models.FCNN_decreasing(torch.sigmoid, torch.sigmoid, torch.sigmoid, device=device),
+        "fcnn_decreasing_all_tanh": lambda: models.FCNN_decreasing(torch.tanh, torch.tanh, torch.tanh),
+        "fcnn_decreasing_all_relu": lambda: models.FCNN_decreasing(torch.relu, torch.relu, torch.relu),
+        "fcnn_decreasing_all_gelu": lambda: models.FCNN_decreasing(torch.nn.functional.gelu, torch.nn.functional.gelu, torch.nn.functional.gelu),
+        "fcnn_decreasing_all_sigmoid": lambda: models.FCNN_decreasing(torch.sigmoid, torch.sigmoid, torch.sigmoid),
         
-        "nonoverlapping_transformer_tanh": lambda: transformer_model.NonOverlappingViT(torch.tanh, device=device),
-        "nonoverlapping_transformer_relu": lambda: transformer_model.NonOverlappingViT(torch.relu, device=device),
-        "nonoverlapping_transformer_gelu": lambda: transformer_model.NonOverlappingViT(torch.nn.functional.gelu, device=device),
-        "nonoverlapping_transformer_sigmoid": lambda: transformer_model.NonOverlappingViT(torch.sigmoid, device=device)
+        "nonoverlapping_transformer_tanh": lambda: transformer_model.NonOverlappingViT(torch.tanh),
+        "nonoverlapping_transformer_relu": lambda: transformer_model.NonOverlappingViT(torch.relu),
+        "nonoverlapping_transformer_gelu": lambda: transformer_model.NonOverlappingViT(torch.nn.functional.gelu),
+        "nonoverlapping_transformer_sigmoid": lambda: transformer_model.NonOverlappingViT(torch.sigmoid)
     }
     return model_dict[model_type]()
 
@@ -41,13 +46,15 @@ def read_config(config_path):
     return config
 
 def init_teacher(teacher_model, teacher_name):
-    teacher_weights = []
     if "nonoverlappingCNN" in teacher_name:
         teacher_weights = [
             torch.tensor([[[2.59, -2.83, 0.87]]]),  # conv1
             torch.tensor([[[-1.38, 1.29]]]),        # conv2
             torch.tensor([[[0.86, -0.84]]])         # conv3
         ]
+        with torch.no_grad():
+            for layer, weight in zip(teacher_model.layers, teacher_weights):
+                layer.weight.copy_(weight)
     elif "overlappingCNN" in teacher_name:
         teacher_weights = [
         torch.tensor([[[-0.78, -0.12,  0.70]],
@@ -75,7 +82,7 @@ def init_teacher(teacher_model, teacher_name):
                     [ 0.08,  0.18],
                     [-0.22,  0.81]]])           # conv3
         ]
-    with torch.no_grad():
-        for layer, weight in zip(teacher_model.layers, teacher_weights):
-            layer.weight.copy_(weight)
+        with torch.no_grad():
+            for layer, weight in zip(teacher_model.layers, teacher_weights):
+                layer.weight.copy_(weight)
     return teacher_model

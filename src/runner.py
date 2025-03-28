@@ -22,6 +22,9 @@ class ExperimentRunner:
         torch.manual_seed(42)
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         print("Running on", self.device)
+        if self.device == "cuda":
+            torch.backends.cudnn.benchmark = True
+            torch.backends.cudnn.enabled = True
         
         self.config = utils.read_config(config_path)
         self.config_path = config_path

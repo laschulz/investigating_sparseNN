@@ -1,4 +1,7 @@
+import torch
 import torch.nn as nn
+import torch.nn.functional as F
+
 import utils
 
 # TODO: update when using GeLU
@@ -35,8 +38,6 @@ class BaseCNN(nn.Module):
             x = act(layer(x))
         return x
 
-# Subclasses inheriting from BaseCNN
-
 class NonOverlappingCNN(BaseCNN):
     """CNN with non-overlapping strides."""
     def __init__(self, act1, act2, act3, config_path=None):
@@ -46,8 +47,6 @@ class NonOverlappingCNN(BaseCNN):
             (1, 1, 2, 2)
         ]
         super().__init__(layers_config, [act1, act2, act3], config_path)
-
-        #TODO: different weights per kernel
 
 class OverlappingCNN(BaseCNN):
     """CNN with overlapping strides."""
@@ -68,6 +67,49 @@ class OverlappingCNN2(BaseCNN):
             (1, 1, 2, 1)
         ]
         super().__init__(layers_config, [act1, act2, act3], config_path)
+
+##########################################################################
+
+class AlternatingCNN(nn.Module):
+    """CNN with alternating weights for each chunk of input and configurable activations."""
+    def __init__(self, activations):
+        self.activations = activations
+        super().__init__()
+        self.layer1_weights = nn.ParameterList([
+            nn.Parameter(torch.tensor([[2.59, -2.83, 0.87]])),
+            nn.Parameter(torch.tensor([[-1.22, 0.45, 0.88]])),
+            nn.Parameter(torch.tensor([[1.45, -0.92, 0.66]]))
+        ])
+        self.layer2_weights = nn.ParameterList([
+            nn.Parameter(torch.tensor([[-1.38, 1.29]])),
+            nn.Parameter(torch.tensor([[0.35, -0.73]]))
+        ])
+        self.layer3_weights = nn.ParameterList([
+            nn.Parameter(torch.tensor([[0.86, -0.84]])),
+        ])
+
+    def forward(self, x):
+        # Layer 1: input (batch, 12) ➝ 4 chunks of 3 ➝ (batch, 4)
+        chunks1 = x.unfold(1, size=3, step=3)  # (batch, 4, 3)
+        out1 = []
+        for i in range(chunks1.size(1)):
+            weight = self.layer1_weights[i % 3]
+            out1.append(self.activations[0](F.linear(chunks1[:, i], weight)))  # (batch, 1)
+        x1 = torch.cat(out1, dim=1)
+
+        # Layer 2: input (batch, 4) ➝ 2 chunks of 2 ➝ (batch, 2)
+        chunks2 = x1.unfold(1, size=2, step=2)
+        out2 = []
+        for i in range(chunks2.size(1)):
+            weight = self.layer2_weights[i % 2]
+            out2.append(self.activations[1](F.linear(chunks2[:, i], weight)))
+        x2 = torch.cat(out2, dim=1)
+
+        # Layer 3: input (batch, 2) ➝ 1 chunk of 2 ➝ (batch, 1)
+        weight = self.layer3_weights[0]  # or still alternate if more chunks
+        x3 = self.activations[2](F.linear(x2, weight))
+
+        return x3
 
 ##########################################################################
 

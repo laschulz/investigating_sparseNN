@@ -14,8 +14,8 @@ hostname                     # Print the hostname of the compute node
 mkdir -p /om2/user/laschulz/investigating_sparseNN/logs
 
 # Activate the conda environment
-source /om2/user/laschulz/anaconda/etc/profile.d/conda.sh
-conda activate sparse2
+source /om2/user/laschulz/anaconda3/etc/profile.d/conda.sh
+conda activate sparse_new
 echo $CONDA_PREFIX
 
 cd /om2/user/laschulz/investigating_sparseNN || exit 1

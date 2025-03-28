@@ -2,6 +2,7 @@ from torch.utils.data import DataLoader, TensorDataset
 from tqdm import tqdm
 import torch
 import sys
+import time
 
 import utils
 import models
@@ -17,17 +18,25 @@ def train_model(model, X_train, y_train, optimizer, loss_fn, l1_lambda=0, batch_
 
     # Create a DataLoader to handle batching and shuffling
     dataset = TensorDataset(X_train, y_train)
-    if device == "cuda":
-        dataloader = DataLoader(
-                dataset, 
-                batch_size=batch_size, 
-                shuffle=True,
-                num_workers=8,
-                persistent_workers=True,
-                pin_memory=True
-            )
-    else:
-        dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
+    dataloader = DataLoader(
+        dataset, 
+        batch_size=batch_size, 
+        shuffle=True,
+        num_workers=8,
+        persistent_workers=True,
+        pin_memory=True
+    )
+    # if device == "cuda":
+    #     dataloader = DataLoader(
+    #             dataset, 
+    #             batch_size=batch_size, 
+    #             shuffle=True,
+    #             num_workers=8,
+    #             persistent_workers=True,
+    #             pin_memory=True
+    #         )
+    # else:
+    #     dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
 
     print("Starting training...")
     disable_tqdm = not sys.stdout.isatty()
