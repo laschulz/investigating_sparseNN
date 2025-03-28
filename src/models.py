@@ -72,7 +72,7 @@ class OverlappingCNN2(BaseCNN):
 
 class MultiWeightCNN(nn.Module):
     """CNN with alternating weights for each chunk of input and configurable activations."""
-    def __init__(self, act1, act2, act3):
+    def __init__(self, act1, act2, act3, config_path=None):
         self.activations = [act1, act2, act3]
         super().__init__()
         self.layer1_weights = nn.ParameterList([
@@ -109,7 +109,7 @@ class MultiWeightCNN(nn.Module):
         weight = self.layer3_weights[0]  # or still alternate if more chunks
         x3 = self.activations[2](F.linear(x2, weight))
 
-        return x3
+        return x3.unsqueeze(1)  # (batch, 1, 1)
 
 ##########################################################################
 

@@ -116,8 +116,8 @@ if __name__ == "__main__":
     parser.add_argument("--student_model", type=str, help="Student model name")
     parser.add_argument("--teacher_type", type=str, choices=["nonoverlappingCNN", "multiWeightCNN", "overlappingCNN", "fcnn", "fcnn_decreasing", "nonoverlappingViT"],
                         help="Student model type: nonoverlappingCNN, multiWeightCNN, overlappingCNN, fcnn, fcnn_decreasing, nonoverlappingViT")
-    parser.add_argument("--student_type", type=str, choices=["nonoverlappingCNN", "multiWeightCNN", "overlappingCNN", "fcnn", "fcnn_decreasing", "nonoverlappingViT"],
-                        help="Student model type: nonoverlappingCNN, multiWeightCNN, overlappingCNN, fcnn, fcnn_decreasing, nonoverlappingViT")
+    parser.add_argument("--student_type", type=str, choices=["nonoverlappingCNN", "overlappingCNN", "fcnn", "fcnn_decreasing", "nonoverlappingViT"],
+                        help="Student model type: nonoverlappingCNN, overlappingCNN, fcnn, fcnn_decreasing, nonoverlappingViT")
     parser.add_argument("--config_path", type=str, help="Path to configuration file")
 
     args = parser.parse_args()
