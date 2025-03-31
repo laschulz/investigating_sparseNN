@@ -1,41 +1,40 @@
 import json
 import torch
-import re
 
 import models
 import transformer_model
 
-def create_model(model_type):
+def create_model(model_type, config_path=None):
     model_dict = {
-        "nonoverlapping_CNN_all_tanh": lambda: models.NonOverlappingCNN(torch.tanh, torch.tanh, torch.tanh),
-        "nonoverlapping_CNN_all_relu": lambda: models.NonOverlappingCNN(torch.relu, torch.relu, torch.relu),
-        "nonoverlapping_CNN_all_gelu": lambda: models.NonOverlappingCNN(torch.nn.functional.gelu, torch.nn.functional.gelu, torch.nn.functional.gelu),
-        "nonoverlapping_CNN_all_sigmoid": lambda: models.NonOverlappingCNN(torch.sigmoid, torch.sigmoid, torch.sigmoid),
+        "nonoverlapping_CNN_all_tanh": lambda: models.NonOverlappingCNN(torch.tanh, torch.tanh, torch.tanh, config_path),
+        "nonoverlapping_CNN_all_relu": lambda: models.NonOverlappingCNN(torch.relu, torch.relu, torch.relu, config_path),
+        "nonoverlapping_CNN_all_gelu": lambda: models.NonOverlappingCNN(torch.nn.functional.gelu, torch.nn.functional.gelu, torch.nn.functional.gelu, config_path),
+        "nonoverlapping_CNN_all_sigmoid": lambda: models.NonOverlappingCNN(torch.sigmoid, torch.sigmoid, torch.sigmoid, config_path),
 
-        "multiWeight_CNN_all_tanh": lambda: models.MultiWeightCNN(torch.tanh, torch.tanh, torch.tanh),
-        "multiWeight_CNN_all_relu": lambda: models.MultiWeightCNN(torch.relu, torch.relu, torch.relu),
-        "multiWeight_CNN_all_gelu": lambda: models.MultiWeightCNN(torch.nn.functional.gelu, torch.nn.functional.gelu, torch.nn.functional.gelu),
-        "multiWeight_CNN_all_sigmoid": lambda: models.MultiWeightCNN(torch.sigmoid, torch.sigmoid, torch.sigmoid),
+        "multiWeight_CNN_all_tanh": lambda: models.MultiWeightCNN(torch.tanh, torch.tanh, torch.tanh, config_path),
+        "multiWeight_CNN_all_relu": lambda: models.MultiWeightCNN(torch.relu, torch.relu, torch.relu, config_path),
+        "multiWeight_CNN_all_gelu": lambda: models.MultiWeightCNN(torch.nn.functional.gelu, torch.nn.functional.gelu, torch.nn.functional.gelu, config_path),
+        "multiWeight_CNN_all_sigmoid": lambda: models.MultiWeightCNN(torch.sigmoid, torch.sigmoid, torch.sigmoid, config_path),
         
-        "overlapping_CNN_all_tanh": lambda: models.OverlappingCNN(torch.tanh, torch.tanh, torch.tanh),
-        "overlapping_CNN_all_relu": lambda: models.OverlappingCNN(torch.relu, torch.relu, torch.relu),
-        "overlapping_CNN_all_gelu": lambda: models.OverlappingCNN(torch.nn.functional.gelu, torch.nn.functional.gelu, torch.nn.functional.gelu),
-        "overlapping_CNN_all_sigmoid": lambda: models.OverlappingCNN(torch.sigmoid, torch.sigmoid, torch.sigmoid),
+        "overlapping_CNN_all_tanh": lambda: models.OverlappingCNN(torch.tanh, torch.tanh, torch.tanh, config_path),
+        "overlapping_CNN_all_relu": lambda: models.OverlappingCNN(torch.relu, torch.relu, torch.relu, config_path),
+        "overlapping_CNN_all_gelu": lambda: models.OverlappingCNN(torch.nn.functional.gelu, torch.nn.functional.gelu, torch.nn.functional.gelu, config_path),
+        "overlapping_CNN_all_sigmoid": lambda: models.OverlappingCNN(torch.sigmoid, torch.sigmoid, torch.sigmoid, config_path),
         
-        "fcnn_all_tanh": lambda: models.FCNN(torch.tanh, torch.tanh, torch.tanh),
-        "fcnn_all_relu": lambda: models.FCNN(torch.relu, torch.relu, torch.relu),
-        "fcnn_all_gelu": lambda: models.FCNN(torch.nn.functional.gelu, torch.nn.functional.gelu, torch.nn.functional.gelu),
-        "fcnn_all_sigmoid": lambda: models.FCNN(torch.sigmoid, torch.sigmoid, torch.sigmoid),
+        "fcnn_all_tanh": lambda: models.FCNN(torch.tanh, torch.tanh, torch.tanh, config_path),
+        "fcnn_all_relu": lambda: models.FCNN(torch.relu, torch.relu, torch.relu, config_path),
+        "fcnn_all_gelu": lambda: models.FCNN(torch.nn.functional.gelu, torch.nn.functional.gelu, torch.nn.functional.gelu, config_path),
+        "fcnn_all_sigmoid": lambda: models.FCNN(torch.sigmoid, torch.sigmoid, torch.sigmoid, config_path),
         
-        "fcnn_decreasing_all_tanh": lambda: models.FCNN_decreasing(torch.tanh, torch.tanh, torch.tanh),
-        "fcnn_decreasing_all_relu": lambda: models.FCNN_decreasing(torch.relu, torch.relu, torch.relu),
-        "fcnn_decreasing_all_gelu": lambda: models.FCNN_decreasing(torch.nn.functional.gelu, torch.nn.functional.gelu, torch.nn.functional.gelu),
-        "fcnn_decreasing_all_sigmoid": lambda: models.FCNN_decreasing(torch.sigmoid, torch.sigmoid, torch.sigmoid),
+        "fcnn_decreasing_all_tanh": lambda: models.FCNN_decreasing(torch.tanh, torch.tanh, torch.tanh, config_path),
+        "fcnn_decreasing_all_relu": lambda: models.FCNN_decreasing(torch.relu, torch.relu, torch.relu, config_path),
+        "fcnn_decreasing_all_gelu": lambda: models.FCNN_decreasing(torch.nn.functional.gelu, torch.nn.functional.gelu, torch.nn.functional.gelu, config_path),
+        "fcnn_decreasing_all_sigmoid": lambda: models.FCNN_decreasing(torch.sigmoid, torch.sigmoid, torch.sigmoid, config_path),
         
-        "nonoverlapping_transformer_tanh": lambda: transformer_model.NonOverlappingViT(torch.tanh),
-        "nonoverlapping_transformer_relu": lambda: transformer_model.NonOverlappingViT(torch.relu),
-        "nonoverlapping_transformer_gelu": lambda: transformer_model.NonOverlappingViT(torch.nn.functional.gelu),
-        "nonoverlapping_transformer_sigmoid": lambda: transformer_model.NonOverlappingViT(torch.sigmoid)
+        "nonoverlapping_transformer_tanh": lambda: transformer_model.NonOverlappingViT(torch.tanh, config_path),
+        "nonoverlapping_transformer_relu": lambda: transformer_model.NonOverlappingViT(torch.relu, config_path),
+        "nonoverlapping_transformer_gelu": lambda: transformer_model.NonOverlappingViT(torch.nn.functional.gelu, config_path),
+        "nonoverlapping_transformer_sigmoid": lambda: transformer_model.NonOverlappingViT(torch.sigmoid, config_path)
     }
     return model_dict[model_type]()
 

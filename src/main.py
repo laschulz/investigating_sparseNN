@@ -78,7 +78,7 @@ def run_experiments(teacher_type, student_types, config_path=None):
             config_path=config_path
         )
 
-def run_single_experiment(teacher_model, student_model, teacher_name, student_name, lr, l1_norm, l2_norm, config_path=None):
+def run_single_experiment(teacher_model, student_model, teacher_name, student_name, lr, l1_norm, l2_norm, config_path):
     """Runs an experiment, trains the model, and saves results."""
     
     teacher_model = teacher_model
@@ -126,8 +126,8 @@ if __name__ == "__main__":
     if mode == "single":
         teacher_name = args.teacher_model
         student_name = args.student_model
-        teacher_model = utils.create_model(teacher_name)
-        student_model = utils.create_model(student_name)
+        teacher_model = utils.create_model(teacher_name, args.config_path)
+        student_model = utils.create_model(student_name, args.config_path)
         config = utils.read_config(args.config_path)
         lr = config["lr"][0]
         l1_norm = config["l1_norm"][0]
@@ -139,7 +139,8 @@ if __name__ == "__main__":
                               student_name=student_name, 
                               lr=lr, 
                               l1_norm=l1_norm, 
-                              l2_norm=l2_norm
+                              l2_norm=l2_norm,
+                              config_path=args.config_path
                               )
 
     elif mode == "multiple":
