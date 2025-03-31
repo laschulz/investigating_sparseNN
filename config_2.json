@@ -9,6 +9,6 @@
     "loss_func": "MSE",
     "init": true, 
     "clipping": 0,
-    "same_act": false,
-    "save_path": "/Users/laura/Documents/MIT/Semesterproject/investigating_sparseNN/experiment_output"
+    "same_act": true,
+    "save_path": "./experiment_output"
 }

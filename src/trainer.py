@@ -2,41 +2,23 @@ from torch.utils.data import DataLoader, TensorDataset
 from tqdm import tqdm
 import torch
 import sys
-import time
+import os
 
 import utils
 import models
 import transformer_model
 
-def train_model(model, X_train, y_train, optimizer, loss_fn, l1_lambda=0, batch_size=32, clipping = None, device="cpu", config_path=None):
+def train_model(model, X_train, y_train, optimizer, loss_fn, l1_lambda=0, batch_size=32, clipping = None, device=None, config_path=None):
     config = utils.read_config(config_path)
     best_loss = float('inf')
     patience_counter = 0
 
     print(f"Using device: {device}")    
-    X_train, y_train = X_train.cpu(), y_train.cpu()
+    print("CUDA_VISIBLE_DEVICES:", os.environ.get("CUDA_VISIBLE_DEVICES"))
 
     # Create a DataLoader to handle batching and shuffling
     dataset = TensorDataset(X_train, y_train)
-    dataloader = DataLoader(
-        dataset, 
-        batch_size=batch_size, 
-        shuffle=True,
-        num_workers=8,
-        persistent_workers=True,
-        pin_memory=True
-    )
-    # if device == "cuda":
-    #     dataloader = DataLoader(
-    #             dataset, 
-    #             batch_size=batch_size, 
-    #             shuffle=True,
-    #             num_workers=8,
-    #             persistent_workers=True,
-    #             pin_memory=True
-    #         )
-    # else:
-    #     dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
+    dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
 
     print("Starting training...")
     disable_tqdm = not sys.stdout.isatty()
@@ -47,17 +29,18 @@ def train_model(model, X_train, y_train, optimizer, loss_fn, l1_lambda=0, batch_
             
             for batch_X, batch_y in dataloader:
                 batch_X, batch_y = batch_X.to(device), batch_y.to(device)
-                
+
                 optimizer.zero_grad()
                 y_pred = model(batch_X)
                 if isinstance(model, (models.FCNN, models.FCNN_decreasing, transformer_model.NonOverlappingViT)):
                     batch_y = batch_y.view(batch_y.size(0), -1) 
-                loss = loss_fn(y_pred, batch_y)
+                loss = loss_fn(y_pred, batch_y).to(device)
 
                 # Apply L1 regularization if l1_lambda > 0
                 if l1_lambda > 0:
-                    l1_norm = sum(p.abs().sum() for p in model.parameters())
-                    loss += l1_norm * l1_lambda
+                    with torch.no_grad():
+                        l1_norm = sum(p.abs().sum().detach() for p in model.parameters()).to(device)
+                        loss += l1_norm * l1_lambda
 
                 loss.backward()
                 optimizer.step()

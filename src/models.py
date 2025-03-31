@@ -25,10 +25,12 @@ class BaseCNN(nn.Module):
     def initialize_weights(self):
         """Applies weight initialization based on activation functions."""
         for layer, act in zip(self.layers, self.activations):
-            if isinstance(act, (nn.ReLU, nn.LeakyReLU)):
+            if act == torch.relu:
                 nn.init.kaiming_normal_(layer.weight, mode='fan_out', nonlinearity='relu')
-            elif isinstance(act, (nn.Sigmoid, nn.Tanh)):
-                nn.init.xavier_uniform_(layer.weight)
+            elif act == torch.sigmoid:
+                nn.init.xavier_uniform_(layer.weight, gain=nn.init.calculate_gain('sigmoid'))
+            elif act == torch.tanh:
+                nn.init.xavier_uniform_(layer.weight, gain=nn.init.calculate_gain('tanh'))
             else:
                 nn.init.kaiming_normal_(layer.weight)
 
@@ -109,7 +111,7 @@ class MultiWeightCNN(nn.Module):
         weight = self.layer3_weights[0]  # or still alternate if more chunks
         x3 = self.activations[2](F.linear(x2, weight))
 
-        return x3.unsqueeze(1)  # (batch, 1, 1)
+        return x3.unsqueeze(1)
 
 ##########################################################################
 
@@ -130,14 +132,18 @@ class BaseFCNN(nn.Module):
     def initialize_weights(self):
         """Initialize weights based on activation functions."""
         for layer, act in zip(self.layers, self.activations):
-            if isinstance(act, (nn.ReLU)):
+            if act == torch.relu:
                 nn.init.kaiming_normal_(layer.weight, mode='fan_out', nonlinearity='relu')
-                layer.weight.data = layer.weight.data * 0.02
+                layer.weight.data = layer.weight.data * 0.2
 
                 # Alternative small weights
                 # nn.init.normal_(layer.weight, mean=0, std=0.01)
-            elif isinstance(act, (nn.Sigmoid, nn.Tanh)):
-                nn.init.xavier_uniform_(layer.weight, gain=1)
+            elif act == torch.sigmoid:
+                nn.init.xavier_uniform_(layer.weight, gain=nn.init.calculate_gain('sigmoid'))
+                layer.weight.data = layer.weight.data * 0.2
+            elif act == torch.tanh:
+                nn.init.xavier_uniform_(layer.weight, gain=nn.init.calculate_gain('tanh'))
+                layer.weight.data = layer.weight.data * 0.2
             else:
                 nn.init.kaiming_normal_(layer.weight)
 

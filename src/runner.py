@@ -22,18 +22,16 @@ class ExperimentRunner:
         torch.manual_seed(42)
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         print("Running on", self.device)
-        if self.device == "cuda":
-            torch.backends.cudnn.benchmark = True
-            torch.backends.cudnn.enabled = True
         
         self.config = utils.read_config(config_path)
         self.config_path = config_path
 
         # Initialize the teacher model with fixed ReLU activations
-        self.teacher_model = teacher_model
+        self.teacher_model = teacher_model.to(self.device)
         self.teacher_model_name = teacher_name
 
         self.teacher_model = utils.init_teacher(self.teacher_model, self.teacher_model_name)
+        self.teacher_model.to(self.device)
 
         # print weights of model
         for name, param in self.teacher_model.named_parameters():
@@ -55,10 +53,10 @@ class ExperimentRunner:
     def run(self):
         """Start the experiment: Generate dataset and train the student model."""
         # Generate dataset using the teacher model
-        X_generated = torch.randn(self.config["dataset_size"], 12)
+        X_generated = torch.randn(self.config["dataset_size"], 12, device=self.device)
         with torch.no_grad():
-            y_generated = self.teacher_model(X_generated).detach().cpu()
-        X_generated = X_generated.cpu()
+            y_generated = self.teacher_model(X_generated).detach() #.cpu()
+        X_generated = X_generated #.cpu()
 
         self.batch_size = self.config["batch_size"]
         self.clipping = self.config["clipping"]
