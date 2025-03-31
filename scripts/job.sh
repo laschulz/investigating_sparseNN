@@ -5,7 +5,7 @@
 #SBATCH --cpus-per-task=8
 #SBATCH --output=/om2/user/laschulz/investigating_sparseNN/logs/output_fcnn_%A_%a.log
 #SBATCH --error=/om2/user/laschulz/investigating_sparseNN/logs/error_fcnn_%A_%a.log
-#SBATCH --job-name alternating
+#SBATCH --job-name AllAct_Weight0.1-1e-5
 
 hostname                     # Print the hostname of the compute node
 
@@ -22,6 +22,6 @@ cd /om2/user/laschulz/investigating_sparseNN || exit 1
 
 python src/main.py \
     --mode multiple \
-    --teacher_type multiWeightCNN \
-    --student_type overlappingCNN \
-    --config_path config_2.json
+    --teacher_type nonoverlappingCNN \
+    --student_type fcnn_decreasing \
+    --config_path config_1.json

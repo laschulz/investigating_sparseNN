@@ -8,7 +8,7 @@ import utils
 import models
 import transformer_model
 
-def train_model(model, X_train, y_train, optimizer, loss_fn, l1_lambda=0, batch_size=32, clipping = None, device=None, config_path=None):
+def train_model(model, X_train, y_train, optimizer, loss_fn, l1_lambda, l2_lambda, batch_size=32, clipping = None, device=None, config_path=None):
     config = utils.read_config(config_path)
     best_loss = float('inf')
     patience_counter = 0
@@ -41,6 +41,10 @@ def train_model(model, X_train, y_train, optimizer, loss_fn, l1_lambda=0, batch_
                     with torch.no_grad():
                         l1_norm = sum(p.abs().sum().detach() for p in model.parameters()).to(device)
                         loss += l1_norm * l1_lambda
+                elif l2_lambda > 0:
+                    with torch.no_grad():
+                        l2_norm = sum(p.pow(2).sum().detach() for p in model.parameters()).to(device)
+                        loss += l2_norm * l2_lambda
 
                 loss.backward()
                 optimizer.step()

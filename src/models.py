@@ -19,18 +19,22 @@ class BaseCNN(nn.Module):
         self.activations = activations
         self.config = utils.read_config(config_path)
 
-        if self.config.get("init"):
-            self.initialize_weights()
+        init = self.config.get("init")
+        if init:
+            self.initialize_weights(init)
 
-    def initialize_weights(self):
+    def initialize_weights(self, init):
         """Applies weight initialization based on activation functions."""
         for layer, act in zip(self.layers, self.activations):
             if act == torch.relu:
                 nn.init.kaiming_normal_(layer.weight, mode='fan_out', nonlinearity='relu')
+                layer.weight.data = layer.weight.data * init
             elif act == torch.sigmoid:
                 nn.init.xavier_uniform_(layer.weight, gain=nn.init.calculate_gain('sigmoid'))
+                layer.weight.data = layer.weight.data * init
             elif act == torch.tanh:
                 nn.init.xavier_uniform_(layer.weight, gain=nn.init.calculate_gain('tanh'))
+                layer.weight.data = layer.weight.data * init
             else:
                 nn.init.kaiming_normal_(layer.weight)
 
@@ -126,24 +130,25 @@ class BaseFCNN(nn.Module):
         self.activations = activations
         self.config = utils.read_config(config_path)
 
-        if self.config.get("init"):
-            self.initialize_weights()
+        init = self.config.get("init")
+        if init:
+            self.initialize_weights(init)
 
-    def initialize_weights(self):
+    def initialize_weights(self, init):
         """Initialize weights based on activation functions."""
         for layer, act in zip(self.layers, self.activations):
             if act == torch.relu:
                 nn.init.kaiming_normal_(layer.weight, mode='fan_out', nonlinearity='relu')
-                layer.weight.data = layer.weight.data * 0.2
+                layer.weight.data = layer.weight.data * init
 
                 # Alternative small weights
                 # nn.init.normal_(layer.weight, mean=0, std=0.01)
             elif act == torch.sigmoid:
                 nn.init.xavier_uniform_(layer.weight, gain=nn.init.calculate_gain('sigmoid'))
-                layer.weight.data = layer.weight.data * 0.2
+                layer.weight.data = layer.weight.data * init
             elif act == torch.tanh:
                 nn.init.xavier_uniform_(layer.weight, gain=nn.init.calculate_gain('tanh'))
-                layer.weight.data = layer.weight.data * 0.2
+                layer.weight.data = layer.weight.data * init
             else:
                 nn.init.kaiming_normal_(layer.weight)
 

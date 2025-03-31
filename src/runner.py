@@ -45,7 +45,7 @@ class ExperimentRunner:
         self.l1_norm = l1_norm
         self.l2_norm = l2_norm
         self.lr = lr
-        self.optimizer = optim.SGD(self.student_model.parameters(), lr=self.lr, momentum=momentum, weight_decay=self.l2_norm)
+        self.optimizer = optim.SGD(self.student_model.parameters(), lr=self.lr, momentum=momentum)
         self.loss_fn = nn.MSELoss()
         # set loss to cosine similarity loss
         # self.loss_fn = nn.CosineEmbeddingLoss()
@@ -68,6 +68,7 @@ class ExperimentRunner:
             y_train=y_generated,
             optimizer=self.optimizer,
             l1_lambda=self.l1_norm,
+            l2_lambda=self.l2_norm,
             loss_fn=self.loss_fn,
             batch_size=self.batch_size,
             clipping=self.clipping,
@@ -98,7 +99,8 @@ class ExperimentRunner:
         """Save the trained model's weights and log experiment details in a text file."""
         #Path
         date = datetime.now().strftime("%d%m%Y")
-        save_dir = os.path.join(self.config.get("save_path", "./experiment_output"), f"experiments_{date}")
+        name = self.config["name"]
+        save_dir = os.path.join(self.config.get("save_path", "./experiment_output"), f"experiments_{date}_{name}")
         os.makedirs(save_dir, exist_ok=True)
         model_save_path = os.path.join(save_dir, f"{self.teacher_model_name}__{self.student_model_name}.pth")
         text_save_path = os.path.join(save_dir, f"experiment__{date}.txt")
