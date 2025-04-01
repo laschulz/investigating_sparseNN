@@ -3,7 +3,6 @@ import torch
 import torch.backends
 import torch.nn as nn
 import torch.optim as optim
-import numpy as np
 from datetime import datetime
 from torch.utils.data import DataLoader, TensorDataset
 
@@ -18,8 +17,6 @@ class ExperimentRunner:
 
     # could change this that we have th emodel directly
     def __init__(self, teacher_model, student_model, teacher_name, student_name, lr, l1_norm, l2_norm, momentum=0.9, config_path=None):
-        np.random.seed(42)
-        torch.manual_seed(42)
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         print("Running on", self.device)
         
