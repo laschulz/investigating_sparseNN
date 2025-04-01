@@ -13,9 +13,6 @@ def train_model(model, X_train, y_train, optimizer, loss_fn, l1_lambda, l2_lambd
     best_loss = float('inf')
     patience_counter = 0
 
-    print(f"Using device: {device}")    
-    print("CUDA_VISIBLE_DEVICES:", os.environ.get("CUDA_VISIBLE_DEVICES"))
-
     # Create a DataLoader to handle batching and shuffling
     dataset = TensorDataset(X_train, y_train)
     dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)

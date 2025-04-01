@@ -5,7 +5,7 @@
 #SBATCH --cpus-per-task=8
 #SBATCH --output=/om2/user/laschulz/investigating_sparseNN/logs/output_fcnn_%A_%a.log
 #SBATCH --error=/om2/user/laschulz/investigating_sparseNN/logs/error_fcnn_%A_%a.log
-#SBATCH --job-name AllAct_Weight0.1-1e-5
+#SBATCH --job-name AllAct_Weight1-1e-5
 
 hostname                     # Print the hostname of the compute node
 

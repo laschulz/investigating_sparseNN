@@ -83,8 +83,8 @@ class MultiWeightCNN(nn.Module):
         super().__init__()
         self.layer1_weights = nn.ParameterList([
             nn.Parameter(torch.tensor([[2.59, -2.83, 0.87]])),
-            nn.Parameter(torch.tensor([[-1.22, 0.45, 0.88]])),
-            nn.Parameter(torch.tensor([[1.45, -0.92, 0.66]]))
+            nn.Parameter(torch.tensor([[-1.22, 0.45, 0.88]]))
+            #nn.Parameter(torch.tensor([[1.45, -0.92, 0.66]]))
         ])
         self.layer2_weights = nn.ParameterList([
             nn.Parameter(torch.tensor([[-1.38, 1.29]])),
@@ -99,7 +99,7 @@ class MultiWeightCNN(nn.Module):
         chunks1 = x.unfold(1, size=3, step=3)  # (batch, 4, 3)
         out1 = []
         for i in range(chunks1.size(1)):
-            weight = self.layer1_weights[i % 3]
+            weight = self.layer1_weights[i % 2]
             out1.append(self.activations[0](F.linear(chunks1[:, i], weight)))  # (batch, 1)
         x1 = torch.cat(out1, dim=1)
 

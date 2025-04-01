@@ -2,14 +2,14 @@
     "batch_size": 16,
     "patience": 200,
     "dataset_size": 5120,
-    "num_epochs": 50000,
-    "lr": [0.01],
-    "l1_norm": [5e-6],
+    "num_epochs": 10000,
+    "lr": [0.005],
+    "l1_norm": [1e-5],
     "l2_norm": [0],
     "loss_func": "MSE",
-    "init": 0.1, 
+    "init": 0.2, 
     "clipping": 0,
-    "same_act": true,
+    "same_act": false,
     "save_path": "./experiment_output",
-    "name": "multiWeightTeacher"
+    "name": "sameSame_init_all0.2"
 }

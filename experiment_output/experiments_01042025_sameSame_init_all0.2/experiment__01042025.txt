@@ -1,0 +1,118 @@
+Experiment Summary:
+================================================================================
+
+Teacher Model Parameters:
+layers.0.weight: [[[ 2.59 -2.83  0.87]]]
+layers.1.weight: [[[-1.38  1.29]]]
+layers.2.weight: [[[ 0.86 -0.84]]]
+
+================================================================================
+
+nonoverlappingCNN_relu -> nonoverlappingCNN_relu
+
+Student Model Parameters:
+layers.0.weight: [[[ 0.0939263  -0.07549709  0.02071461]]]
+layers.1.weight: [[[-0.06878381 -0.1624556 ]]]
+layers.2.weight: [[[0.07699112 0.07826947]]]
+
+Final Loss: 5.0602
+Distance Metric: 6.8753
+L1 norm: 1e-05
+L2 norm: 0
+Batch size: 16
+Clipping: 0
+Learning rate: 0.005
+data size: 5120
+
+================================================================================
+
+nonoverlappingCNN_relu -> nonoverlappingCNN_relu
+
+Student Model Parameters:
+layers.0.weight: [[[-0.5789038   0.2574447   0.06419778]]]
+layers.1.weight: [[[ 0.6491839 -0.5657193]]]
+layers.2.weight: [[[-0.6071586 -0.6941342]]]
+
+Final Loss: 5.0603
+Distance Metric: 5.9489
+L1 norm: 1e-05
+L2 norm: 0
+Batch size: 16
+Clipping: 0
+Learning rate: 0.005
+data size: 5120
+
+================================================================================
+
+nonoverlappingCNN_relu -> nonoverlappingCNN_tanh
+
+Student Model Parameters:
+layers.0.weight: [[[-0.29109988  0.32310465 -0.14360896]]]
+layers.1.weight: [[[-0.23438063  0.49563587]]]
+layers.2.weight: [[[-5.991325   1.4249088]]]
+
+Final Loss: 3.8130
+Distance Metric: 10.1277
+L1 norm: 1e-05
+L2 norm: 0
+Batch size: 16
+Clipping: 0
+Learning rate: 0.005
+data size: 5120
+
+================================================================================
+
+nonoverlappingCNN_relu -> nonoverlappingCNN_sigmoid
+
+Student Model Parameters:
+layers.0.weight: [[[ 0.3468664  -0.57861334  0.19207492]]]
+layers.1.weight: [[[-27.17502   23.322147]]]
+layers.2.weight: [[[ 9.82797   -6.8557906]]]
+
+Final Loss: 3.6562
+Distance Metric: 48.0528
+L1 norm: 1e-05
+L2 norm: 0
+Batch size: 16
+Clipping: 0
+Learning rate: 0.005
+data size: 5120
+
+================================================================================
+
+nonoverlappingCNN_tanh -> nonoverlappingCNN_relu
+
+Student Model Parameters:
+layers.0.weight: [[[ 1.343223   -1.5293976   0.59128743]]]
+layers.1.weight: [[[-1.9955786   0.87910485]]]
+layers.2.weight: [[[ 0.30577704 -3.4841287 ]]]
+
+Final Loss: 0.2923
+Distance Metric: 5.2648
+L1 norm: 1e-05
+L2 norm: 0
+Batch size: 16
+Clipping: 0
+Learning rate: 0.005
+data size: 5120
+
+================================================================================
+
+nonoverlappingCNN_tanh -> nonoverlappingCNN_tanh
+
+Student Model Parameters:
+layers.0.weight: [[[-2.5897362  2.8297124 -0.8699119]]]
+layers.1.weight: [[[ 1.3799088 -1.2899079]]]
+layers.2.weight: [[[ 0.8600068  -0.84000784]]]
+
+Final Loss: 0.0001
+Distance Metric: 0.0005
+L1 norm: 1e-05
+L2 norm: 0
+Batch size: 16
+Clipping: 0
+Learning rate: 0.005
+data size: 5120
+
+================================================================================
+
