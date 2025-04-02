@@ -23,5 +23,5 @@ cd /om2/user/laschulz/investigating_sparseNN || exit 1
 python src/main.py \
     --mode multiple \
     --teacher_type multiWeightCNN \
-    --student_type overlappingCNN \
-    --config_path config_2.json
+    --student_type fcnn_decreasing \
+    --config_path config_3.json

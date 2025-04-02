@@ -11,7 +11,6 @@ hostname                     # Print the hostname of the compute node
 
 # Create the logs directory if it doesn't exist
 mkdir -p /om2/user/laschulz/investigating_sparseNN/logs
-echo "Logs directory created or already exists."
 
 # Activate the conda environment
 source /om2/user/laschulz/anaconda3/etc/profile.d/conda.sh

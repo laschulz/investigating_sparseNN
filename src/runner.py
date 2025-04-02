@@ -16,12 +16,13 @@ class ExperimentRunner:
     """
 
     # could change this that we have th emodel directly
-    def __init__(self, teacher_model, student_model, teacher_name, student_name, lr, l1_norm, l2_norm, momentum=0.9, config_path=None):
+    def __init__(self, teacher_model, student_model, teacher_name, student_name, lr, l1_norm, l2_norm, momentum=0.9, config_path=None, seed=42):
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         print("Running on", self.device)
         
         self.config = utils.read_config(config_path)
         self.config_path = config_path
+        self.seed = seed
 
         # Initialize the teacher model with fixed ReLU activations
         self.teacher_model = teacher_model.to(self.device)
@@ -97,7 +98,7 @@ class ExperimentRunner:
         #Path
         date = datetime.now().strftime("%d%m%Y")
         name = self.config["name"]
-        save_dir = os.path.join(self.config.get("save_path", "./experiment_output"), f"experiments_{date}_{name}")
+        save_dir = os.path.join(self.config.get("save_path", "./experiment_output"), f"experiments_{date}_{name}_{self.seed}")
         os.makedirs(save_dir, exist_ok=True)
         model_save_path = os.path.join(save_dir, f"{self.teacher_model_name}__{self.student_model_name}.pth")
         text_save_path = os.path.join(save_dir, f"experiment__{date}.txt")
@@ -148,6 +149,8 @@ class ExperimentRunner:
             f.write(f"Clipping: {self.clipping}\n")
             f.write(f"Learning rate: {self.lr}\n")
             f.write(f"data size: {self.config['dataset_size']}\n")
+            f.write(f"init: {self.config['init']}\n")
+            f.write(f"seed: {self.seed}\n")
             f.write("\n" + "=" * 80 + "\n\n")
 
         print(f"Experiment details saved to {text_save_path}")

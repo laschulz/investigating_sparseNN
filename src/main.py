@@ -97,7 +97,8 @@ def run_single_experiment(teacher_model, student_model, teacher_name, student_na
         lr=lr,
         l1_norm=l1_norm,
         l2_norm=l2_norm,
-        config_path=config_path
+        config_path=config_path,
+        seed=seed
     )
 
     cmd = f"python3 {' '.join(sys.argv)}"
