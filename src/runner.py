@@ -43,7 +43,7 @@ class ExperimentRunner:
         self.l1_norm = l1_norm
         self.l2_norm = l2_norm
         self.lr = lr
-        self.optimizer = optim.SGD(self.student_model.parameters(), lr=self.lr, momentum=momentum)
+        self.optimizer = optim.SGD(self.student_model.parameters(), lr=self.lr, momentum=momentum, weight_decay=l2_norm)
         self.loss_fn = nn.MSELoss()
         # set loss to cosine similarity loss
         # self.loss_fn = nn.CosineEmbeddingLoss()

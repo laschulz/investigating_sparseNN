@@ -21,6 +21,7 @@ class BaseCNN(nn.Module):
 
         init = self.config.get("init")
         if init:
+            print("Initializing the weights with scaling factor:", init)
             self.initialize_weights(init)
 
     def initialize_weights(self, init):
@@ -37,6 +38,16 @@ class BaseCNN(nn.Module):
                 layer.weight.data = layer.weight.data * init
             else:
                 nn.init.kaiming_normal_(layer.weight)
+    
+    # def initialize_weights(self, init):
+    #     """Applies weight initialization based on activation functions."""
+    #     for layer, act in zip(self.layers, self.activations):
+    #         if isinstance(act, (nn.ReLU, nn.LeakyReLU)):
+    #             nn.init.kaiming_normal_(layer.weight, mode='fan_out', nonlinearity='relu')
+    #         elif isinstance(act, (nn.Sigmoid, nn.Tanh)):
+    #             nn.init.xavier_uniform_(layer.weight)
+    #         else:
+    #             nn.init.kaiming_normal_(layer.weight)
 
     def forward(self, x):
         x = x.unsqueeze(1)
@@ -132,6 +143,7 @@ class BaseFCNN(nn.Module):
 
         init = self.config.get("init")
         if init:
+            print("Initializing the weights with scaling factor:", init)
             self.initialize_weights(init)
 
     def initialize_weights(self, init):
@@ -151,6 +163,16 @@ class BaseFCNN(nn.Module):
                 layer.weight.data = layer.weight.data * init
             else:
                 nn.init.kaiming_normal_(layer.weight)
+
+    # def initialize_weights(self, init):
+    #     """Applies weight initialization based on activation functions."""
+    #     for layer, act in zip(self.layers, self.activations):
+    #         if isinstance(act, (nn.ReLU, nn.LeakyReLU)):
+    #             nn.init.kaiming_normal_(layer.weight, mode='fan_out', nonlinearity='relu')
+    #         elif isinstance(act, (nn.Sigmoid, nn.Tanh)):
+    #             nn.init.xavier_uniform_(layer.weight)
+    #         else:
+    #             nn.init.kaiming_normal_(layer.weight)
 
     def forward(self, x):
         for layer, act in zip(self.layers, self.activations):

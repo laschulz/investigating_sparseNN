@@ -22,3 +22,9 @@ python src/main.py \
     --student_type overlappingCNN \
     --config_path config_2.json
 ```
+
+python src/main.py \
+    --mode single \
+    --teacher_model nononverlappingCNN_all_tanh \
+    --student_model overlappingCNN_all_tanh \
+    --config_path config_2.json
