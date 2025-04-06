@@ -1,8 +1,8 @@
 {
     "batch_size": 16,
-    "patience": 50,
+    "patience": 100,
     "dataset_size": 5120,
-    "num_epochs": 10000,
+    "num_epochs": 100000,
     "lr": [0.01],
     "l1_norm": [1e-5],
     "l2_norm": [0],
@@ -11,5 +11,5 @@
     "clipping": 0,
     "same_act": false,
     "save_path": "./experiment_output",
-    "name": "5seeds_nonoverlapping"
+    "name": "exp1_5seeds"
 }

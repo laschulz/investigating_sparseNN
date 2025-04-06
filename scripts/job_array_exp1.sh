@@ -1,7 +1,7 @@
 #!/bin/bash                      
-#SBATCH -t 18:00:00                  # walltime = 1 hour
+#SBATCH -t 15:00:00                  # walltime = 1 hour
 #SBATCH --gres=gpu:1                # Request 1 GPU
-#SBATCH --mem=32G                   # Set memory limit
+#SBATCH --mem=16G                   # Set memory limit
 #SBATCH --cpus-per-task=8
 #SBATCH --job-name=array
 #SBATCH --array=0-4
