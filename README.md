@@ -51,7 +51,7 @@ python src/main.py \
     --name my_experiments
 ```
 
-**Note:** The arguments seed and name are optional and default to `42` and `"noName"` respecively. 
+**Note:** The arguments `--seed` and `--name` are optional and default to `42` and `"noName"` respecively. 
 All other hyperparameters, such as learning rate, regularization strength, and activation constraints, are defined in the corresponding configuration file.
 
 > **Note:** Only the name of the config file (e.g., `config.json`) needs to be passed.  
