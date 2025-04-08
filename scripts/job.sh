@@ -1,11 +1,11 @@
 #!/bin/bash                        
-#SBATCH -t 18:00:00        
+#SBATCH -t 28:00:00        
 #SBATCH --gres=gpu:1  # Request exactly 1 GPU
-#SBATCH --mem=32G
+#SBATCH --mem=16G
 #SBATCH --cpus-per-task=8
 #SBATCH --output=/om2/user/laschulz/investigating_sparseNN/logs/output_fcnn_%A_%a.log
 #SBATCH --error=/om2/user/laschulz/investigating_sparseNN/logs/error_fcnn_%A_%a.log
-#SBATCH --job-name AllAct_Weight1-1e-5
+#SBATCH --job-name exp3_l2_init0.2
 
 hostname                     # Print the hostname of the compute node
 
@@ -20,29 +20,8 @@ echo $CONDA_PREFIX
 cd /om2/user/laschulz/investigating_sparseNN || exit 1
 
 python src/main.py \
-    --mode single \
-    --teacher_model nonoverlapping_CNN_all_tanh \
-    --student_model fcnn_decreasing_all_tanh \
-    --config_path config_2.json \
+    --mode multiple \
+    --teacher_type nonoverlappingCNN \
+    --student_type fcnn_decreasing \
+    --config_path config_31.json \
     --seed 1
-
-python src/main.py \
-    --mode single \
-    --teacher_model nonoverlapping_CNN_all_tanh \
-    --student_model fcnn_decreasing_all_tanh \
-    --config_path config_2.json \
-    --seed 2
-
-python src/main.py \
-    --mode single \
-    --teacher_model nonoverlapping_CNN_all_tanh \
-    --student_model fcnn_decreasing_all_tanh \
-    --config_path config_2.json \
-    --seed 4
-
-python src/main.py \
-    --mode single \
-    --teacher_model nonoverlapping_CNN_all_tanh \
-    --student_model fcnn_decreasing_all_tanh \
-    --config_path config_2.json \
-    --seed 5

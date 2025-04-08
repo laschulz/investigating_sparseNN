@@ -60,7 +60,7 @@ class ExperimentRunner:
         self.clipping = self.config["clipping"]
 
         # Train student model
-        self.student_model, self.final_loss = trainer.train_model(
+        self.student_model, self.final_loss, self.epoch = trainer.train_model(
             model=self.student_model,
             X_train=X_generated,
             y_train=y_generated,
@@ -151,6 +151,7 @@ class ExperimentRunner:
             f.write(f"data size: {self.config['dataset_size']}\n")
             f.write(f"init: {self.config['init']}\n")
             f.write(f"seed: {self.seed}\n")
+            f.write(f"stopped after epoch: {self.epoch}\n")
             f.write("\n" + "=" * 80 + "\n\n")
 
         print(f"Experiment details saved to {text_save_path}")

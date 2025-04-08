@@ -66,4 +66,4 @@ def train_model(model, X_train, y_train, optimizer, loss_fn, l1_lambda, l2_lambd
                 if patience_counter >= config["patience"]:
                     print(f"Early stopping at epoch {epoch}, best loss: {best_loss:.4f}")
                     break
-    return model, best_loss
+    return model, best_loss, epoch

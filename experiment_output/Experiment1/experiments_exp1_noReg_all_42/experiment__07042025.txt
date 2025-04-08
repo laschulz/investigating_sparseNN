@@ -1,0 +1,199 @@
+Experiment Summary:
+================================================================================
+
+Teacher Model Parameters:
+layers.0.weight: [[[ 2.59 -2.83  0.87]]]
+layers.1.weight: [[[-1.38  1.29]]]
+layers.2.weight: [[[ 0.86 -0.84]]]
+
+================================================================================
+
+nonoverlappingCNN_relu -> nonoverlappingCNN_relu
+
+Student Model Parameters:
+layers.0.weight: [[[-2.7811472   0.71922314 -0.14867459]]]
+layers.1.weight: [[[-0.10981376 -8.028101  ]]]
+layers.2.weight: [[[ 0.34410802 -1.6730373 ]]]
+
+Final Loss: 3.9353
+Distance Metric: 10.5170
+L1 norm: 0
+L2 norm: 0
+Batch size: 16
+Clipping: 0
+Learning rate: 0.005
+data size: 5120
+init: 0.2
+seed: 42
+stopped after epoch: 129
+
+================================================================================
+
+nonoverlappingCNN_relu -> nonoverlappingCNN_tanh
+
+Student Model Parameters:
+layers.0.weight: [[[ 0.295028   -0.39484662  0.13899994]]]
+layers.1.weight: [[[ 0.26791868 -0.52460843]]]
+layers.2.weight: [[[-5.852293   1.4080949]]]
+
+Final Loss: 3.8137
+Distance Metric: 9.8001
+L1 norm: 0
+L2 norm: 0
+Batch size: 16
+Clipping: 0
+Learning rate: 0.005
+data size: 5120
+init: 0.2
+seed: 42
+stopped after epoch: 223
+
+================================================================================
+
+nonoverlappingCNN_relu -> nonoverlappingCNN_sigmoid
+
+Student Model Parameters:
+layers.0.weight: [[[ 0.44501573 -0.4932653   0.12073585]]]
+layers.1.weight: [[[-23.15589   19.743393]]]
+layers.2.weight: [[[ 9.512913  -6.6468525]]]
+
+Final Loss: 3.6582
+Distance Metric: 42.3901
+L1 norm: 0
+L2 norm: 0
+Batch size: 16
+Clipping: 0
+Learning rate: 0.005
+data size: 5120
+init: 0.2
+seed: 42
+stopped after epoch: 1223
+
+================================================================================
+
+nonoverlappingCNN_tanh -> nonoverlappingCNN_relu
+
+Student Model Parameters:
+layers.0.weight: [[[-1.217937    1.3614995  -0.45476395]]]
+layers.1.weight: [[[ 0.8685164 -1.1774203]]]
+layers.2.weight: [[[ 0.384151  -3.0811255]]]
+
+Final Loss: 0.2860
+Distance Metric: 5.1801
+L1 norm: 0
+L2 norm: 0
+Batch size: 16
+Clipping: 0
+Learning rate: 0.005
+data size: 5120
+init: 0.2
+seed: 42
+stopped after epoch: 241
+
+================================================================================
+
+nonoverlappingCNN_tanh -> nonoverlappingCNN_tanh
+
+Student Model Parameters:
+layers.0.weight: [[[-2.5898151   2.8297987  -0.86993796]]]
+layers.1.weight: [[[ 1.3799363 -1.2899364]]]
+layers.2.weight: [[[ 0.86000437 -0.8400051 ]]]
+
+Final Loss: 0.0000
+Distance Metric: 0.0004
+L1 norm: 0
+L2 norm: 0
+Batch size: 16
+Clipping: 0
+Learning rate: 0.005
+data size: 5120
+init: 0.2
+seed: 42
+stopped after epoch: 3097
+
+================================================================================
+
+nonoverlappingCNN_tanh -> nonoverlappingCNN_sigmoid
+
+Student Model Parameters:
+layers.0.weight: [[[ 4.101309  -4.460938   1.3943645]]]
+layers.1.weight: [[[ 0.9140379 -0.7944324]]]
+layers.2.weight: [[[-23.19487   18.195112]]]
+
+Final Loss: 0.1940
+Distance Metric: 31.2690
+L1 norm: 0
+L2 norm: 0
+Batch size: 16
+Clipping: 0
+Learning rate: 0.005
+data size: 5120
+init: 0.2
+seed: 42
+stopped after epoch: 5277
+
+================================================================================
+
+nonoverlappingCNN_sigmoid -> nonoverlappingCNN_relu
+
+Student Model Parameters:
+layers.0.weight: [[[-0.04559793 -0.21665767  0.07775839]]]
+layers.1.weight: [[[0.15205805 0.20802493]]]
+layers.2.weight: [[[-0.25286558 -0.13723922]]]
+
+Final Loss: 0.2557
+Distance Metric: 6.7717
+L1 norm: 0
+L2 norm: 0
+Batch size: 16
+Clipping: 0
+Learning rate: 0.005
+data size: 5120
+init: 0.2
+seed: 42
+stopped after epoch: 200
+
+================================================================================
+
+nonoverlappingCNN_sigmoid -> nonoverlappingCNN_tanh
+
+Student Model Parameters:
+layers.0.weight: [[[ 1.0120496 -1.50814    0.5210804]]]
+layers.1.weight: [[[-0.2120935   0.16104516]]]
+layers.2.weight: [[[ 0.21000433 -0.15724076]]]
+
+Final Loss: 0.2522
+Distance Metric: 4.6549
+L1 norm: 0
+L2 norm: 0
+Batch size: 16
+Clipping: 0
+Learning rate: 0.005
+data size: 5120
+init: 0.2
+seed: 42
+stopped after epoch: 477
+
+================================================================================
+
+nonoverlapping_CNN_all_sigmoid -> nonoverlapping_CNN_all_sigmoid
+
+Student Model Parameters:
+layers.0.weight: [[[-0.17347944  0.18716142  0.06054957]]]
+layers.1.weight: [[[0.11391398 0.1620184 ]]]
+layers.2.weight: [[[ 0.07306456 -0.07050163]]]
+
+Final Loss: 0.0000
+Distance Metric: 0.6777
+L1 norm: 0
+L2 norm: 0
+Batch size: 16
+Clipping: 0
+Learning rate: 0.005
+data size: 5120
+init: 0.2
+seed: 42
+stopped after epoch: 68899
+
+================================================================================
+

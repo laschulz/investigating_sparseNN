@@ -18,13 +18,8 @@ or running multiple experiments where all 9 combinations of activation functions
 ```sh
 python src/main.py \
     --mode multiple \
-    --teacher_type multiWeightCNN \
-    --student_type overlappingCNN \
-    --config_path config_2.json
+    --teacher_type nonoverlappingCNN \
+    --student_type nonoverlappingCNN \
+    --config_path config_1.json
 ```
 
-python src/main.py \
-    --mode single \
-    --teacher_model nononverlappingCNN_all_tanh \
-    --student_model overlappingCNN_all_tanh \
-    --config_path config_2.json

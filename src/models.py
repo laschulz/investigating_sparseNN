@@ -152,9 +152,6 @@ class BaseFCNN(nn.Module):
             if act == torch.relu:
                 nn.init.kaiming_normal_(layer.weight, mode='fan_out', nonlinearity='relu')
                 layer.weight.data = layer.weight.data * init
-
-                # Alternative small weights
-                # nn.init.normal_(layer.weight, mean=0, std=0.01)
             elif act == torch.sigmoid:
                 nn.init.xavier_uniform_(layer.weight, gain=nn.init.calculate_gain('sigmoid'))
                 layer.weight.data = layer.weight.data * init
