@@ -35,7 +35,7 @@ def model_mapper(model_type, activation, config_path):
     else:
         return model_map[model_type](activation, activation, activation, config_path)
 
-def run_experiments(teacher_type, student_types, config_path, seed):
+def run_experiments(teacher_type, student_types, config_path, seed, name = "NoName"):
     """Runs experiments across multiple activations for given teacher and student model types."""
     activations = {torch.sigmoid, torch.tanh, torch.relu}
 
@@ -77,10 +77,11 @@ def run_experiments(teacher_type, student_types, config_path, seed):
             l1_norm=l1_norm,
             l2_norm=l2_norm,
             config_path=config_path,
-            seed=seed
+            seed=seed,
+            name=name
         )
 
-def run_single_experiment(teacher_model, student_model, teacher_name, student_name, lr, l1_norm, l2_norm, config_path, seed):
+def run_single_experiment(teacher_model, student_model, teacher_name, student_name, lr, l1_norm, l2_norm, config_path, seed, name = "NoName"):
     """Runs an experiment, trains the model, and saves results."""
 
     np.random.seed(seed)
@@ -98,7 +99,8 @@ def run_single_experiment(teacher_model, student_model, teacher_name, student_na
         l1_norm=l1_norm,
         l2_norm=l2_norm,
         config_path=config_path,
-        seed=seed
+        seed=seed,
+        name=name
     )
 
     cmd = f"python3 {' '.join(sys.argv)}"
@@ -126,6 +128,7 @@ if __name__ == "__main__":
                         help="Student model type: nonoverlappingCNN, overlappingCNN, fcnn, fcnn_decreasing, nonoverlappingViT")
     parser.add_argument("--config_path", type=str, help="Path to configuration file")
     parser.add_argument("--seed", type=int, default=42, help="Random seed for reproducibility")
+    parser.add_argument("--name", type=str, help="Name of the experiment")
 
     args = parser.parse_args()
     mode = args.mode
@@ -148,10 +151,11 @@ if __name__ == "__main__":
                               l1_norm=l1_norm, 
                               l2_norm=l2_norm,
                               config_path=args.config_path,
-                              seed=args.seed
+                              seed=args.seed,
+                              name=args.name
                               )
 
     elif mode == "multiple":
         if not args.student_type:
             raise ValueError("--student_type is required in 'multiple' mode")
-        run_experiments(args.teacher_type, [args.student_type], config_path=args.config_path, seed=args.seed)
+        run_experiments(args.teacher_type, [args.student_type], config_path=args.config_path, seed=args.seed, name=args.name)

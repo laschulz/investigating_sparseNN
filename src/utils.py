@@ -40,8 +40,10 @@ def create_model(model_type, config_path=None):
 
 
 def read_config(config_path):
-    with open(config_path, "r") as file:
-        config = json.load(file)   
+    print(config_path)
+    full_path = f"config_files/{config_path}"
+    with open(full_path, "r") as file:
+        config = json.load(file)
     return config
 
 def init_teacher(teacher_model, teacher_name):

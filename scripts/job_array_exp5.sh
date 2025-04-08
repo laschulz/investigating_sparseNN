@@ -3,7 +3,7 @@
 #SBATCH --gres=gpu:1                # Request 1 GPU
 #SBATCH --mem=32G                   # Set memory limit
 #SBATCH --cpus-per-task=8
-#SBATCH --job-name=exp3
+#SBATCH --job-name=exp5
 #SBATCH --array=0-29                 # 2 configs × 5 seeds x 3 Reg = 30 jobs
 #SBATCH --output=/om2/user/laschulz/investigating_sparseNN/logs/output_%A_%a.log
 #SBATCH --error=/om2/user/laschulz/investigating_sparseNN/logs/error_%A_%a.log
@@ -37,8 +37,8 @@ echo "Running with config: $CONFIG, seed: $SEED"
 
 python src/main.py \
     --mode multiple \
-    --teacher_type nonoverlappingCNN \
+    --teacher_type overlappingCNN \
     --student_type fcnn_decreasing \
     --config_path $CONFIG \
     --seed $SEED \
-    --name exp3
+    --name exp5

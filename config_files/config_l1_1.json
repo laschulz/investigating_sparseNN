@@ -1,15 +1,15 @@
 {
     "batch_size": 16,
     "patience": 100,
-    "dataset_size": 5120,
+    "dataset_size": 100000,
     "num_epochs": 100000,
     "lr": [0.005],
-    "l1_norm": [0],
+    "l1_norm": [1e-5],
     "l2_norm": [0],
     "loss_func": "MSE",
-    "init": 0.2, 
+    "init": 1, 
     "clipping": 0,
     "same_act": false,
     "save_path": "./experiment_output",
-    "name": "exp2_noReg_init0.2"
+    "name": "l1_init1"
 }

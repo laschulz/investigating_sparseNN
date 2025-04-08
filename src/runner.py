@@ -16,13 +16,14 @@ class ExperimentRunner:
     """
 
     # could change this that we have th emodel directly
-    def __init__(self, teacher_model, student_model, teacher_name, student_name, lr, l1_norm, l2_norm, momentum=0.9, config_path=None, seed=42):
+    def __init__(self, teacher_model, student_model, teacher_name, student_name, lr, l1_norm, l2_norm, momentum=0.9, config_path=None, seed=42, name="NoName"):
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         print("Running on", self.device)
         
         self.config = utils.read_config(config_path)
         self.config_path = config_path
         self.seed = seed
+        self.name = name
 
         # Initialize the teacher model with fixed ReLU activations
         self.teacher_model = teacher_model.to(self.device)
@@ -98,10 +99,10 @@ class ExperimentRunner:
         #Path
         date = datetime.now().strftime("%d%m%Y")
         name = self.config["name"]
-        save_dir = os.path.join(self.config.get("save_path", "./experiment_output"), f"experiments_{date}_{name}_{self.seed}")
+        save_dir = os.path.join(self.config.get("save_path", "./experiment_output"), f"experiments_{self.name}_{name}_{self.seed}")
         os.makedirs(save_dir, exist_ok=True)
         model_save_path = os.path.join(save_dir, f"{self.teacher_model_name}__{self.student_model_name}.pth")
-        text_save_path = os.path.join(save_dir, f"experiment__{date}.txt")
+        text_save_path = os.path.join(save_dir, f"experiment_{self.name}_{name}_{self.seed}.txt")
 
         save_data = {
             "teacher_model_state_dict": self.teacher_model.state_dict(),
