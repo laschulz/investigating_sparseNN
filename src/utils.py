@@ -2,39 +2,33 @@ import json
 import torch
 
 import models
-import transformer_model
 
 def create_model(model_type, config_path=None):
     model_dict = {
-        "nonoverlapping_CNN_all_tanh": lambda: models.NonOverlappingCNN(torch.tanh, torch.tanh, torch.tanh, config_path),
-        "nonoverlapping_CNN_all_relu": lambda: models.NonOverlappingCNN(torch.relu, torch.relu, torch.relu, config_path),
-        "nonoverlapping_CNN_all_gelu": lambda: models.NonOverlappingCNN(torch.nn.functional.gelu, torch.nn.functional.gelu, torch.nn.functional.gelu, config_path),
-        "nonoverlapping_CNN_all_sigmoid": lambda: models.NonOverlappingCNN(torch.sigmoid, torch.sigmoid, torch.sigmoid, config_path),
+        "baselineCNN_tanh": lambda: models.BaselineCNN(torch.tanh, torch.tanh, torch.tanh, config_path),
+        "baselineCNN_relu": lambda: models.BaselineCNN(torch.relu, torch.relu, torch.relu, config_path),
+        "baselineCNN_gelu": lambda: models.BaselineCNN(torch.nn.functional.gelu, torch.nn.functional.gelu, torch.nn.functional.gelu, config_path),
+        "baselineCNN_sigmoid": lambda: models.BaselineCNN(torch.sigmoid, torch.sigmoid, torch.sigmoid, config_path),
 
-        "multiWeight_CNN_all_tanh": lambda: models.MultiWeightCNN(torch.tanh, torch.tanh, torch.tanh, config_path),
-        "multiWeight_CNN_all_relu": lambda: models.MultiWeightCNN(torch.relu, torch.relu, torch.relu, config_path),
-        "multiWeight_CNN_all_gelu": lambda: models.MultiWeightCNN(torch.nn.functional.gelu, torch.nn.functional.gelu, torch.nn.functional.gelu, config_path),
-        "multiWeight_CNN_all_sigmoid": lambda: models.MultiWeightCNN(torch.sigmoid, torch.sigmoid, torch.sigmoid, config_path),
+        "splitFilterCNN_tanh": lambda: models.SplitFilterCNN(torch.tanh, torch.tanh, torch.tanh, config_path),
+        "splitFilterCNN_relu": lambda: models.SplitFilterCNN(torch.relu, torch.relu, torch.relu, config_path),
+        "splitFilterCNN_gelu": lambda: models.SplitFilterCNN(torch.nn.functional.gelu, torch.nn.functional.gelu, torch.nn.functional.gelu, config_path),
+        "splitFilterCNN_sigmoid": lambda: models.SplitFilterCNN(torch.sigmoid, torch.sigmoid, torch.sigmoid, config_path),
         
-        "overlapping_CNN_all_tanh": lambda: models.OverlappingCNN(torch.tanh, torch.tanh, torch.tanh, config_path),
-        "overlapping_CNN_all_relu": lambda: models.OverlappingCNN(torch.relu, torch.relu, torch.relu, config_path),
-        "overlapping_CNN_all_gelu": lambda: models.OverlappingCNN(torch.nn.functional.gelu, torch.nn.functional.gelu, torch.nn.functional.gelu, config_path),
-        "overlapping_CNN_all_sigmoid": lambda: models.OverlappingCNN(torch.sigmoid, torch.sigmoid, torch.sigmoid, config_path),
+        "multiChannelCNN_tanh": lambda: models.MultiChannelCNN(torch.tanh, torch.tanh, torch.tanh, config_path),
+        "multiChannelCNN_relu": lambda: models.MultiChannelCNN(torch.relu, torch.relu, torch.relu, config_path),
+        "multiChannelCNN_gelu": lambda: models.MultiChannelCNN(torch.nn.functional.gelu, torch.nn.functional.gelu, torch.nn.functional.gelu, config_path),
+        "multiChannelCNN_sigmoid": lambda: models.MultiChannelCNN(torch.sigmoid, torch.sigmoid, torch.sigmoid, config_path),
         
-        "fcnn_all_tanh": lambda: models.FCNN(torch.tanh, torch.tanh, torch.tanh, config_path),
-        "fcnn_all_relu": lambda: models.FCNN(torch.relu, torch.relu, torch.relu, config_path),
-        "fcnn_all_gelu": lambda: models.FCNN(torch.nn.functional.gelu, torch.nn.functional.gelu, torch.nn.functional.gelu, config_path),
-        "fcnn_all_sigmoid": lambda: models.FCNN(torch.sigmoid, torch.sigmoid, torch.sigmoid, config_path),
+        "fcnn_128_128_tanh": lambda: models.FCNN_128_128(torch.tanh, torch.tanh, torch.tanh, config_path),
+        "fcnn_128_128_relu": lambda: models.FCNN_128_128(torch.relu, torch.relu, torch.relu, config_path),
+        "fcnn_128_128_gelu": lambda: models.FCNN_128_128(torch.nn.functional.gelu, torch.nn.functional.gelu, torch.nn.functional.gelu, config_path),
+        "fcnn_128_128_sigmoid": lambda: models.FCNN_128_128(torch.sigmoid, torch.sigmoid, torch.sigmoid, config_path),
         
-        "fcnn_decreasing_all_tanh": lambda: models.FCNN_decreasing(torch.tanh, torch.tanh, torch.tanh, config_path),
-        "fcnn_decreasing_all_relu": lambda: models.FCNN_decreasing(torch.relu, torch.relu, torch.relu, config_path),
-        "fcnn_decreasing_all_gelu": lambda: models.FCNN_decreasing(torch.nn.functional.gelu, torch.nn.functional.gelu, torch.nn.functional.gelu, config_path),
-        "fcnn_decreasing_all_sigmoid": lambda: models.FCNN_decreasing(torch.sigmoid, torch.sigmoid, torch.sigmoid, config_path),
-        
-        "nonoverlapping_transformer_tanh": lambda: transformer_model.NonOverlappingViT(torch.tanh, config_path),
-        "nonoverlapping_transformer_relu": lambda: transformer_model.NonOverlappingViT(torch.relu, config_path),
-        "nonoverlapping_transformer_gelu": lambda: transformer_model.NonOverlappingViT(torch.nn.functional.gelu, config_path),
-        "nonoverlapping_transformer_sigmoid": lambda: transformer_model.NonOverlappingViT(torch.sigmoid, config_path)
+        "fcnn_256_32_tanh": lambda: models.FCNN_256_32(torch.tanh, torch.tanh, torch.tanh, config_path),
+        "fcnn_256_32_relu": lambda: models.FCNN_256_32(torch.relu, torch.relu, torch.relu, config_path),
+        "fcnn_256_32_gelu": lambda: models.FCNN_256_32(torch.nn.functional.gelu, torch.nn.functional.gelu, torch.nn.functional.gelu, config_path),
+        "fcnn_256_32_sigmoid": lambda: models.FCNN_256_32(torch.sigmoid, torch.sigmoid, torch.sigmoid, config_path),
     }
     return model_dict[model_type]()
 
@@ -47,7 +41,7 @@ def read_config(config_path):
     return config
 
 def init_teacher(teacher_model, teacher_name):
-    if "nonoverlappingCNN" in teacher_name:
+    if "BaselineCNN" in teacher_name:
         teacher_weights = [
             torch.tensor([[[2.59, -2.83, 0.87]]]),  # conv1
             torch.tensor([[[-1.38, 1.29]]]),        # conv2
@@ -56,7 +50,7 @@ def init_teacher(teacher_model, teacher_name):
         with torch.no_grad():
             for layer, weight in zip(teacher_model.layers, teacher_weights):
                 layer.weight.copy_(weight)
-    elif "overlappingCNN" in teacher_name:
+    elif "SplitFilterCNN" in teacher_name:
         teacher_weights = [
         torch.tensor([[[-0.78, -0.12,  0.70]],
                     [[-1.16,  0.47,  0.05]],

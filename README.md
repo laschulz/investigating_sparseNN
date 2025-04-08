@@ -1,25 +1,67 @@
 # investigating_sparseNN
 
-Repository for Semester Project conducted at the MIT Poggio Lab.
 
+This repository contains the code for the project xyz (link to report), conducted at the MIT Poggio Lab. 
+This project investigates how student neural networks can learn sparse internal representations from fixed teacher networks. 
+The core focus is on evaluating the effects of regularization techniques (L1-Regularization, L2-Regularization, no Regularization), and weight initialization on sparsity across various activation functions.
 
-## Run Experiments
+---
 
-Currently, the code enables to either run a single experiment
+## Project Structure
+
+TODO
+
+---
+
+## Running Experiments
+
+### Single Experiment
+
+To run a specific teacher–student experiment with a defined configuration:
+
 ```sh
 python src/main.py \
     --mode single \
-    --teacher_model multiWeight_CNN_all_tanh \
-    --student_model fcnn_decreasing_all_tanh \
-    --config_path config_2.json
+    --teacher_model BaselineCNN_tanh \
+    --student_model FCNN_128_128_tanh \
+    --config_path config.json \
+    --seed 42 \
+    --name my_experiment
 ```
 
-or running multiple experiments where all 9 combinations of activation functions (tanh, sigmoid, relu) for the teacher / student are tested.
+In this mode, `--teacher_model` and `--student_model` should be specified using the format:
+<model_type>_<activation_function>
+
+where:
+
+- `<model_type>` \in `{baselineCNN, multiChannelCNN, splitFilterCNN, fcnn_128_128, fcnn_256_32}`
+- `<activation_function>` \in `{relu, sigmoid, tanh}`
+
+
+### Multiple Experiments
+
+To run multiple experiments over combinations of activation functions for a given teacher and student model type:
+
 ```sh
 python src/main.py \
-    --mode multiple \
-    --teacher_type nonoverlappingCNN \
-    --student_type nonoverlappingCNN \
-    --config_path config_1.json
+    --mode single \
+    --teacher_type BaselineCNN \
+    --student_type FCNN_128_128 \
+    --config_path config.json \
+    --seed 42 \
+    --name my_experiments
 ```
 
+
+### Optional arguments:
+
+- `--seed`: Sets the random seed for reproducibility  
+  **Default:** `42`
+
+- `--name`: Assigns a name to the experiment for logging and result tracking  
+  **Default:** `"noName"`
+
+All other hyperparameters, such as learning rate, regularization strength, and activation constraints, are defined in the corresponding configuration file.
+
+> **Note:** Only the name of the config file (e.g., `config.json`) needs to be passed.  
+> It is assumed to be located in the `config_files/` folder.

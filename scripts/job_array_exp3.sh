@@ -20,7 +20,7 @@ mkdir -p /om2/user/laschulz/investigating_sparseNN/logs
 cd /om2/user/laschulz/investigating_sparseNN || exit 1
 
 # Define configs and student model
-CONFIG_FILES=("config_l1_1.json" "config_l1_0.2.json" "config_l2_1.json" "config_l2_0.2.json" "config_noReg_1.json" "config_noReg_0.2.json")
+CONFIG_FILES=("config_l2_1.json" "config_l2_0.2.json" "config_noReg_1.json" "config_noReg_0.2.json")
 SEEDS=(1 2 3 4 5)
 
 # Compute indices

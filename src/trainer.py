@@ -2,11 +2,9 @@ from torch.utils.data import DataLoader, TensorDataset
 from tqdm import tqdm
 import torch
 import sys
-import os
 
 import utils
 import models
-import transformer_model
 
 def train_model(model, X_train, y_train, optimizer, loss_fn, l1_lambda, l2_lambda, batch_size=16, clipping = None, device=None, config_path=None):
     config = utils.read_config(config_path)
@@ -29,7 +27,7 @@ def train_model(model, X_train, y_train, optimizer, loss_fn, l1_lambda, l2_lambd
 
                 optimizer.zero_grad()
                 y_pred = model(batch_X)
-                if isinstance(model, (models.FCNN, models.FCNN_decreasing, transformer_model.NonOverlappingViT)):
+                if isinstance(model, (models.FCNN_128_128, models.FCNN_256_32)):
                     batch_y = batch_y.view(batch_y.size(0), -1) 
                 loss = loss_fn(y_pred, batch_y).to(device)
 

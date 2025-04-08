@@ -38,16 +38,6 @@ class BaseCNN(nn.Module):
                 layer.weight.data = layer.weight.data * init
             else:
                 nn.init.kaiming_normal_(layer.weight)
-    
-    # def initialize_weights(self, init):
-    #     """Applies weight initialization based on activation functions."""
-    #     for layer, act in zip(self.layers, self.activations):
-    #         if isinstance(act, (nn.ReLU, nn.LeakyReLU)):
-    #             nn.init.kaiming_normal_(layer.weight, mode='fan_out', nonlinearity='relu')
-    #         elif isinstance(act, (nn.Sigmoid, nn.Tanh)):
-    #             nn.init.xavier_uniform_(layer.weight)
-    #         else:
-    #             nn.init.kaiming_normal_(layer.weight)
 
     def forward(self, x):
         x = x.unsqueeze(1)
@@ -55,7 +45,7 @@ class BaseCNN(nn.Module):
             x = act(layer(x))
         return x
 
-class NonOverlappingCNN(BaseCNN):
+class BaselineCNN(BaseCNN):
     """CNN with non-overlapping strides."""
     def __init__(self, act1, act2, act3, config_path=None):
         layers_config = [
@@ -65,8 +55,8 @@ class NonOverlappingCNN(BaseCNN):
         ]
         super().__init__(layers_config, [act1, act2, act3], config_path)
 
-class OverlappingCNN(BaseCNN):
-    """CNN with overlapping strides."""
+class MultiChannelCNN(BaseCNN):
+    """CNN with multiple channels."""
     def __init__(self, act1, act2, act3, config_path=None):
         layers_config = [
             (1, 4, 3, 3), #in_c, out_c, kernel_size, stride
@@ -75,19 +65,9 @@ class OverlappingCNN(BaseCNN):
         ]
         super().__init__(layers_config, [act1, act2, act3], config_path)
 
-class OverlappingCNN2(BaseCNN):
-    """Alternative overlapping CNN with different stride settings."""
-    def __init__(self, act1, act2, act3, config_path=None):
-        layers_config = [
-            (1, 1, 3, 1), #in_c, out_c, kernel_size, stride
-            (1, 1, 2, 1),
-            (1, 1, 2, 1)
-        ]
-        super().__init__(layers_config, [act1, act2, act3], config_path)
-
 ##########################################################################
 
-class MultiWeightCNN(nn.Module):
+class SplitFilterCNN(nn.Module):
     """CNN with alternating weights for each chunk of input and configurable activations."""
     def __init__(self, act1, act2, act3, config_path=None):
         self.activations = [act1, act2, act3]
@@ -95,7 +75,6 @@ class MultiWeightCNN(nn.Module):
         self.layer1_weights = nn.ParameterList([
             nn.Parameter(torch.tensor([[2.59, -2.83, 0.87]])),
             nn.Parameter(torch.tensor([[-1.22, 0.45, 0.88]]))
-            #nn.Parameter(torch.tensor([[1.45, -0.92, 0.66]]))
         ])
         self.layer2_weights = nn.ParameterList([
             nn.Parameter(torch.tensor([[-1.38, 1.29]])),
@@ -106,12 +85,11 @@ class MultiWeightCNN(nn.Module):
         ])
 
     def forward(self, x):
-        # Layer 1: input (batch, 12) ➝ 4 chunks of 3 ➝ (batch, 4)
-        chunks1 = x.unfold(1, size=3, step=3)  # (batch, 4, 3)
+        chunks1 = x.unfold(1, size=3, step=3)
         out1 = []
         for i in range(chunks1.size(1)):
             weight = self.layer1_weights[i % 2]
-            out1.append(self.activations[0](F.linear(chunks1[:, i], weight)))  # (batch, 1)
+            out1.append(self.activations[0](F.linear(chunks1[:, i], weight)))
         x1 = torch.cat(out1, dim=1)
 
         # Layer 2: input (batch, 4) ➝ 2 chunks of 2 ➝ (batch, 2)
@@ -161,30 +139,20 @@ class BaseFCNN(nn.Module):
             else:
                 nn.init.kaiming_normal_(layer.weight)
 
-    # def initialize_weights(self, init):
-    #     """Applies weight initialization based on activation functions."""
-    #     for layer, act in zip(self.layers, self.activations):
-    #         if isinstance(act, (nn.ReLU, nn.LeakyReLU)):
-    #             nn.init.kaiming_normal_(layer.weight, mode='fan_out', nonlinearity='relu')
-    #         elif isinstance(act, (nn.Sigmoid, nn.Tanh)):
-    #             nn.init.xavier_uniform_(layer.weight)
-    #         else:
-    #             nn.init.kaiming_normal_(layer.weight)
-
     def forward(self, x):
         for layer, act in zip(self.layers, self.activations):
             x = act(layer(x))
         return x
 
 
-class FCNN(BaseFCNN):
+class FCNN_128_128(BaseFCNN):
     """Fully Connected Neural Network with uniform layer sizes."""
     
     def __init__(self, act1, act2, act3, config_path):
         super().__init__([12, 128, 128, 1], [act1, act2, act3], config_path)
 
 
-class FCNN_decreasing(BaseFCNN):
+class FCNN_256_32(BaseFCNN):
     """Fully Connected Neural Network with decreasing layer sizes."""
     
     def __init__(self, act1, act2, act3, config_path):

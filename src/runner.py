@@ -1,10 +1,8 @@
 import os
 import torch
-import torch.backends
 import torch.nn as nn
 import torch.optim as optim
 from datetime import datetime
-from torch.utils.data import DataLoader, TensorDataset
 
 import utils
 import metrics
@@ -76,23 +74,14 @@ class ExperimentRunner:
         )
     
     def evaluate(self):
-        if "ViT" in self.student_model_name:
-            # Perform evaluation using CKA metric for transformer models
-            print(f"Evaluating transformer model: {self.student_model_name}")
-            # Test on unseen data
-            X_test = torch.randn(256, 12, device=self.device)
-            y_test = self.teacher_model(X_test).detach().to(self.device)
-            dataset = TensorDataset(X_test, y_test)
-            dataloader = DataLoader(dataset, batch_size=self.batch_size, shuffle=True)
-            self.distance = metrics.calc_cka_metric(teacher_model=self.teacher_model, student_model=self.student_model, data_loader=dataloader, device=self.device)
-        else:
-            # Perform general evaluation using the normal distance metric
-            print(f"Evaluating model: {self.student_model_name}")
-            self.distance = metrics.calc_distance_metric(teacher_model=self.teacher_model, 
-                                                         student_model=self.student_model, 
-                                                         teacher_model_name=self.teacher_model_name, 
-                                                         student_model_name=self.student_model_name, 
-                                                         device=self.device)
+        """Evaluate the student model against the teacher model."""
+        # Perform general evaluation using the normal distance metric
+        print(f"Evaluating model: {self.student_model_name}")
+        self.distance = metrics.calc_distance_metric(teacher_model=self.teacher_model, 
+                                                        student_model=self.student_model, 
+                                                        teacher_model_name=self.teacher_model_name, 
+                                                        student_model_name=self.student_model_name, 
+                                                        device=self.device)
     
     def save_output(self):
         """Save the trained model's weights and log experiment details in a text file."""

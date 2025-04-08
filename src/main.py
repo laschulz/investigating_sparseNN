@@ -8,7 +8,6 @@ import numpy as np
 from runner import ExperimentRunner
 import utils
 import models
-import transformer_model
 
 def signal_handler(msg, sig):
     """Handles timeout signals and logs experiment failures."""
@@ -21,12 +20,11 @@ def signal_handler(msg, sig):
 def model_mapper(model_type, activation, config_path):
     """Helper function to create the appropriate model instance."""
     model_map = {
-        "nonoverlappingCNN": models.NonOverlappingCNN,
-        "multiWeightCNN": models.MultiWeightCNN,
-        "overlappingCNN": models.OverlappingCNN,
-        "fcnn": models.FCNN,
-        "fcnn_decreasing": models.FCNN_decreasing,
-        "nonoverlappingViT": transformer_model.NonOverlappingViT
+        "baselineCNN": models.baselineCNN,
+        "splitFilterCNN": models.splitFilterCNN,
+        "multiChannelCNN": models.multiChannelCNN,
+        "fcnn_128_128": models.fcnn_128_128,
+        "fcnn_256_32": models.fcnn_256_32
     }
     if model_type not in model_map:
         raise ValueError(f"Unknown model type: {model_type}")
@@ -119,13 +117,13 @@ def run_single_experiment(teacher_model, student_model, teacher_name, student_na
 if __name__ == "__main__":    
     # Parse command-line arguments
     parser = argparse.ArgumentParser(description="Run model experiments")
-    parser.add_argument("--mode", type=str, choices=["single", "multiple", "all"], required=True, help="Execution mode")
+    parser.add_argument("--mode", type=str, choices=["single", "multiple"], required=True, help="Execution mode")
     parser.add_argument("--teacher_model", type=str, help="Teacher model name")
     parser.add_argument("--student_model", type=str, help="Student model name")
-    parser.add_argument("--teacher_type", type=str, choices=["nonoverlappingCNN", "multiWeightCNN", "overlappingCNN", "fcnn", "fcnn_decreasing", "nonoverlappingViT"],
-                        help="Student model type: nonoverlappingCNN, multiWeightCNN, overlappingCNN, fcnn, fcnn_decreasing, nonoverlappingViT")
-    parser.add_argument("--student_type", type=str, choices=["nonoverlappingCNN", "overlappingCNN", "fcnn", "fcnn_decreasing", "nonoverlappingViT"],
-                        help="Student model type: nonoverlappingCNN, overlappingCNN, fcnn, fcnn_decreasing, nonoverlappingViT")
+    parser.add_argument("--teacher_type", type=str, choices=["baselineCNN", "splitFilterCNN", "multiChannelCNN"],
+                        help="Student model type: baselineCNN, splitFilterCNN, multiChannelCNN")
+    parser.add_argument("--student_type", type=str, choices=["baselineCNN", "multiChannelCNN", "fcnn_128_128", "fcnn_256_32"],
+                        help="Student model type: baselineCNN, multiChannelCNN, fcnn_128_128, fcnn_256_32")
     parser.add_argument("--config_path", type=str, help="Path to configuration file")
     parser.add_argument("--seed", type=int, default=42, help="Random seed for reproducibility")
     parser.add_argument("--name", type=str, help="Name of the experiment")
