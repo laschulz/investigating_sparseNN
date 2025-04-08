@@ -20,11 +20,11 @@ def signal_handler(msg, sig):
 def model_mapper(model_type, activation, config_path):
     """Helper function to create the appropriate model instance."""
     model_map = {
-        "baselineCNN": models.baselineCNN,
-        "splitFilterCNN": models.splitFilterCNN,
-        "multiChannelCNN": models.multiChannelCNN,
-        "fcnn_128_128": models.fcnn_128_128,
-        "fcnn_256_32": models.fcnn_256_32
+        "baselineCNN": models.BaselineCNN,
+        "splitFilterCNN": models.SplitFilterCNN,
+        "multiChannelCNN": models.MultiChannelCNN,
+        "fcnn_128_128": models.FCNN_128_128,
+        "fcnn_256_32": models.FCNN_256_32
     }
     if model_type not in model_map:
         raise ValueError(f"Unknown model type: {model_type}")

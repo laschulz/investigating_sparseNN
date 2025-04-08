@@ -22,8 +22,8 @@ To run a specific teacher–student experiment with a defined configuration:
 ```sh
 python src/main.py \
     --mode single \
-    --teacher_model BaselineCNN_tanh \
-    --student_model FCNN_128_128_tanh \
+    --teacher_model baselineCNN_tanh \
+    --student_model fcnn_128_128_tanh \
     --config_path config.json \
     --seed 42 \
     --name my_experiment
@@ -43,9 +43,9 @@ To run multiple experiments over combinations of activation functions for a give
 
 ```sh
 python src/main.py \
-    --mode single \
-    --teacher_type BaselineCNN \
-    --student_type FCNN_128_128 \
+    --mode multiple \
+    --teacher_type baselineCNN \
+    --student_type fcnn_128_128 \
     --config_path config.json \
     --seed 42 \
     --name my_experiments
