@@ -25,7 +25,7 @@ echo "Running with seed: $SEED"
 
 python src/main.py \
     --mode multiple \
-    --teacher_type nonoverlappingCNN \
-    --student_type overlappingCNN \
+    --teacher_type baselineCNN \
+    --student_type multiChannelCNN \
     --config_path config_2.json \
     --seed $SEED

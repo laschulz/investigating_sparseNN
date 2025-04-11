@@ -108,11 +108,11 @@ class SplitFilterCNN(nn.Module):
 
 ##########################################################################
 
-class BaseFCNN(nn.Module):
+class BaseFCN(nn.Module):
     """Base class for Fully Connected Neural Networks with configurable architecture."""
     
     def __init__(self, layer_sizes, activations, config_path):
-        super(BaseFCNN, self).__init__()
+        super(BaseFCN, self).__init__()
         self.layers = nn.ModuleList([
             nn.Linear(in_f, out_f, bias=False) for in_f, out_f in zip(layer_sizes[:-1], layer_sizes[1:])
         ])
@@ -145,15 +145,21 @@ class BaseFCNN(nn.Module):
         return x
 
 
-class FCNN_128_128(BaseFCNN):
+class FCN_128_128(BaseFCN):
     """Fully Connected Neural Network with uniform layer sizes."""
     
     def __init__(self, act1, act2, act3, config_path):
         super().__init__([12, 128, 128, 1], [act1, act2, act3], config_path)
 
 
-class FCNN_256_32(BaseFCNN):
+class FCN_256_32(BaseFCN):
     """Fully Connected Neural Network with decreasing layer sizes."""
     
     def __init__(self, act1, act2, act3, config_path):
         super().__init__([12, 256, 32, 1], [act1, act2, act3], config_path)
+
+class FCN_1024_128(BaseFCN):
+    """Fully Connected Neural Network with decreasing layer sizes."""
+    
+    def __init__(self, act1, act2, act3, config_path):
+        super().__init__([12, 1024, 128, 1], [act1, act2, act3], config_path)

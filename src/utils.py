@@ -20,15 +20,17 @@ def create_model(model_type, config_path=None):
         "multiChannelCNN_gelu": lambda: models.MultiChannelCNN(torch.nn.functional.gelu, torch.nn.functional.gelu, torch.nn.functional.gelu, config_path),
         "multiChannelCNN_sigmoid": lambda: models.MultiChannelCNN(torch.sigmoid, torch.sigmoid, torch.sigmoid, config_path),
         
-        "fcnn_128_128_tanh": lambda: models.FCNN_128_128(torch.tanh, torch.tanh, torch.tanh, config_path),
-        "fcnn_128_128_relu": lambda: models.FCNN_128_128(torch.relu, torch.relu, torch.relu, config_path),
-        "fcnn_128_128_gelu": lambda: models.FCNN_128_128(torch.nn.functional.gelu, torch.nn.functional.gelu, torch.nn.functional.gelu, config_path),
-        "fcnn_128_128_sigmoid": lambda: models.FCNN_128_128(torch.sigmoid, torch.sigmoid, torch.sigmoid, config_path),
+        "fcn_128_128_tanh": lambda: models.FCN_128_128(torch.tanh, torch.tanh, torch.tanh, config_path),
+        "fcn_128_128_relu": lambda: models.FCN_128_128(torch.relu, torch.relu, torch.relu, config_path),
+        "fcn_128_128_gelu": lambda: models.FCN_128_128(torch.nn.functional.gelu, torch.nn.functional.gelu, torch.nn.functional.gelu, config_path),
+        "fcn_128_128_sigmoid": lambda: models.FCN_128_128(torch.sigmoid, torch.sigmoid, torch.sigmoid, config_path),
         
-        "fcnn_256_32_tanh": lambda: models.FCNN_256_32(torch.tanh, torch.tanh, torch.tanh, config_path),
-        "fcnn_256_32_relu": lambda: models.FCNN_256_32(torch.relu, torch.relu, torch.relu, config_path),
-        "fcnn_256_32_gelu": lambda: models.FCNN_256_32(torch.nn.functional.gelu, torch.nn.functional.gelu, torch.nn.functional.gelu, config_path),
-        "fcnn_256_32_sigmoid": lambda: models.FCNN_256_32(torch.sigmoid, torch.sigmoid, torch.sigmoid, config_path),
+        "fcn_256_32_tanh": lambda: models.FCN_256_32(torch.tanh, torch.tanh, torch.tanh, config_path),
+        "fcn_256_32_relu": lambda: models.FCN_256_32(torch.relu, torch.relu, torch.relu, config_path),
+        "fcn_256_32_gelu": lambda: models.FCN_256_32(torch.nn.functional.gelu, torch.nn.functional.gelu, torch.nn.functional.gelu, config_path),
+        "fcn_256_32_sigmoid": lambda: models.FCN_256_32(torch.sigmoid, torch.sigmoid, torch.sigmoid, config_path),
+
+        "fcn_1024_128_relu": lambda: models.FCN_1024_128(torch.relu, torch.relu, torch.relu, config_path)
     }
     return model_dict[model_type]()
 

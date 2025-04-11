@@ -37,8 +37,8 @@ echo "Running with config: $CONFIG, seed: $SEED"
 
 python src/main.py \
     --mode multiple \
-    --teacher_type nonoverlappingCNN \
-    --student_type fcnn \
+    --teacher_type baselineCNN \
+    --student_type fcn_128_128 \
     --config_path $CONFIG \
     --seed $SEED \
     --name exp4

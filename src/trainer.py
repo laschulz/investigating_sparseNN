@@ -27,7 +27,7 @@ def train_model(model, X_train, y_train, optimizer, loss_fn, l1_lambda, l2_lambd
 
                 optimizer.zero_grad()
                 y_pred = model(batch_X)
-                if isinstance(model, (models.FCNN_128_128, models.FCNN_256_32)):
+                if isinstance(model, (models.FCNN_128_128, models.FCNN_256_32, models.FCNN_1024_128)):
                     batch_y = batch_y.view(batch_y.size(0), -1) 
                 loss = loss_fn(y_pred, batch_y).to(device)
 

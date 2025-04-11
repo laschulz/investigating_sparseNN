@@ -23,8 +23,9 @@ def model_mapper(model_type, activation, config_path):
         "baselineCNN": models.BaselineCNN,
         "splitFilterCNN": models.SplitFilterCNN,
         "multiChannelCNN": models.MultiChannelCNN,
-        "fcnn_128_128": models.FCNN_128_128,
-        "fcnn_256_32": models.FCNN_256_32
+        "fcn_128_128": models.FCN_128_128,
+        "fcn_256_32": models.FCN_256_32,
+        "fcn_1024_128": models.FCN_1024_128
     }
     if model_type not in model_map:
         raise ValueError(f"Unknown model type: {model_type}")
@@ -122,8 +123,8 @@ if __name__ == "__main__":
     parser.add_argument("--student_model", type=str, help="Student model name")
     parser.add_argument("--teacher_type", type=str, choices=["baselineCNN", "splitFilterCNN", "multiChannelCNN"],
                         help="Student model type: baselineCNN, splitFilterCNN, multiChannelCNN")
-    parser.add_argument("--student_type", type=str, choices=["baselineCNN", "multiChannelCNN", "fcnn_128_128", "fcnn_256_32"],
-                        help="Student model type: baselineCNN, multiChannelCNN, fcnn_128_128, fcnn_256_32")
+    parser.add_argument("--student_type", type=str, choices=["baselineCNN", "multiChannelCNN", "fcn_128_128", "fcn_256_32"],
+                        help="Student model type: baselineCNN, multiChannelCNN, fcn_128_128, fcn_256_32")
     parser.add_argument("--config_path", type=str, help="Path to configuration file")
     parser.add_argument("--seed", type=int, default=42, help="Random seed for reproducibility")
     parser.add_argument("--name", type=str, help="Name of the experiment")

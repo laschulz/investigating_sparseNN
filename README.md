@@ -23,10 +23,10 @@ To run a specific teacher–student experiment with a defined configuration:
 python src/main.py \
     --mode single \
     --teacher_model baselineCNN_tanh \
-    --student_model fcnn_128_128_tanh \
+    --student_model fcnn_1024_128_tanh \
     --config_path config.json \
     --seed 42 \
-    --name my_experiment
+    --name sanity_check
 ```
 
 In this mode, `--teacher_model` and `--student_model` should be specified using the format:
