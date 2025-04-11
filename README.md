@@ -23,7 +23,7 @@ To run a specific teacher–student experiment with a defined configuration:
 python src/main.py \
     --mode single \
     --teacher_model baselineCNN_tanh \
-    --student_model fcnn_1024_128_tanh \
+    --student_model fcn_1024_128_tanh \
     --config_path config.json \
     --seed 42 \
     --name sanity_check
@@ -33,7 +33,7 @@ In this mode, `--teacher_model` and `--student_model` should be specified using 
 <model_type>_<activation_function>
 
 where:
-- `<model_type>` $\in$ `{baselineCNN, multiChannelCNN, splitFilterCNN, fcnn_128_128, fcnn_256_32}`
+- `<model_type>` $\in$ `{baselineCNN, multiChannelCNN, splitFilterCNN, fcn_128_128, fcn_256_32}`
 - `<activation_function>` $\in$ `{relu, sigmoid, tanh}`
 
 
@@ -45,7 +45,7 @@ To run multiple experiments over combinations of activation functions for a give
 python src/main.py \
     --mode multiple \
     --teacher_type baselineCNN \
-    --student_type fcnn_128_128 \
+    --student_type fcn_128_128 \
     --config_path config.json \
     --seed 42 \
     --name my_experiments
