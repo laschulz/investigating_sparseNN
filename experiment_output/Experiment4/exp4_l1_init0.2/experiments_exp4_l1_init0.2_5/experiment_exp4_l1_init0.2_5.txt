@@ -8,7 +8,7 @@ layers.2.weight: [[[ 0.86 -0.84]]]
 
 ================================================================================
 
-nonoverlappingCNN_sigmoid -> fcnn_sigmoid
+baselineCNN_sigmoid -> fcn_128_128_sigmoid
 
 Student Model Parameters:
 layers.0.weight: [[0. 0. 0. ... 0. 0. 0.]
@@ -62,7 +62,7 @@ stopped after epoch: 166
 
 ================================================================================
 
-nonoverlappingCNN_sigmoid -> fcnn_relu
+baselineCNN_sigmoid -> fcn_128_128_relu
 
 Student Model Parameters:
 layers.0.weight: [[ 0.0029079   0.00296636  0.03953435 ... -0.00412184  0.10744642
@@ -128,7 +128,7 @@ stopped after epoch: 540
 
 ================================================================================
 
-nonoverlappingCNN_sigmoid -> fcnn_tanh
+baselineCNN_sigmoid -> fcn_128_128_tanh
 
 Student Model Parameters:
 layers.0.weight: [[0. 0. 0. ... 0. 0. 0.]
@@ -179,7 +179,7 @@ stopped after epoch: 194
 
 ================================================================================
 
-nonoverlappingCNN_relu -> fcnn_sigmoid
+baselineCNN_relu -> fcn_128_128_sigmoid
 
 Student Model Parameters:
 layers.0.weight: [[ 0.          0.          0.         ...  0.          0.
@@ -239,7 +239,7 @@ stopped after epoch: 5049
 
 ================================================================================
 
-nonoverlappingCNN_relu -> fcnn_relu
+baselineCNN_relu -> fcn_128_128_relu
 
 Student Model Parameters:
 layers.0.weight: [[0. 0. 0. ... 0. 0. 0.]
@@ -293,7 +293,7 @@ stopped after epoch: 1323
 
 ================================================================================
 
-nonoverlappingCNN_relu -> fcnn_tanh
+baselineCNN_relu -> fcn_128_128_tanh
 
 Student Model Parameters:
 layers.0.weight: [[ 0.0000000e+00  0.0000000e+00  0.0000000e+00 ...  0.0000000e+00
@@ -353,7 +353,7 @@ stopped after epoch: 431
 
 ================================================================================
 
-nonoverlappingCNN_tanh -> fcnn_sigmoid
+baselineCNN_tanh -> fcn_128_128_sigmoid
 
 Student Model Parameters:
 layers.0.weight: [[0. 0. 0. ... 0. 0. 0.]
@@ -407,7 +407,7 @@ stopped after epoch: 125
 
 ================================================================================
 
-nonoverlappingCNN_tanh -> fcnn_relu
+baselineCNN_tanh -> fcn_128_128_relu
 
 Student Model Parameters:
 layers.0.weight: [[-0.1407836  -0.18640961  0.10259731 ...  0.0561084  -0.00925289
@@ -467,7 +467,7 @@ stopped after epoch: 938
 
 ================================================================================
 
-nonoverlappingCNN_tanh -> fcnn_tanh
+baselineCNN_tanh -> fcn_128_128_tanh
 
 Student Model Parameters:
 layers.0.weight: [[0. 0. 0. ... 0. 0. 0.]

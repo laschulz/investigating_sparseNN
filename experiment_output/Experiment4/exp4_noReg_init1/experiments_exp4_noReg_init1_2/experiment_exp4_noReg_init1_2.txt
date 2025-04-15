@@ -8,7 +8,7 @@ layers.2.weight: [[[ 0.86 -0.84]]]
 
 ================================================================================
 
-nonoverlappingCNN_sigmoid -> fcnn_sigmoid
+baselineCNN_sigmoid -> fcn_128_128_sigmoid
 
 Student Model Parameters:
 layers.0.weight: [[-0.04188275 -0.01551997  0.01300445 ...  0.13440403  0.00693104
@@ -74,7 +74,7 @@ stopped after epoch: 25210
 
 ================================================================================
 
-nonoverlappingCNN_sigmoid -> fcnn_relu
+baselineCNN_sigmoid -> fcn_128_128_relu
 
 Student Model Parameters:
 layers.0.weight: [[ 0.00470805 -0.05473269  0.10440262 ...  0.07949144 -0.15369743

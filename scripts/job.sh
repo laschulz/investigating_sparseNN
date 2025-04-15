@@ -1,11 +1,11 @@
 #!/bin/bash                        
-#SBATCH -t 28:00:00        
+#SBATCH -t 30:00:00        
 #SBATCH --gres=gpu:1  # Request exactly 1 GPU
 #SBATCH --mem=16G
 #SBATCH --cpus-per-task=8
 #SBATCH --output=/om2/user/laschulz/investigating_sparseNN/logs/output_fcnn_%A_%a.log
 #SBATCH --error=/om2/user/laschulz/investigating_sparseNN/logs/error_fcnn_%A_%a.log
-#SBATCH --job-name exp3_l2_init0.2
+#SBATCH --job-name exp4_l1_init1
 
 hostname                     # Print the hostname of the compute node
 

@@ -56,3 +56,13 @@ All other hyperparameters, such as learning rate, regularization strength, and a
 
 > **Note:** Only the name of the config file (e.g., `config.json`) needs to be passed.  
 > It is assumed to be located in the `config_files/` folder.
+
+
+
+python src/main.py \
+    --mode single \
+    --teacher_model baselineCNN_relu \
+    --student_model fcn_128_128_tanh \
+    --config_path config_l1_0.2.json \
+    --seed 2 \
+    --name exp4_l1_0.2

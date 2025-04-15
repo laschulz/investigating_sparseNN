@@ -3,7 +3,7 @@
     "patience": 100,
     "dataset_size": 5120,
     "num_epochs": 100000,
-    "lr": [0.005],
+    "lr": [0.01],
     "l1_norm": [0],
     "l2_norm": [1e-5],
     "loss_func": "MSE",
