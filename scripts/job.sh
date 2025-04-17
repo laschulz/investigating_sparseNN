@@ -5,7 +5,7 @@
 #SBATCH --cpus-per-task=8
 #SBATCH --output=/om2/user/laschulz/investigating_sparseNN/logs/output_fcnn_%A_%a.log
 #SBATCH --error=/om2/user/laschulz/investigating_sparseNN/logs/error_fcnn_%A_%a.log
-#SBATCH --job-name exp4_l1_init1
+#SBATCH --job-name exp5_l2_init0.2
 
 hostname                     # Print the hostname of the compute node
 
@@ -21,7 +21,8 @@ cd /om2/user/laschulz/investigating_sparseNN || exit 1
 
 python src/main.py \
     --mode multiple \
-    --teacher_type nonoverlappingCNN \
-    --student_type fcnn_decreasing \
-    --config_path config_31.json \
-    --seed 1
+    --teacher_type multiChannelCNN \
+    --student_type fcn_256_32 \
+    --config_path config_l2_0.2.json \
+    --seed 2 \
+    --name exp5

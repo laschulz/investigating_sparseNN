@@ -4,7 +4,7 @@
 #SBATCH --mem=32G                   # Set memory limit
 #SBATCH --cpus-per-task=8
 #SBATCH --job-name=exp4
-#SBATCH --array=0-5                 # 2 configs × 3 seeds x 1 Reg = 6 jobs
+#SBATCH --array=0-3                 # 1 config × 4 seeds x 1 Reg = 4 jobs
 #SBATCH --output=/om2/user/laschulz/investigating_sparseNN/logs/output_%A_%a.log
 #SBATCH --error=/om2/user/laschulz/investigating_sparseNN/logs/error_%A_%a.log
 
@@ -20,8 +20,8 @@ mkdir -p /om2/user/laschulz/investigating_sparseNN/logs
 cd /om2/user/laschulz/investigating_sparseNN || exit 1
 
 # Define configs and student model
-CONFIG_FILES=("config_noReg_1.json" "config_noReg_0.2.json")
-SEEDS=(1 3 5)
+CONFIG_FILES=("config_noReg_0.2.json")
+SEEDS=(2 3 4 5)
 
 # Compute indices
 NUM_CONFIGS=${#CONFIG_FILES[@]}

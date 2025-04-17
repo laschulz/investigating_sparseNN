@@ -1,10 +1,10 @@
 #!/bin/bash                      
-#SBATCH -t 11:30:00                  # walltime = 1 hour
+#SBATCH -t 30:00:00                  # walltime = 1 hour
 #SBATCH --gres=gpu:1                # Request 1 GPU
 #SBATCH --mem=32G                   # Set memory limit
 #SBATCH --cpus-per-task=8
 #SBATCH --job-name=exp6
-#SBATCH --array=0-9                 # 2 configs × 5 seeds x 1 Reg = 10 jobs
+#SBATCH --array=0-4                 # 1 configs × 5 seeds x 1 Reg = 5 jobs
 #SBATCH --output=/om2/user/laschulz/investigating_sparseNN/logs/output_%A_%a.log
 #SBATCH --error=/om2/user/laschulz/investigating_sparseNN/logs/error_%A_%a.log
 
@@ -21,7 +21,7 @@ cd /om2/user/laschulz/investigating_sparseNN || exit 1
 
 # Define configs and student model
 #TODO ADJUST THIS
-CONFIG_FILES=("config_cnn_noReg_1.json" "config_cnn_noReg_0.2.json")
+CONFIG_FILES=("config_cnn_noReg_0.2.json")
 SEEDS=(1 2 3 4 5)
 
 # Compute indices
