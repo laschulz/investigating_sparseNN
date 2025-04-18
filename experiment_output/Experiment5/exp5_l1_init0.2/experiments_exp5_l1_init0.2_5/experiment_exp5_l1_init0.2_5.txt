@@ -35,7 +35,7 @@ layers.2.weight: [[[-0.54  0.16]
 
 ================================================================================
 
-overlappingCNN_sigmoid -> fcnn_decreasing_sigmoid
+multiChannelCNN_sigmoid -> fcn_256_32_sigmoid
 
 Student Model Parameters:
 layers.0.weight: [[0. 0. 0. ... 0. 0. 0.]
@@ -73,7 +73,7 @@ stopped after epoch: 250
 
 ================================================================================
 
-overlappingCNN_sigmoid -> fcnn_decreasing_relu
+multiChannelCNN_sigmoid -> fcn_256_32_relu
 
 Student Model Parameters:
 layers.0.weight: [[0. 0. 0. ... 0. 0. 0.]
@@ -110,7 +110,7 @@ stopped after epoch: 331
 
 ================================================================================
 
-overlappingCNN_sigmoid -> fcnn_decreasing_tanh
+multiChannelCNN_sigmoid -> fcn_256_32_tanh
 
 Student Model Parameters:
 layers.0.weight: [[0. 0. 0. ... 0. 0. 0.]
@@ -148,7 +148,7 @@ stopped after epoch: 250
 
 ================================================================================
 
-overlappingCNN_relu -> fcnn_decreasing_sigmoid
+multiChannelCNN_relu -> fcn_256_32_sigmoid
 
 Student Model Parameters:
 layers.0.weight: [[ 0.          0.          0.         ...  0.          0.
@@ -200,7 +200,7 @@ stopped after epoch: 4162
 
 ================================================================================
 
-overlappingCNN_relu -> fcnn_decreasing_relu
+multiChannelCNN_relu -> fcn_256_32_relu
 
 Student Model Parameters:
 layers.0.weight: [[0. 0. 0. ... 0. 0. 0.]
@@ -235,6 +235,126 @@ data size: 100000
 init: 0.2
 seed: 5
 stopped after epoch: 784
+
+================================================================================
+
+multiChannelCNN_tanh -> fcn_256_32_sigmoid
+
+Student Model Parameters:
+layers.0.weight: [[0. 0. 0. ... 0. 0. 0.]
+ [0. 0. 0. ... 0. 0. 0.]
+ [0. 0. 0. ... 0. 0. 0.]
+ ...
+ [0. 0. 0. ... 0. 0. 0.]
+ [0. 0. 0. ... 0. 0. 0.]
+ [0. 0. 0. ... 0. 0. 0.]]
+layers.1.weight: [[0. 0. 0. ... 0. 0. 0.]
+ [0. 0. 0. ... 0. 0. 0.]
+ [0. 0. 0. ... 0. 0. 0.]
+ ...
+ [0. 0. 0. ... 0. 0. 0.]
+ [0. 0. 0. ... 0. 0. 0.]
+ [0. 0. 0. ... 0. 0. 0.]]
+layers.2.weight: [[-0.40715802 -0.2884438  -0.2899249  -0.4402701  -0.24839853 -0.4433521
+  -0.4241344  -0.35768884 -0.26772854 -0.3199034  -0.38819844 -0.37434223
+  -0.33809417 -0.2735404  -0.4621672  -0.32096377 -0.40758994 -0.49409756
+  -0.44208065 -0.40937585 -0.2631866  -0.263533   -0.23882842 -0.46437946
+  -0.279414   -0.40793502 -0.45000845 -0.21853827 -0.40992168 -0.26696128
+  -0.3624035  -0.4104745 ]]
+
+Final Loss: 0.0010
+Distance Metric: 3.7474
+L1 norm: 1e-05
+L2 norm: 0
+Batch size: 16
+Clipping: 0
+Learning rate: 0.005
+data size: 100000
+init: 0.2
+seed: 5
+stopped after epoch: 226
+
+================================================================================
+
+multiChannelCNN_tanh -> fcn_256_32_relu
+
+Student Model Parameters:
+layers.0.weight: [[ 0.          0.          0.         ...  0.          0.
+   0.        ]
+ [ 0.          0.          0.         ...  0.          0.
+   0.        ]
+ [ 0.          0.          0.         ...  0.          0.
+   0.        ]
+ ...
+ [ 0.          0.          0.         ...  0.          0.
+   0.        ]
+ [ 0.01536752 -0.06545524  0.00351176 ... -0.03425426  0.04491995
+  -0.02664469]
+ [ 0.          0.          0.         ...  0.          0.
+   0.        ]]
+layers.1.weight: [[0. 0. 0. ... 0. 0. 0.]
+ [0. 0. 0. ... 0. 0. 0.]
+ [0. 0. 0. ... 0. 0. 0.]
+ ...
+ [0. 0. 0. ... 0. 0. 0.]
+ [0. 0. 0. ... 0. 0. 0.]
+ [0. 0. 0. ... 0. 0. 0.]]
+layers.2.weight: [[0.         0.         0.         0.         0.         0.
+  0.         0.42018908 0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.         0.         0.         0.         0.
+  0.         0.        ]]
+
+Final Loss: 0.0004
+Distance Metric: 1.8150
+L1 norm: 1e-05
+L2 norm: 0
+Batch size: 16
+Clipping: 0
+Learning rate: 0.005
+data size: 100000
+init: 0.2
+seed: 5
+stopped after epoch: 845
+
+================================================================================
+
+multiChannelCNN_tanh -> fcn_256_32_tanh
+
+Student Model Parameters:
+layers.0.weight: [[0. 0. 0. ... 0. 0. 0.]
+ [0. 0. 0. ... 0. 0. 0.]
+ [0. 0. 0. ... 0. 0. 0.]
+ ...
+ [0. 0. 0. ... 0. 0. 0.]
+ [0. 0. 0. ... 0. 0. 0.]
+ [0. 0. 0. ... 0. 0. 0.]]
+layers.1.weight: [[0. 0. 0. ... 0. 0. 0.]
+ [0. 0. 0. ... 0. 0. 0.]
+ [0. 0. 0. ... 0. 0. 0.]
+ ...
+ [0. 0. 0. ... 0. 0. 0.]
+ [0. 0. 0. ... 0. 0. 0.]
+ [0. 0. 0. ... 0. 0. 0.]]
+layers.2.weight: [[ 0.          0.          0.          0.          0.          0.
+   0.          0.          0.         -0.45198274  0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.          0.          0.          0.          0.
+   0.          0.        ]]
+
+Final Loss: 0.0000
+Distance Metric: 1.8710
+L1 norm: 1e-05
+L2 norm: 0
+Batch size: 16
+Clipping: 0
+Learning rate: 0.005
+data size: 100000
+init: 0.2
+seed: 5
+stopped after epoch: 729
 
 ================================================================================
 

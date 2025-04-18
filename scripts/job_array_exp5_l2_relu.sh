@@ -20,8 +20,8 @@ mkdir -p /om2/user/laschulz/investigating_sparseNN/logs
 cd /om2/user/laschulz/investigating_sparseNN || exit 1
 
 # Define configs and student model
-CONFIG_FILES=("config_l1_1.json")
-SEEDS=(1 2 3)
+CONFIG_FILES=("config_l2_1.json")
+SEEDS=(3 4 5)
 
 # Compute indices
 NUM_CONFIGS=${#CONFIG_FILES[@]}
@@ -37,7 +37,7 @@ echo "Running with config: $CONFIG, seed: $SEED"
 
 python src/main.py \
     --mode single \
-    --teacher_model multiChannelCNN_tanh \
+    --teacher_model multiChannelCNN_relu \
     --student_model fcn_256_32_sigmoid \
     --config_path $CONFIG \
     --seed $SEED \
@@ -45,7 +45,7 @@ python src/main.py \
 
 python src/main.py \
     --mode single \
-    --teacher_model multiChannelCNN_tanh \
+    --teacher_model multiChannelCNN_relu \
     --student_model fcn_256_32_relu \
     --config_path $CONFIG \
     --seed $SEED \
@@ -53,7 +53,7 @@ python src/main.py \
 
 python src/main.py \
     --mode single \
-    --teacher_model multiChannelCNN_tanh \
+    --teacher_model multiChannelCNN_relu \
     --student_model fcn_256_32_tanh \
     --config_path $CONFIG \
     --seed $SEED \

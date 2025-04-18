@@ -35,7 +35,7 @@ layers.2.weight: [[[-0.54  0.16]
 
 ================================================================================
 
-overlappingCNN_sigmoid -> fcnn_decreasing_sigmoid
+multiChannelCNN_sigmoid -> fcn_256_32_sigmoid
 
 Student Model Parameters:
 layers.0.weight: [[0. 0. 0. ... 0. 0. 0.]
@@ -73,7 +73,7 @@ stopped after epoch: 1762
 
 ================================================================================
 
-overlappingCNN_sigmoid -> fcnn_decreasing_relu
+multiChannelCNN_sigmoid -> fcn_256_32_relu
 
 Student Model Parameters:
 layers.0.weight: [[0. 0. 0. ... 0. 0. 0.]
@@ -111,7 +111,7 @@ stopped after epoch: 1306
 
 ================================================================================
 
-overlappingCNN_sigmoid -> fcnn_decreasing_tanh
+multiChannelCNN_sigmoid -> fcn_256_32_tanh
 
 Student Model Parameters:
 layers.0.weight: [[0. 0. 0. ... 0. 0. 0.]
@@ -147,7 +147,7 @@ stopped after epoch: 563
 
 ================================================================================
 
-overlappingCNN_relu -> fcnn_decreasing_sigmoid
+multiChannelCNN_relu -> fcn_256_32_sigmoid
 
 Student Model Parameters:
 layers.0.weight: [[0. 0. 0. ... 0. 0. 0.]
@@ -193,7 +193,7 @@ stopped after epoch: 1745
 
 ================================================================================
 
-overlappingCNN_relu -> fcnn_decreasing_relu
+multiChannelCNN_relu -> fcn_256_32_relu
 
 Student Model Parameters:
 layers.0.weight: [[ 0.          0.          0.         ...  0.          0.
@@ -243,7 +243,7 @@ stopped after epoch: 1094
 
 ================================================================================
 
-overlappingCNN_relu -> fcnn_decreasing_tanh
+multiChannelCNN_relu -> fcn_256_32_tanh
 
 Student Model Parameters:
 layers.0.weight: [[-0.8442189   0.35407937 -0.4695645  ... -0.30545145  1.0806314
@@ -293,7 +293,7 @@ stopped after epoch: 914
 
 ================================================================================
 
-overlappingCNN_tanh -> fcnn_decreasing_sigmoid
+multiChannelCNN_tanh -> fcn_256_32_sigmoid
 
 Student Model Parameters:
 layers.0.weight: [[0. 0. 0. ... 0. 0. 0.]

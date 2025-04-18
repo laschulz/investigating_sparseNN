@@ -35,7 +35,7 @@ layers.2.weight: [[[-0.54  0.16]
 
 ================================================================================
 
-overlappingCNN_sigmoid -> fcnn_decreasing_sigmoid
+multiChannelCNN_sigmoid -> fcn_256_32_sigmoid
 
 Student Model Parameters:
 layers.0.weight: [[-0.00773718  0.00049554  0.00105543 ... -0.0062054   0.00323303
@@ -85,7 +85,7 @@ stopped after epoch: 1134
 
 ================================================================================
 
-overlappingCNN_sigmoid -> fcnn_decreasing_relu
+multiChannelCNN_sigmoid -> fcn_256_32_relu
 
 Student Model Parameters:
 layers.0.weight: [[-0.04261355 -0.02593472  0.00122161 ... -0.01628435  0.09397261
@@ -135,7 +135,7 @@ stopped after epoch: 2086
 
 ================================================================================
 
-overlappingCNN_sigmoid -> fcnn_decreasing_tanh
+multiChannelCNN_sigmoid -> fcn_256_32_tanh
 
 Student Model Parameters:
 layers.0.weight: [[-0.00980559 -0.00431835  0.01559502 ...  0.01454278 -0.00189591
@@ -185,7 +185,7 @@ stopped after epoch: 356
 
 ================================================================================
 
-overlappingCNN_relu -> fcnn_decreasing_sigmoid
+multiChannelCNN_relu -> fcn_256_32_sigmoid
 
 Student Model Parameters:
 layers.0.weight: [[-0.22399625  0.05254712  0.03752396 ...  0.0867893  -0.06963822

@@ -35,7 +35,7 @@ layers.2.weight: [[[-0.54  0.16]
 
 ================================================================================
 
-overlappingCNN_sigmoid -> fcnn_decreasing_sigmoid
+multiChannelCNN_sigmoid -> fcn_256_32_sigmoid
 
 Student Model Parameters:
 layers.0.weight: [[0. 0. 0. ... 0. 0. 0.]
@@ -73,7 +73,7 @@ stopped after epoch: 2231
 
 ================================================================================
 
-overlappingCNN_sigmoid -> fcnn_decreasing_relu
+multiChannelCNN_sigmoid -> fcn_256_32_relu
 
 Student Model Parameters:
 layers.0.weight: [[0. 0. 0. ... 0. 0. 0.]
@@ -111,7 +111,7 @@ stopped after epoch: 1052
 
 ================================================================================
 
-overlappingCNN_sigmoid -> fcnn_decreasing_tanh
+multiChannelCNN_sigmoid -> fcn_256_32_tanh
 
 Student Model Parameters:
 layers.0.weight: [[0. 0. 0. ... 0. 0. 0.]
@@ -149,7 +149,7 @@ stopped after epoch: 390
 
 ================================================================================
 
-overlappingCNN_relu -> fcnn_decreasing_sigmoid
+multiChannelCNN_relu -> fcn_256_32_sigmoid
 
 Student Model Parameters:
 layers.0.weight: [[ 0.          0.          0.         ...  0.          0.
@@ -201,7 +201,7 @@ stopped after epoch: 2353
 
 ================================================================================
 
-overlappingCNN_relu -> fcnn_decreasing_relu
+multiChannelCNN_relu -> fcn_256_32_relu
 
 Student Model Parameters:
 layers.0.weight: [[0. 0. 0. ... 0. 0. 0.]
@@ -239,7 +239,7 @@ stopped after epoch: 1019
 
 ================================================================================
 
-overlappingCNN_relu -> fcnn_decreasing_tanh
+multiChannelCNN_relu -> fcn_256_32_tanh
 
 Student Model Parameters:
 layers.0.weight: [[ 0.          0.          0.         ...  0.          0.
@@ -289,7 +289,7 @@ stopped after epoch: 1243
 
 ================================================================================
 
-overlappingCNN_tanh -> fcnn_decreasing_sigmoid
+multiChannelCNN_tanh -> fcn_256_32_sigmoid
 
 Student Model Parameters:
 layers.0.weight: [[-0.00947457 -0.02801977  0.02151532 ... -0.19170742  0.15634961
@@ -341,7 +341,7 @@ stopped after epoch: 3751
 
 ================================================================================
 
-overlappingCNN_tanh -> fcnn_decreasing_relu
+multiChannelCNN_tanh -> fcn_256_32_relu
 
 Student Model Parameters:
 layers.0.weight: [[-0.9659005   0.35134077  0.03906051 ... -0.06279266  0.00394263
@@ -391,7 +391,7 @@ stopped after epoch: 1372
 
 ================================================================================
 
-overlappingCNN_tanh -> fcnn_decreasing_tanh
+multiChannelCNN_tanh -> fcn_256_32_tanh
 
 Student Model Parameters:
 layers.0.weight: [[ 0.          0.          0.         ...  0.          0.
