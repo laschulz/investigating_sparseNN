@@ -8,7 +8,7 @@ layers.2.weight: [[[ 0.86 -0.84]]]
 
 ================================================================================
 
-nonoverlappingCNN_sigmoid -> overlappingCNN_sigmoid
+baselineCNN_sigmoid -> multiChannelCNN_sigmoid
 
 Student Model Parameters:
 layers.0.weight: [[[0. 0. 0.]]
@@ -55,7 +55,7 @@ seed: 3
 
 ================================================================================
 
-nonoverlappingCNN_sigmoid -> overlappingCNN_relu
+baselineCNN_sigmoid -> multiChannelCNN_relu
 
 Student Model Parameters:
 layers.0.weight: [[[ 0.07745523  0.22155844 -0.45113143]]
@@ -102,7 +102,7 @@ seed: 3
 
 ================================================================================
 
-nonoverlappingCNN_sigmoid -> overlappingCNN_tanh
+baselineCNN_sigmoid -> multiChannelCNN_tanh
 
 Student Model Parameters:
 layers.0.weight: [[[ 0.07560377  0.2559074  -0.39386594]]
@@ -149,7 +149,7 @@ seed: 3
 
 ================================================================================
 
-nonoverlappingCNN_relu -> overlappingCNN_sigmoid
+baselineCNN_relu -> multiChannelCNN_sigmoid
 
 Student Model Parameters:
 layers.0.weight: [[[ 1.0672137  -1.1408379   0.05750978]]
@@ -196,7 +196,7 @@ seed: 3
 
 ================================================================================
 
-nonoverlappingCNN_relu -> overlappingCNN_relu
+baselineCNN_relu -> multiChannelCNN_relu
 
 Student Model Parameters:
 layers.0.weight: [[[ 1.2665241  -1.3838793   0.42543426]]
@@ -243,7 +243,7 @@ seed: 3
 
 ================================================================================
 
-nonoverlappingCNN_relu -> overlappingCNN_tanh
+baselineCNN_relu -> multiChannelCNN_tanh
 
 Student Model Parameters:
 layers.0.weight: [[[-0.6908853   0.39731103 -0.15042993]]
@@ -287,6 +287,150 @@ Learning rate: 0.01
 data size: 5120
 init: 0.2
 seed: 3
+
+================================================================================
+
+baselineCNN_tanh -> multiChannelCNN_sigmoid
+
+Student Model Parameters:
+layers.0.weight: [[[0. 0. 0.]]
+
+ [[0. 0. 0.]]
+
+ [[0. 0. 0.]]
+
+ [[0. 0. 0.]]]
+layers.1.weight: [[[0. 0.]
+  [0. 0.]
+  [0. 0.]
+  [0. 0.]]
+
+ [[0. 0.]
+  [0. 0.]
+  [0. 0.]
+  [0. 0.]]
+
+ [[0. 0.]
+  [0. 0.]
+  [0. 0.]
+  [0. 0.]]
+
+ [[0. 0.]
+  [0. 0.]
+  [0. 0.]
+  [0. 0.]]]
+layers.2.weight: [[[-1.4332731 -1.4879432]
+  [-1.4340802 -1.1826967]
+  [-1.4939994 -1.5227937]
+  [-1.4848257 -1.6456041]]]
+
+Final Loss: 0.0011
+Distance Metric: 6.3283
+L1 norm: 1e-05
+L2 norm: 0
+Batch size: 16
+Clipping: 0
+Learning rate: 0.005
+data size: 5120
+init: 0.2
+seed: 3
+stopped after epoch: 10682
+
+================================================================================
+
+baselineCNN_tanh -> multiChannelCNN_relu
+
+Student Model Parameters:
+layers.0.weight: [[[-0.16973677 -0.05135052 -0.12732257]]
+
+ [[ 0.16491099  0.04665567  0.12211995]]
+
+ [[ 0.          0.          0.        ]]
+
+ [[ 0.          0.          0.        ]]]
+layers.1.weight: [[[0.06015693 0.286759  ]
+  [0.         0.        ]
+  [0.         0.        ]
+  [0.         0.        ]]
+
+ [[0.         0.        ]
+  [0.0415586  0.2872489 ]
+  [0.         0.        ]
+  [0.         0.        ]]
+
+ [[0.         0.        ]
+  [0.         0.        ]
+  [0.         0.        ]
+  [0.         0.        ]]
+
+ [[0.         0.        ]
+  [0.         0.        ]
+  [0.         0.        ]
+  [0.         0.        ]]]
+layers.2.weight: [[[ 0.13871491  0.21051425]
+  [-0.13707757 -0.19721392]
+  [ 0.          0.        ]
+  [ 0.          0.        ]]]
+
+Final Loss: 0.0002
+Distance Metric: 1.5493
+L1 norm: 1e-05
+L2 norm: 0
+Batch size: 16
+Clipping: 0
+Learning rate: 0.005
+data size: 5120
+init: 0.2
+seed: 3
+stopped after epoch: 4603
+
+================================================================================
+
+baselineCNN_tanh -> multiChannelCNN_tanh
+
+Student Model Parameters:
+layers.0.weight: [[[-0.32176858  0.02034634  0.07448412]]
+
+ [[ 0.          0.          0.        ]]
+
+ [[ 0.          0.          0.        ]]
+
+ [[ 0.          0.          0.        ]]]
+layers.1.weight: [[[ 0.30903852 -0.15822688]
+  [ 0.          0.        ]
+  [ 0.          0.        ]
+  [ 0.          0.        ]]
+
+ [[ 0.          0.        ]
+  [ 0.          0.        ]
+  [ 0.          0.        ]
+  [ 0.          0.        ]]
+
+ [[ 0.          0.        ]
+  [ 0.          0.        ]
+  [ 0.          0.        ]
+  [ 0.          0.        ]]
+
+ [[ 0.          0.        ]
+  [ 0.          0.        ]
+  [ 0.          0.        ]
+  [ 0.          0.        ]]]
+layers.2.weight: [[[ 0.11684592 -0.35304114]
+  [ 0.          0.        ]
+  [ 0.          0.        ]
+  [ 0.          0.        ]]]
+
+Final Loss: 0.0000
+Distance Metric: 0.1167
+L1 norm: 1e-05
+L2 norm: 0
+Batch size: 16
+Clipping: 0
+Learning rate: 0.005
+data size: 5120
+init: 0.2
+seed: 3
+stopped after epoch: 8880
 
 ================================================================================
 

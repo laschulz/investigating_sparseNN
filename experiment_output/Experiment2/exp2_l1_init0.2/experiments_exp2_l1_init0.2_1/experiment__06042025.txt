@@ -8,7 +8,7 @@ layers.2.weight: [[[ 0.86 -0.84]]]
 
 ================================================================================
 
-nonoverlappingCNN_sigmoid -> overlappingCNN_sigmoid
+baselineCNN_sigmoid -> multiChannelCNN_sigmoid
 
 Student Model Parameters:
 layers.0.weight: [[[0. 0. 0.]]
@@ -55,7 +55,7 @@ seed: 1
 
 ================================================================================
 
-nonoverlappingCNN_sigmoid -> overlappingCNN_relu
+baselineCNN_sigmoid -> multiChannelCNN_relu
 
 Student Model Parameters:
 layers.0.weight: [[[-0.00050617  0.39087212  0.38216305]]
@@ -102,7 +102,7 @@ seed: 1
 
 ================================================================================
 
-nonoverlappingCNN_sigmoid -> overlappingCNN_tanh
+baselineCNN_sigmoid -> multiChannelCNN_tanh
 
 Student Model Parameters:
 layers.0.weight: [[[-0.7901531   0.11040274 -0.6577641 ]]
@@ -149,7 +149,7 @@ seed: 1
 
 ================================================================================
 
-nonoverlappingCNN_relu -> overlappingCNN_sigmoid
+baselineCNN_relu -> multiChannelCNN_sigmoid
 
 Student Model Parameters:
 layers.0.weight: [[[ 0.5537666  -0.7855493   0.3513266 ]]
@@ -196,7 +196,7 @@ seed: 1
 
 ================================================================================
 
-nonoverlappingCNN_relu -> overlappingCNN_relu
+baselineCNN_relu -> multiChannelCNN_relu
 
 Student Model Parameters:
 layers.0.weight: [[[ 0.          0.          0.        ]]
@@ -243,7 +243,7 @@ seed: 1
 
 ================================================================================
 
-nonoverlappingCNN_relu -> overlappingCNN_tanh
+baselineCNN_relu -> multiChannelCNN_tanh
 
 Student Model Parameters:
 layers.0.weight: [[[-0.90379363  0.65494424 -0.14413024]]
@@ -290,7 +290,7 @@ seed: 1
 
 ================================================================================
 
-nonoverlappingCNN_tanh -> overlappingCNN_sigmoid
+baselineCNN_tanh -> multiChannelCNN_sigmoid
 
 Student Model Parameters:
 layers.0.weight: [[[-1.7059597e-03 -3.2140533e-04  5.6681940e-03]]
@@ -337,7 +337,7 @@ seed: 1
 
 ================================================================================
 
-nonoverlappingCNN_tanh -> overlappingCNN_relu
+baselineCNN_tanh -> multiChannelCNN_relu
 
 Student Model Parameters:
 layers.0.weight: [[[ 0.5118438   0.2949019  -0.20653719]]
@@ -384,7 +384,7 @@ seed: 1
 
 ================================================================================
 
-nonoverlappingCNN_tanh -> overlappingCNN_tanh
+baselineCNN_tanh -> multiChannelCNN_tanh
 
 Student Model Parameters:
 layers.0.weight: [[[ 0.         0.         0.       ]]

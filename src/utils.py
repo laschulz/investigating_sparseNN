@@ -43,7 +43,7 @@ def read_config(config_path):
     return config
 
 def init_teacher(teacher_model, teacher_name):
-    if "BaselineCNN" in teacher_name:
+    if "baselineCNN" in teacher_name:
         teacher_weights = [
             torch.tensor([[[2.59, -2.83, 0.87]]]),  # conv1
             torch.tensor([[[-1.38, 1.29]]]),        # conv2
@@ -52,7 +52,7 @@ def init_teacher(teacher_model, teacher_name):
         with torch.no_grad():
             for layer, weight in zip(teacher_model.layers, teacher_weights):
                 layer.weight.copy_(weight)
-    elif "SplitFilterCNN" in teacher_name:
+    elif "multiChannelCNN" in teacher_name:
         teacher_weights = [
         torch.tensor([[[-0.78, -0.12,  0.70]],
                     [[-1.16,  0.47,  0.05]],

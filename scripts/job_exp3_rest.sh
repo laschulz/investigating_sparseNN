@@ -22,15 +22,7 @@ python src/main.py \
     --mode single \
     --teacher_model baselineCNN_tanh \
     --student_model fcn_256_32_tanh \
-    --config_path config_noReg_1.json \
-    --seed 1 \
-    --name exp3
-
-python src/main.py \
-    --mode single \
-    --teacher_model baselineCNN_tanh \
-    --student_model fcn_256_32_tanh \
-    --config_path config_noReg_1.json \
+    --config_path config_l1_1.json \
     --seed 2 \
     --name exp3
 
@@ -38,22 +30,54 @@ python src/main.py \
     --mode single \
     --teacher_model baselineCNN_tanh \
     --student_model fcn_256_32_tanh \
-    --config_path config_noReg_1.json \
+    --config_path config_l1_1.json \
     --seed 3 \
     --name exp3
 
 python src/main.py \
     --mode single \
-    --teacher_model baselineCNN_sigmoid \
-    --student_model fcn_256_32_relu \
-    --config_path config_noReg_0.2.json \
+    --teacher_model baselineCNN_relu \
+    --student_model fcn_256_32_sigmoid \
+    --config_path config_l2_0.2.json \
     --seed 1 \
     --name exp3
 
 python src/main.py \
     --mode single \
-    --teacher_model baselineCNN_sigmoid \
-    --student_model fcn_256_32_tanh \
-    --config_path config_noReg_0.2.json \
+    --teacher_model baselineCNN_relu \
+    --student_model fcn_256_32_relu \
+    --config_path config_l2_0.2.json \
     --seed 1 \
+    --name exp3
+
+python src/main.py \
+    --mode single \
+    --teacher_model baselineCNN_relu \
+    --student_model fcn_256_32_sigmoid \
+    --config_path config_l2_0.2.json \
+    --seed 3 \
+    --name exp3
+
+python src/main.py \
+    --mode single \
+    --teacher_model baselineCNN_relu \
+    --student_model fcn_256_32_relu \
+    --config_path config_l2_0.2.json \
+    --seed 3 \
+    --name exp3
+
+python src/main.py \
+    --mode single \
+    --teacher_model baselineCNN_relu \
+    --student_model fcn_256_32_relu \
+    --config_path config_l2_0.2.json \
+    --seed 5 \
+    --name exp3
+
+python src/main.py \
+    --mode single \
+    --teacher_model baselineCNN_tanh \
+    --student_model fcn_256_32_tanh \
+    --config_path config_l2_0.2.json \
+    --seed 5 \
     --name exp3

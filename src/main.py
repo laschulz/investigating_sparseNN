@@ -123,8 +123,8 @@ if __name__ == "__main__":
     parser.add_argument("--student_model", type=str, help="Student model name")
     parser.add_argument("--teacher_type", type=str, choices=["baselineCNN", "splitFilterCNN", "multiChannelCNN"],
                         help="Student model type: baselineCNN, splitFilterCNN, multiChannelCNN")
-    parser.add_argument("--student_type", type=str, choices=["baselineCNN", "multiChannelCNN", "fcn_128_128", "fcn_256_32"],
-                        help="Student model type: baselineCNN, multiChannelCNN, fcn_128_128, fcn_256_32")
+    parser.add_argument("--student_type", type=str, choices=["baselineCNN", "multiChannelCNN", "fcn_128_128", "fcn_256_32", "fcn_1024_128"],
+                        help="Student model type: baselineCNN, multiChannelCNN, fcn_128_128, fcn_256_32, fcn_1024_128")
     parser.add_argument("--config_path", type=str, help="Path to configuration file")
     parser.add_argument("--seed", type=int, default=42, help="Random seed for reproducibility")
     parser.add_argument("--name", type=str, help="Name of the experiment")

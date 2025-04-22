@@ -1,7 +1,7 @@
 #!/bin/bash                        
 #SBATCH -t 30:00:00        
 #SBATCH --gres=gpu:1  # Request exactly 1 GPU
-#SBATCH --mem=16G
+#SBATCH --mem=32G
 #SBATCH --cpus-per-task=8
 #SBATCH --output=/om2/user/laschulz/investigating_sparseNN/logs/output_fcnn_%A_%a.log
 #SBATCH --error=/om2/user/laschulz/investigating_sparseNN/logs/error_fcnn_%A_%a.log
