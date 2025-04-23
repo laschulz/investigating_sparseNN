@@ -19,13 +19,13 @@ mkdir -p /om2/user/laschulz/investigating_sparseNN/logs
 
 cd /om2/user/laschulz/investigating_sparseNN || exit 1
 
-SEEDS=(1 2 3 4 5)
+SEEDS=(42)
 SEED=${SEEDS[$SLURM_ARRAY_TASK_ID]}
 echo "Running with seed: $SEED"
 
 python src/main.py \
     --mode multiple \
-    --teacher_type nonoverlappingCNN \
-    --student_type nonoverlappingCNN \
-    --config_path config_1.json \
+    --teacher_type baselineCNN \
+    --student_type baselineCNN \
+    --config_path config.json \
     --seed $SEED

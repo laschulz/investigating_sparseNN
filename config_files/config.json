@@ -11,5 +11,5 @@
     "clipping": false,
     "same_act": true,
     "save_path": "./experiment_output",
-    "name": "test"
+    "name": "exp1"
 }
