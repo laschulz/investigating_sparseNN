@@ -1,7 +1,7 @@
 # investigating_sparseNN
 
 
-This repository contains the code for the project xyz (link to report), conducted at the MIT Poggio Lab. 
+This repository contains the code for the project [L1-regularization: Path to sparsity](./l1_path_to_sparsity.pdf), conducted at the MIT Poggio Lab. 
 This project investigates how student neural networks can learn sparse internal representations from fixed teacher networks. 
 The core focus is on evaluating the effects of regularization techniques (L1-Regularization, L2-Regularization, no Regularization), and weight initialization on sparsity across various activation functions.
 
