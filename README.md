@@ -9,7 +9,16 @@ The core focus is on evaluating the effects of regularization techniques (L1-Reg
 
 ## Project Structure
 
-TODO
+### Project Structure
+
+The repository is organized as follows:
+
+- **`src/`**: Contains the main source code for running experiments, including model definitions, training loops, and evaluation scripts.
+- **`scripts/`**: Includes scripts to run each experiment on the cluster.
+- **`config_files/`**: Stores JSON configuration files that define hyperparameters and settings for the experiments.
+- **`experiment_output/`**: Directory that contains all results from the experiments, including model checkpoints and brief insights into the weights, loss variables, etc in a text-file.
+- **`analysis/`**: Contains Jupyter notebooks for each experiment for analyzing experiment results, visualizing sparsity patterns.
+- **`requirements.txt`**: Lists the Python dependencies required to run the project.
 
 ---
 
@@ -56,13 +65,3 @@ All other hyperparameters, such as learning rate, regularization strength, and a
 
 > **Note:** Only the name of the config file (e.g., `config.json`) needs to be passed.  
 > It is assumed to be located in the `config_files/` folder.
-
-
-
-python src/main.py \
-    --mode single \
-    --teacher_model baselineCNN_relu \
-    --student_model fcn_128_128_tanh \
-    --config_path config_l1_0.2.json \
-    --seed 2 \
-    --name exp4_l1_0.2
