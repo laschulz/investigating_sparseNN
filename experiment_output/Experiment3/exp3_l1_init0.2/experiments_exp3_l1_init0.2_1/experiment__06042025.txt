@@ -8,7 +8,7 @@ layers.2.weight: [[[ 0.86 -0.84]]]
 
 ================================================================================
 
-nonoverlappingCNN_sigmoid -> fcnn_decreasing_sigmoid
+baselineCNN_sigmoid -> fcn_256_32_sigmoid
 
 Student Model Parameters:
 layers.0.weight: [[0. 0. 0. ... 0. 0. 0.]
@@ -45,7 +45,7 @@ seed: 1
 
 ================================================================================
 
-nonoverlappingCNN_sigmoid -> fcnn_decreasing_relu
+baselineCNN_sigmoid -> fcn_256_32_relu
 
 Student Model Parameters:
 layers.0.weight: [[ 0.          0.          0.         ...  0.          0.
@@ -88,7 +88,7 @@ seed: 1
 
 ================================================================================
 
-nonoverlappingCNN_sigmoid -> fcnn_decreasing_tanh
+baselineCNN_sigmoid -> fcn_256_32_tanh
 
 Student Model Parameters:
 layers.0.weight: [[0. 0. 0. ... 0. 0. 0.]
@@ -125,7 +125,7 @@ seed: 1
 
 ================================================================================
 
-nonoverlappingCNN_relu -> fcnn_decreasing_sigmoid
+baselineCNN_relu -> fcn_256_32_sigmoid
 
 Student Model Parameters:
 layers.0.weight: [[0. 0. 0. ... 0. 0. 0.]
@@ -162,7 +162,7 @@ seed: 1
 
 ================================================================================
 
-nonoverlappingCNN_relu -> fcnn_decreasing_relu
+baselineCNN_relu -> fcn_256_32_relu
 
 Student Model Parameters:
 layers.0.weight: [[0. 0. 0. ... 0. 0. 0.]
@@ -199,7 +199,7 @@ seed: 1
 
 ================================================================================
 
-nonoverlappingCNN_relu -> fcnn_decreasing_tanh
+baselineCNN_relu -> fcn_256_32_tanh
 
 Student Model Parameters:
 layers.0.weight: [[-4.5310707   4.776872   -1.4509333  ...  0.25967997 -0.21374424
@@ -242,7 +242,7 @@ seed: 1
 
 ================================================================================
 
-nonoverlappingCNN_tanh -> fcnn_decreasing_sigmoid
+baselineCNN_tanh -> fcn_256_32_sigmoid
 
 Student Model Parameters:
 layers.0.weight: [[0. 0. 0. ... 0. 0. 0.]
@@ -286,7 +286,7 @@ seed: 1
 
 ================================================================================
 
-nonoverlappingCNN_tanh -> fcnn_decreasing_relu
+baselineCNN_tanh -> fcn_256_32_relu
 
 Student Model Parameters:
 layers.0.weight: [[0. 0. 0. ... 0. 0. 0.]
@@ -323,7 +323,7 @@ seed: 1
 
 ================================================================================
 
-nonoverlappingCNN_tanh -> fcnn_decreasing_tanh
+baselineCNN_tanh -> fcn_256_32_tanh
 
 Student Model Parameters:
 layers.0.weight: [[0. 0. 0. ... 0. 0. 0.]
