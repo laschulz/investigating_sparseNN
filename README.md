@@ -1,7 +1,7 @@
-# investigating_sparseNN
+# L1-regularization: Path to sparsity
 
 
-This repository contains the code for the project [L1-regularization: Path to sparsity](./l1_path_to_sparsity.pdf), conducted at the MIT Poggio Lab. 
+This repository contains the code for [semester project](./l1_path_to_sparsity.pdf), conducted at the MIT Poggio Lab. 
 
 This study investigates the effects of L1-regularization on inducing sparsity in neural networks, specifically within a teacher-student framework. Various experiments were conducted to evaluate both the convergence and emergence of sparsity. 
 The results show that L1-regularization is the only regularization technique that reliably drives weights exactly to zero. It achieves near-perfect sparsity, especially when the teacher and student share the same activation function. While initialization is crucial, our results offer practical guidance for optimizing student networks that accurately approximate teachers and recover sparse, interpretable representations.
